@@ -1093,96 +1093,186 @@
     }
 
     /**
-     * THREE.JS 3D GOLDEN WEDDING RINGS & PARTICLES ENGINE
-     */
-    let scene, camera, renderer, ringGroup, particlesMesh;
-    let targetRotationX = 0, targetRotationY = 0;
+ * THREE.JS PHOTOREALISTIC PROCEDURAL HDR ENVIRONMENT & PBR JEWELRY ENGINE
+ */
+let scene, camera, renderer, ringGroup, particlesMesh;
+let targetRotationX = 0, targetRotationY = 0;
 
-    function initThreeJSScene() {
-      const container = document.getElementById("webgl-canvas-container");
-      scene = new THREE.Scene();
+// Helper: Membuat peta studio HDR dinamis tanpa file eksternal
+function createProceduralStudioHDR(rendererInstance) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
 
-      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 8;
+  // Gradien dasar studio kubah gelap (Dark Jewelry Showroom)
+  const baseGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  baseGrad.addColorStop(0, '#0c0a09');
+  baseGrad.addColorStop(0.5, '#1c1613');
+  baseGrad.addColorStop(1, '#050404');
+  ctx.fillStyle = baseGrad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(renderer.domElement);
+  // Softbox Light 1: Key Light Atas (Putih Terang Bersih untuk Specular Edge)
+  const keyLight = ctx.createRadialGradient(512, 120, 10, 512, 120, 220);
+  keyLight.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
+  keyLight.addColorStop(0.4, 'rgba(255, 240, 220, 0.7)');
+  keyLight.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = keyLight;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Lights
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-      scene.add(ambientLight);
+  // Softbox Light 2: Warm Tungsten Rim Light (Kiri - Memberikan Pantulan Emas Pekat)
+  const warmLight = ctx.createRadialGradient(180, 260, 20, 180, 260, 260);
+  warmLight.addColorStop(0, 'rgba(255, 190, 90, 0.95)');
+  warmLight.addColorStop(0.5, 'rgba(200, 130, 40, 0.4)');
+  warmLight.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = warmLight;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const goldPointLight = new THREE.PointLight(0xF7E5A9, 2.5, 50);
-      goldPointLight.position.set(5, 5, 5);
-      scene.add(goldPointLight);
+  // Softbox Light 3: Champagne Accent Light (Kanan Bawah - Fill Light Refleksi)
+  const champLight = ctx.createRadialGradient(840, 300, 20, 840, 300, 280);
+  champLight.addColorStop(0, 'rgba(255, 235, 180, 0.85)');
+  champLight.addColorStop(0.6, 'rgba(160, 120, 60, 0.3)');
+  champLight.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = champLight;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const rimLight = new THREE.DirectionalLight(0xECC877, 1.8);
-      rimLight.position.set(-5, -5, -2);
-      scene.add(rimLight);
+  // Texture Conversion via PMREMGenerator
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.mapping = THREE.EquirectangularReflectionMapping;
 
-      // Intertwined 3D Golden Wedding Rings
-      ringGroup = new THREE.Group();
+  const pmremGenerator = new THREE.PMREMGenerator(rendererInstance);
+  pmremGenerator.compileEquirectangularShader();
+  const envMap = pmremGenerator.fromEquirectangular(texture).texture;
 
-      const ringGeometry = new THREE.TorusGeometry(1.2, 0.15, 24, 100);
-      const ringMaterial = new THREE.MeshStandardMaterial({
-        color: 0xD4AF37,
-        metalness: 0.9,
-        roughness: 0.15,
-        wireframe: false
-      });
+  texture.dispose();
+  pmremGenerator.dispose();
+  return envMap;
+}
 
-      const ring1 = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring1.position.x = -0.6;
-      ring1.rotation.y = 0.5;
+function initThreeJSScene() {
+  const container = document.getElementById("webgl-canvas-container");
+  scene = new THREE.Scene();
 
-      const ring2 = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring2.position.x = 0.6;
-      ring2.rotation.y = -0.5;
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 0, 7.5);
 
-      ringGroup.add(ring1);
-      ringGroup.add(ring2);
-      ringGroup.position.y = 0.2;
-      scene.add(ringGroup);
+  // Konfigurasi Renderer Presisi Tinggi
+  renderer = new THREE.WebGLRenderer({ 
+    alpha: true, 
+    antialias: true, 
+    powerPreference: "high-performance" 
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      // Gold Star-Dust Ambient Particles
-      const particleGeo = new THREE.BufferGeometry();
-      const count = 350;
-      const positions = new Float32Array(count * 3);
+  // Photographic Tone Mapping & Color Calibration
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.35;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  container.appendChild(renderer.domElement);
 
-      for (let i = 0; i < count * 3; i++) {
-        positions[i] = (Math.random() - 0.5) * 20;
-      }
+  // Injeksi HDR Environment ke Scene & Material
+  const studioEnvMap = createProceduralStudioHDR(renderer);
+  scene.environment = studioEnvMap;
 
-      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      const particleMat = new THREE.PointsMaterial({
-        size: 0.05,
-        color: 0xF7E5A9,
-        transparent: true,
-        opacity: 0.7
-      });
+  // Pencahayaan Langsung Tambahan (Highlight Specular)
+  const keySpot = new THREE.SpotLight(0xFFFFFF, 3.2, 30, Math.PI / 4, 0.3);
+  keySpot.position.set(4, 6, 5);
+  scene.add(keySpot);
 
-      particlesMesh = new THREE.Points(particleGeo, particleMat);
-      scene.add(particlesMesh);
+  const warmRim = new THREE.DirectionalLight(0xF5DEB3, 2.0);
+  warmRim.position.set(-6, -2, -3);
+  scene.add(warmRim);
 
-      // Mouse / Gyro Parallax Tracking
-      window.addEventListener("mousemove", (e) => {
-        const x = (e.clientX / window.innerWidth) * 2 - 1;
-        const y = -(e.clientY / window.innerHeight) * 2 + 1;
-        targetRotationY = x * 0.6;
-        targetRotationX = y * 0.4;
-      });
+  const fillSoft = new THREE.AmbientLight(0xFFF6E5, 0.6);
+  scene.add(fillSoft);
 
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+  // Material Fisik Emas 18K Realistis (PBR Standard)
+  const yellowGold18K = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0xFFDF73),      // Warna spektral emas murni
+    metalness: 1.0,                       // 100% konduktor logam
+    roughness: 0.11,                      // Micro-surface halus dengan pantulan glossy tajam
+    envMap: studioEnvMap,
+    envMapIntensity: 2.2,                 // Intensitas kilau pantulan HDR
+    roughnessMap: null
+  });
 
-      animate3D();
+  // Material Cincin Kedua (Rose Gold Polish Aksen Mewah)
+  const roseGold18K = new THREE.MeshStandardMaterial({
+    color: new THREE.Color(0xF0B9A2),      // Aksen Rose Gold
+    metalness: 1.0,
+    roughness: 0.13,
+    envMap: studioEnvMap,
+    envMapIntensity: 2.0
+  });
+
+  // Geometri Cincin Kawin Profil Ergonomis (Comfort-Fit Wedding Band)
+  ringGroup = new THREE.Group();
+  const ringGeo = new THREE.TorusGeometry(1.25, 0.13, 36, 128);
+
+  const ringGroom = new THREE.Mesh(ringGeo, yellowGold18K);
+  ringGroom.position.set(-0.55, 0, 0);
+  ringGroom.rotation.set(0.4, 0.6, 0);
+
+  const ringBride = new THREE.Mesh(ringGeo, roseGold18K);
+  ringBride.position.set(0.55, 0, 0);
+  ringBride.rotation.set(-0.4, -0.6, 0);
+
+  ringGroup.add(ringGroom);
+  ringGroup.add(ringBride);
+  ringGroup.position.y = 0.25;
+  scene.add(ringGroup);
+
+  // Efek Floating Gold Shimmer Dust Partikel
+  const particleCount = 280;
+  const particleGeo = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    positions[i] = (Math.random() - 0.5) * 16;
+    positions[i + 1] = (Math.random() - 0.5) * 12;
+    positions[i + 2] = (Math.random() - 0.5) * 10;
+  }
+
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({
+    size: 0.045,
+    color: 0xFFE082,
+    transparent: true,
+    opacity: 0.75,
+    blending: THREE.AdditiveBlending
+  });
+
+  particlesMesh = new THREE.Points(particleGeo, particleMat);
+  scene.add(particlesMesh);
+
+  // Parallax Gyroscope & Mouse Tracking
+  window.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth) * 2 - 1;
+    const y = -(e.clientY / window.innerHeight) * 2 + 1;
+    targetRotationY = x * 0.75;
+    targetRotationX = y * 0.5;
+  });
+
+  // Support Orientasi Sensor Layar Sentuh Mobile (Gyroscope Touch Tilt)
+  window.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      const x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+      const y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+      targetRotationY = x * 0.9;
+      targetRotationX = y * 0.6;
     }
+  }, { passive: true });
 
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  animate3D();
+}
     function animate3D() {
       requestAnimationFrame(animate3D);
 
