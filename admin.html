@@ -27,6 +27,7 @@
       --font-sans: 'Montserrat', sans-serif;
       --success: #22C55E;
       --danger: #EF4444;
+      --info: #38BDF8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
@@ -44,7 +45,7 @@
       z-index: 100;
     }
 
-    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+    .container { max-width: 1060px; margin: 0 auto; padding: 24px 16px; }
 
     .stats-row {
       display: grid;
@@ -84,7 +85,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-gold);
       border-radius: 18px;
-      padding: 28px;
+      padding: 26px;
       margin-bottom: 24px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
@@ -95,10 +96,10 @@
       background: var(--gold-metallic);
       color: #141210;
       border: none;
-      padding: 12px 24px;
-      font-size: 0.8rem;
+      padding: 10px 20px;
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       border-radius: 20px;
       cursor: pointer;
@@ -111,11 +112,15 @@
       background: transparent;
       border: 1px solid var(--border-gold);
       color: var(--gold-bright);
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 20px;
       font-size: 0.75rem;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
+    .btn-outline:hover { background: rgba(212, 175, 55, 0.15); }
 
     .input-box {
       width: 100%;
@@ -139,9 +144,35 @@
     .verification-box.valid { background: rgba(34, 197, 94, 0.15); border: 1px solid var(--success); }
     .verification-box.duplicate { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); }
 
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
-    th, td { padding: 14px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-    th { background: rgba(255, 255, 255, 0.03); color: var(--gold-bright); font-size: 0.7rem; text-transform: uppercase; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); vertical-align: middle; }
+    th { background: rgba(255, 255, 255, 0.03); color: var(--gold-bright); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .badge-status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .badge-hadir { background: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
+    .badge-tidak { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+    .badge-pending { background: rgba(255, 255, 255, 0.08); color: var(--text-muted); }
+
+    .btn-wa {
+      background: #25D366;
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
 
     #admin-gate-modal {
       position: fixed;
@@ -153,37 +184,11 @@
       justify-content: center;
       padding: 20px;
     }
-
-    #toast-shelf {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999999;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: none;
-    }
-    .toast-pill {
-      background: #141210;
-      border: 1px solid var(--border-gold);
-      color: #FFF;
-      padding: 10px 22px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.3s;
-    }
-    .toast-pill.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <div id="toast-shelf"></div>
-
-  <!-- ADMIN AUTH GATE PIN -->
+  <!-- ADMIN AUTH PIN -->
   <div id="admin-gate-modal">
     <div class="card" style="max-width: 380px; width: 100%; text-align: center;">
       <i data-lucide="shield-check" style="width: 42px; height: 42px; color: var(--gold-bright); margin-bottom: 12px;"></i>
@@ -211,36 +216,36 @@
           <div class="stat-lbl">Undangan</div>
         </div>
         <div class="stat-card">
-          <div class="stat-val" id="kpi-quota">0</div>
-          <div class="stat-lbl">Total Kuota</div>
+          <div class="stat-val" id="kpi-rsvp-yes">0</div>
+          <div class="stat-lbl">Konfirmasi Hadir</div>
         </div>
         <div class="stat-card">
           <div class="stat-val" style="color: var(--success);" id="kpi-present">0</div>
-          <div class="stat-lbl">Sudah Hadir</div>
+          <div class="stat-lbl">Hadir Hari H</div>
         </div>
         <div class="stat-card">
           <div class="stat-val" style="color: var(--gold-bright);" id="kpi-pending">0</div>
-          <div class="stat-lbl">Belum Hadir</div>
+          <div class="stat-lbl">Belum Datang</div>
         </div>
       </div>
 
       <!-- Navigation Tabs -->
       <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('scanner')">
-          <i data-lucide="camera"></i> Scanner QR
+          <i data-lucide="camera"></i> Scanner QR Hari H
         </button>
         <button class="tab-btn" onclick="switchTab('guestbook')">
-          <i data-lucide="list"></i> Presensi Tamu
+          <i data-lucide="list"></i> Data Tamu & Presensi
         </button>
         <button class="tab-btn" onclick="switchTab('manage')">
-          <i data-lucide="user-plus"></i> Kelola Tamu
+          <i data-lucide="user-plus"></i> Tambah Tamu
         </button>
       </div>
 
-      <!-- TAB 1: SCANNER -->
+      <!-- TAB 1: SCANNER HARI H -->
       <div id="tab-scanner" class="tab-view">
         <div class="card">
-          <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 14px;">Pemindai QR Tiket</h3>
+          <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 14px;">Pemindai QR Tiket Presensi</h3>
           <div id="reader"></div>
 
           <div style="display: flex; gap: 10px;">
@@ -260,32 +265,38 @@
         </div>
 
         <div class="card">
-          <h4 style="font-family: var(--font-display); margin-bottom: 8px;">Pencarian Manual Cepat</h4>
-          <input type="text" id="manual-search-box" class="input-box" placeholder="Ketik nama tamu jika QR tidak terbaca..." oninput="handleFastSearch()">
+          <h4 style="font-family: var(--font-display); margin-bottom: 8px;">Check-in Manual Cepat (Tanpa QR)</h4>
+          <input type="text" id="manual-search-box" class="input-box" placeholder="Ketik nama tamu..." oninput="handleFastSearch()">
           <div id="fast-search-list" style="margin-top: 12px;"></div>
         </div>
       </div>
 
-      <!-- TAB 2: GUESTBOOK TABLE -->
+      <!-- TAB 2: DATA TAMU, RSVP & HARI H -->
       <div id="tab-guestbook" class="tab-view" style="display: none;">
         <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h3 style="font-family: var(--font-display); font-size: 1.4rem;">Rekap Presensi</h3>
-            <button class="btn-outline" onclick="exportCSV()">
-              <i data-lucide="download"></i> Export CSV
-            </button>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem;">Daftar Tamu & Monitoring</h3>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-outline" onclick="syncOnlineRSVP()">
+                <i data-lucide="refresh-cw"></i> Tarik RSVP Online
+              </button>
+              <button class="btn-outline" onclick="exportCSV()">
+                <i data-lucide="download"></i> Export CSV
+              </button>
+            </div>
           </div>
+
           <div style="overflow-x: auto;">
             <table>
               <thead>
                 <tr>
-                  <th>UID Terenkripsi</th>
+                  <th>UID</th>
                   <th>Nama Tamu</th>
                   <th>Kategori</th>
                   <th>Kuota</th>
-                  <th>Status</th>
-                  <th>Waktu Hadir</th>
-                  <th>Aksi</th>
+                  <th>Status RSVP</th>
+                  <th>Presensi Hari H</th>
+                  <th>Bagikan Undangan</th>
                 </tr>
               </thead>
               <tbody id="guest-table-body"></tbody>
@@ -300,7 +311,7 @@
           <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 12px;">Tambah Tamu Baru (Auto-Hash UID)</h3>
           <form onsubmit="handleNewGuestSubmit(event)">
             <div style="margin-bottom: 12px;">
-              <label style="font-size: 0.75rem; color: var(--text-muted);">Nama Lengkap</label>
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Nama Tamu Lengkap</label>
               <input type="text" id="add-name" class="input-box" required placeholder="Contoh: Bpk. Bambang Pamungkas">
             </div>
             <div style="margin-bottom: 12px;">
@@ -308,7 +319,7 @@
               <input type="text" id="add-cat" class="input-box" required placeholder="VIP / Keluarga / Sahabat">
             </div>
             <div style="margin-bottom: 18px;">
-              <label style="font-size: 0.75rem; color: var(--text-muted);">Kuota</label>
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Kuota Undangan</label>
               <input type="number" id="add-quota" class="input-box" min="1" max="10" value="2" required>
             </div>
             <button type="submit" class="btn-lux">Generate UID & Simpan</button>
@@ -319,8 +330,12 @@
   </div>
 
   <script>
+    // MASUKKAN URL GOOGLE SCRIPT ANDA DI SINI
+    const GOOGLE_SCRIPT_RSVP_URL = "https://script.google.com/macros/s/AKfycbxxxx-GANTI_DENGAN_URL_ANDA-xxxx/exec";
+
     const STORAGE_KEY_REGISTRY = "secure_wedding_registry_2026";
     const STORAGE_KEY_CHECKINS = "secure_wedding_checkins_2026";
+    const STORAGE_KEY_RSVP_CACHE = "secure_wedding_rsvp_cache_2026";
     const STORAGE_KEY_PIN = "secure_admin_pin_2026";
 
     let scannerInstance = null;
@@ -339,6 +354,11 @@
       return data ? JSON.parse(data) : {};
     }
 
+    function queryRSVPCache() {
+      const data = localStorage.getItem(STORAGE_KEY_RSVP_CACHE);
+      return data ? JSON.parse(data) : {};
+    }
+
     function markPresent(uid) {
       const checkins = queryCheckins();
       const now = new Date();
@@ -348,28 +368,6 @@
       };
       localStorage.setItem(STORAGE_KEY_CHECKINS, JSON.stringify(checkins));
       return checkins[uid];
-    }
-
-    function triggerAudioBeep(type = "success") {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        if (type === "success") {
-          osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15);
-        } else {
-          osc.frequency.setValueAtTime(320, audioCtx.currentTime);
-          osc.frequency.linearRampToValueAtTime(180, audioCtx.currentTime + 0.3);
-        }
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.2);
-      } catch (e) {}
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -403,6 +401,7 @@
 
     function openConsole() {
       document.getElementById("admin-main-view").style.display = "block";
+      syncOnlineRSVP();
       refreshKPIs();
       renderTable();
       if (window.lucide) lucide.createIcons();
@@ -416,20 +415,41 @@
       if (name !== "scanner") stopScanner();
     }
 
+    // TARIK DATA DARI GOOGLE SHEETS VIA APPS SCRIPT
+    function syncOnlineRSVP() {
+      if (!GOOGLE_SCRIPT_RSVP_URL.includes("/exec")) return;
+
+      fetch(GOOGLE_SCRIPT_RSVP_URL)
+        .then(res => res.json())
+        .then(data => {
+          const rsvpMap = {};
+          data.forEach(item => {
+            rsvpMap[item.uid] = item;
+          });
+          localStorage.setItem(STORAGE_KEY_RSVP_CACHE, JSON.stringify(rsvpMap));
+          refreshKPIs();
+          renderTable();
+        })
+        .catch(err => console.log("Gagal sinkron RSVP:", err));
+    }
+
     function refreshKPIs() {
       const reg = queryRegistry();
       const chk = queryCheckins();
-      let totalQ = 0, presentC = 0;
+      const rsvp = queryRSVPCache();
+
+      let presentCount = 0;
+      let rsvpYesCount = 0;
 
       reg.forEach(g => {
-        totalQ += parseInt(g.quota || 1, 10);
-        if (chk[g.uid]) presentC++;
+        if (chk[g.uid]) presentCount++;
+        if (rsvp[g.uid] && rsvp[g.uid].status === "Hadir") rsvpYesCount++;
       });
 
       document.getElementById("kpi-total").textContent = reg.length;
-      document.getElementById("kpi-quota").textContent = totalQ;
-      document.getElementById("kpi-present").textContent = presentC;
-      document.getElementById("kpi-pending").textContent = reg.length - presentC;
+      document.getElementById("kpi-rsvp-yes").textContent = rsvpYesCount;
+      document.getElementById("kpi-present").textContent = presentCount;
+      document.getElementById("kpi-pending").textContent = reg.length - presentCount;
     }
 
     function startScanner() {
@@ -465,7 +485,6 @@
       box.style.display = "block";
 
       if (!raw || !raw.startsWith("WEDDING|")) {
-        triggerAudioBeep("error");
         box.className = "verification-box duplicate";
         title.textContent = "Format QR Tidak Dikenali";
         body.innerHTML = `Data: <code>${raw}</code>`;
@@ -478,23 +497,20 @@
       const guest = reg.find(g => g.uid.toUpperCase() === uid.toUpperCase());
 
       if (!guest) {
-        triggerAudioBeep("error");
         box.className = "verification-box duplicate";
         title.textContent = "Tamu Tidak Terdaftar";
-        body.innerHTML = `UID Hash <code>${uid}</code> tidak ditemukan.`;
+        body.innerHTML = `UID <code>${uid}</code> tidak terdaftar.`;
         act.innerHTML = "";
         return;
       }
 
       const checkins = queryCheckins();
       if (checkins[guest.uid]) {
-        triggerAudioBeep("error");
         box.className = "verification-box duplicate";
         title.textContent = "PERINGATAN: SUDAH CHECK-IN";
         body.innerHTML = `<strong>${guest.name}</strong> (${guest.category})<br>Check-in pada: ${checkins[guest.uid].formatted}`;
         act.innerHTML = "";
       } else {
-        triggerAudioBeep("success");
         box.className = "verification-box valid";
         title.textContent = "Tiket Valid";
         body.innerHTML = `<strong>${guest.name}</strong><br>Kategori: ${guest.category} • Kuota: ${guest.quota} Orang`;
@@ -506,12 +522,11 @@
       const log = markPresent(uid);
       refreshKPIs();
       renderTable();
-      triggerAudioBeep("success");
 
       const box = document.getElementById("verification-result-box");
       box.className = "verification-box valid";
       document.getElementById("verif-title").textContent = "CHECK-IN BERHASIL!";
-      document.getElementById("verif-action").innerHTML = `<span style="color:var(--success); font-weight:700;">Sudah Hadir (${log.formatted})</span>`;
+      document.getElementById("verif-action").innerHTML = `<span style="color:var(--success); font-weight:700;">Tercatat Hadir (${log.formatted})</span>`;
     }
 
     function handleFastSearch() {
@@ -541,28 +556,74 @@
       list.innerHTML = html;
     }
 
+    // RENDER TABEL LENGKAP: DATA TAMU, RSVP, CHECK-IN HARI H & GENERATOR WA
     function renderTable() {
       const reg = queryRegistry();
       const chk = queryCheckins();
+      const rsvp = queryRSVPCache();
       const tbody = document.getElementById("guest-table-body");
       tbody.innerHTML = "";
 
+      // Dapatkan Base URL undangan secara dinamis
+      const baseUrl = window.location.origin + window.location.pathname.replace("admin.html", "");
+
       reg.forEach(g => {
         const isPresent = !!chk[g.uid];
+        const rsvpData = rsvp[g.uid];
+        
+        // Link Personal Tamu
+        const guestUrl = `${baseUrl}?uid=${g.uid}`;
+        
+        // Template Pesan WhatsApp Formal
+        const waText = 
+`Yth. ${g.name},
+
+Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:
+
+*Charis & Sita*
+
+Berikut tautan undangan digital personal Anda (termasuk tiket presensi QR Code):
+${guestUrl}
+
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.
+
+Terima kasih.`;
+
+        const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`;
+
+        // Badge Status RSVP
+        let rsvpBadge = `<span class="badge-status badge-pending">Belum RSVP</span>`;
+        if (rsvpData) {
+          if (rsvpData.status === "Hadir") {
+            rsvpBadge = `<span class="badge-status badge-hadir">Hadir (${rsvpData.count} Org)</span>`;
+          } else {
+            rsvpBadge = `<span class="badge-status badge-tidak">Tidak Hadir</span>`;
+          }
+        }
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><code>${g.uid}</code></td>
           <td><strong>${g.name}</strong></td>
           <td>${g.category}</td>
           <td>${g.quota}</td>
-          <td>${isPresent ? '<span style="color:var(--success); font-weight:700;">HADIR</span>' : '<span style="color:var(--text-muted);">BELUM</span>'}</td>
-          <td style="font-size:0.8rem;">${isPresent ? chk[g.uid].formatted : '-'}</td>
+          <td>${rsvpBadge}</td>
           <td>
-            ${!isPresent ? `<button class="btn-outline" style="padding:4px 8px;" onclick="confirmCheckinAction('${g.uid}')">Check-in</button>` : '✓'}
+            ${isPresent 
+              ? `<span style="color:var(--success); font-weight:700;">HADIR<br><small style="color:var(--text-muted);">${chk[g.uid].formatted}</small></span>` 
+              : `<button class="btn-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="confirmCheckinAction('${g.uid}')">Check-in</button>`
+            }
+          </td>
+          <td>
+            <a href="${waUrl}" target="_blank" class="btn-wa">
+              <i data-lucide="send" style="width:12px; height:12px;"></i> Kirim WA
+            </a>
           </td>
         `;
         tbody.appendChild(tr);
       });
+
+      if (window.lucide) lucide.createIcons();
     }
 
     function handleNewGuestSubmit(e) {
@@ -587,11 +648,14 @@
     function exportCSV() {
       const reg = queryRegistry();
       const chk = queryCheckins();
-      let csv = "\uFEFFUID,Nama Tamu,Kategori,Kuota,Status,Waktu Check-in\n";
+      const rsvp = queryRSVPCache();
+
+      let csv = "\uFEFFUID,Nama Tamu,Kategori,Kuota,Status RSVP,Presensi Hari H,Waktu Checkin\n";
       reg.forEach(g => {
         const isPresent = !!chk[g.uid];
+        const rsvpStatus = rsvp[g.uid] ? rsvp[g.uid].status : "Belum RSVP";
         const t = isPresent ? chk[g.uid].formatted : "-";
-        csv += `"${g.uid}","${g.name}","${g.category}",${g.quota},"${isPresent ? 'HADIR' : 'BELUM'}","${t}"\n`;
+        csv += `"${g.uid}","${g.name}","${g.category}",${g.quota},"${rsvpStatus}","${isPresent ? 'HADIR' : 'BELUM'}","${t}"\n`;
       });
 
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
