@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Reception Console — Charis & Sita Wedding</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Libraries CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0A0808;
+      --bg-card: rgba(22, 19, 17, 0.9);
+      --border-gold: rgba(212, 175, 55, 0.35);
+      --gold-bright: #F7E5A9;
+      --gold-metallic: linear-gradient(135deg, #ECC877 0%, #FAF1D6 40%, #B88E3E 70%, #F5DEB3 100%);
+      --text-main: #FDFBF7;
+      --text-muted: #A39D95;
+      --font-display: 'Cinzel', serif;
+      --font-sans: 'Montserrat', sans-serif;
+      --success: #22C55E;
+      --danger: #EF4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+    body { background: var(--bg-dark); color: var(--text-main); font-family: var(--font-sans); min-height: 100vh; }
+
+    .header-bar {
+      background: rgba(18, 14, 13, 0.95);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 18px 12px;
+      text-align: center;
+    }
+    .stat-val { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--gold-bright); }
+    .stat-lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-top: 4px; }
+
+    .nav-tabs { display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; }
+    .tab-btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+    .tab-btn.active { background: var(--gold-metallic); color: #141210; border-color: transparent; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    #reader { width: 100%; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--border-gold); margin-bottom: 16px; }
+
+    .btn-lux {
+      background: var(--gold-metallic);
+      color: #141210;
+      border: none;
+      padding: 12px 24px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-gold);
+      background: rgba(0, 0, 0, 0.5);
+      color: #FFF;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      margin-top: 6px;
+      outline: none;
+    }
+
+    .verification-box {
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 16px;
+      display: none;
+    }
+    .verification-box.valid { background: rgba(34, 197, 94, 0.15); border: 1px solid var(--success); }
+    .verification-box.duplicate { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    th { background: rgba(255, 255, 255, 0.03); color: var(--gold-bright); font-size: 0.7rem; text-transform: uppercase; }
+
+    #admin-gate-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 999999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #toast-shelf {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast-pill {
+      background: #141210;
+      border: 1px solid var(--border-gold);
+      color: #FFF;
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+    }
+    .toast-pill.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div id="toast-shelf"></div>
+
+  <!-- ADMIN AUTH GATE PIN -->
+  <div id="admin-gate-modal">
+    <div class="card" style="max-width: 380px; width: 100%; text-align: center;">
+      <i data-lucide="shield-check" style="width: 42px; height: 42px; color: var(--gold-bright); margin-bottom: 12px;"></i>
+      <h3 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 6px;">Autentikasi Petugas</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">Masukkan PIN Meja Resepsionis</p>
+      <input type="password" id="input-admin-pin" class="input-box" placeholder="••••" style="text-align: center; font-size: 1.6rem; letter-spacing: 0.3em; margin-bottom: 20px;" maxlength="8">
+      <button class="btn-lux" style="width: 100%; justify-content: center;" onclick="verifyPIN()">Buka Dashboard</button>
+    </div>
+  </div>
+
+  <div id="admin-main-view" style="display: none;">
+    <header class="header-bar">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <i data-lucide="scan-line" style="color: var(--gold-bright);"></i>
+        <h2 style="font-family: var(--font-display); font-size: 1.1rem;">Reception Console</h2>
+      </div>
+      <button class="btn-outline" onclick="logoutAdmin()">Keluar</button>
+    </header>
+
+    <div class="container">
+      <!-- Live Metrics -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val" id="kpi-total">0</div>
+          <div class="stat-lbl">Undangan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="kpi-quota">0</div>
+          <div class="stat-lbl">Total Kuota</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--success);" id="kpi-present">0</div>
+          <div class="stat-lbl">Sudah Hadir</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--gold-bright);" id="kpi-pending">0</div>
+          <div class="stat-lbl">Belum Hadir</div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('scanner')">
+          <i data-lucide="camera"></i> Scanner QR
+        </button>
+        <button class="tab-btn" onclick="switchTab('guestbook')">
+          <i data-lucide="list"></i> Presensi Tamu
+        </button>
+        <button class="tab-btn" onclick="switchTab('manage')">
+          <i data-lucide="user-plus"></i> Kelola Tamu
+        </button>
+      </div>
+
+      <!-- TAB 1: SCANNER -->
+      <div id="tab-scanner" class="tab-view">
+        <div class="card">
+          <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 14px;">Pemindai QR Tiket</h3>
+          <div id="reader"></div>
+
+          <div style="display: flex; gap: 10px;">
+            <button id="btn-start-scan" class="btn-lux" onclick="startScanner()">
+              <i data-lucide="camera"></i> Aktifkan Kamera
+            </button>
+            <button id="btn-stop-scan" class="btn-outline" onclick="stopScanner()" style="display: none;">
+              Matikan Kamera
+            </button>
+          </div>
+
+          <div id="verification-result-box" class="verification-box">
+            <h4 id="verif-title" style="font-size: 1.1rem; margin-bottom: 6px;"></h4>
+            <div id="verif-body" style="font-size: 0.85rem; line-height: 1.6;"></div>
+            <div id="verif-action" style="margin-top: 14px;"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4 style="font-family: var(--font-display); margin-bottom: 8px;">Pencarian Manual Cepat</h4>
+          <input type="text" id="manual-search-box" class="input-box" placeholder="Ketik nama tamu jika QR tidak terbaca..." oninput="handleFastSearch()">
+          <div id="fast-search-list" style="margin-top: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- TAB 2: GUESTBOOK TABLE -->
+      <div id="tab-guestbook" class="tab-view" style="display: none;">
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem;">Rekap Presensi</h3>
+            <button class="btn-outline" onclick="exportCSV()">
+              <i data-lucide="download"></i> Export CSV
+            </button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>UID Terenkripsi</th>
+                  <th>Nama Tamu</th>
+                  <th>Kategori</th>
+                  <th>Kuota</th>
+                  <th>Status</th>
+                  <th>Waktu Hadir</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="guest-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: MANAGE GUESTS -->
+      <div id="tab-manage" class="tab-view" style="display: none;">
+        <div class="card">
+          <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 12px;">Tambah Tamu Baru (Auto-Hash UID)</h3>
+          <form onsubmit="handleNewGuestSubmit(event)">
+            <div style="margin-bottom: 12px;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Nama Lengkap</label>
+              <input type="text" id="add-name" class="input-box" required placeholder="Contoh: Bpk. Bambang Pamungkas">
+            </div>
+            <div style="margin-bottom: 12px;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Kategori</label>
+              <input type="text" id="add-cat" class="input-box" required placeholder="VIP / Keluarga / Sahabat">
+            </div>
+            <div style="margin-bottom: 18px;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Kuota</label>
+              <input type="number" id="add-quota" class="input-box" min="1" max="10" value="2" required>
+            </div>
+            <button type="submit" class="btn-lux">Generate UID & Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY_REGISTRY = "secure_wedding_registry_2026";
+    const STORAGE_KEY_CHECKINS = "secure_wedding_checkins_2026";
+    const STORAGE_KEY_PIN = "secure_admin_pin_2026";
+
+    let scannerInstance = null;
+
+    function queryRegistry() {
+      const data = localStorage.getItem(STORAGE_KEY_REGISTRY);
+      return data ? JSON.parse(data) : [];
+    }
+
+    function commitRegistry(list) {
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(list));
+    }
+
+    function queryCheckins() {
+      const data = localStorage.getItem(STORAGE_KEY_CHECKINS);
+      return data ? JSON.parse(data) : {};
+    }
+
+    function markPresent(uid) {
+      const checkins = queryCheckins();
+      const now = new Date();
+      checkins[uid] = {
+        iso: now.toISOString(),
+        formatted: new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium', timeStyle: 'short' }).format(now)
+      };
+      localStorage.setItem(STORAGE_KEY_CHECKINS, JSON.stringify(checkins));
+      return checkins[uid];
+    }
+
+    function triggerAudioBeep(type = "success") {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === "success") {
+          osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1760, audioCtx.currentTime + 0.15);
+        } else {
+          osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+          osc.frequency.linearRampToValueAtTime(180, audioCtx.currentTime + 0.3);
+        }
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.2);
+      } catch (e) {}
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) lucide.createIcons();
+      const authed = sessionStorage.getItem("admin_session_active") === "true";
+      if (!authed) {
+        document.getElementById("admin-gate-modal").style.display = "flex";
+      } else {
+        openConsole();
+      }
+    });
+
+    function verifyPIN() {
+      const entered = document.getElementById("input-admin-pin").value;
+      const valid = localStorage.getItem(STORAGE_KEY_PIN) || "1234";
+
+      if (entered === valid) {
+        sessionStorage.setItem("admin_session_active", "true");
+        document.getElementById("admin-gate-modal").style.display = "none";
+        openConsole();
+      } else {
+        alert("PIN Tidak Valid!");
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem("admin_session_active");
+      stopScanner();
+      location.reload();
+    }
+
+    function openConsole() {
+      document.getElementById("admin-main-view").style.display = "block";
+      refreshKPIs();
+      renderTable();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function switchTab(name) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+      document.querySelectorAll(".tab-view").forEach(t => t.style.display = "none");
+      document.getElementById(`tab-${name}`).style.display = "block";
+      if (name !== "scanner") stopScanner();
+    }
+
+    function refreshKPIs() {
+      const reg = queryRegistry();
+      const chk = queryCheckins();
+      let totalQ = 0, presentC = 0;
+
+      reg.forEach(g => {
+        totalQ += parseInt(g.quota || 1, 10);
+        if (chk[g.uid]) presentC++;
+      });
+
+      document.getElementById("kpi-total").textContent = reg.length;
+      document.getElementById("kpi-quota").textContent = totalQ;
+      document.getElementById("kpi-present").textContent = presentC;
+      document.getElementById("kpi-pending").textContent = reg.length - presentC;
+    }
+
+    function startScanner() {
+      if (!window.Html5Qrcode) return;
+      scannerInstance = new Html5Qrcode("reader");
+      scannerInstance.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 240 },
+        processScannedCode,
+        () => {}
+      ).then(() => {
+        document.getElementById("btn-start-scan").style.display = "none";
+        document.getElementById("btn-stop-scan").style.display = "inline-flex";
+      });
+    }
+
+    function stopScanner() {
+      if (scannerInstance) {
+        scannerInstance.stop().then(() => {
+          scannerInstance.clear();
+          scannerInstance = null;
+          document.getElementById("btn-start-scan").style.display = "inline-flex";
+          document.getElementById("btn-stop-scan").style.display = "none";
+        }).catch(e => {});
+      }
+    }
+
+    function processScannedCode(raw) {
+      const box = document.getElementById("verification-result-box");
+      const title = document.getElementById("verif-title");
+      const body = document.getElementById("verif-body");
+      const act = document.getElementById("verif-action");
+      box.style.display = "block";
+
+      if (!raw || !raw.startsWith("WEDDING|")) {
+        triggerAudioBeep("error");
+        box.className = "verification-box duplicate";
+        title.textContent = "Format QR Tidak Dikenali";
+        body.innerHTML = `Data: <code>${raw}</code>`;
+        act.innerHTML = "";
+        return;
+      }
+
+      const uid = raw.split("|")[1];
+      const reg = queryRegistry();
+      const guest = reg.find(g => g.uid.toUpperCase() === uid.toUpperCase());
+
+      if (!guest) {
+        triggerAudioBeep("error");
+        box.className = "verification-box duplicate";
+        title.textContent = "Tamu Tidak Terdaftar";
+        body.innerHTML = `UID Hash <code>${uid}</code> tidak ditemukan.`;
+        act.innerHTML = "";
+        return;
+      }
+
+      const checkins = queryCheckins();
+      if (checkins[guest.uid]) {
+        triggerAudioBeep("error");
+        box.className = "verification-box duplicate";
+        title.textContent = "PERINGATAN: SUDAH CHECK-IN";
+        body.innerHTML = `<strong>${guest.name}</strong> (${guest.category})<br>Check-in pada: ${checkins[guest.uid].formatted}`;
+        act.innerHTML = "";
+      } else {
+        triggerAudioBeep("success");
+        box.className = "verification-box valid";
+        title.textContent = "Tiket Valid";
+        body.innerHTML = `<strong>${guest.name}</strong><br>Kategori: ${guest.category} • Kuota: ${guest.quota} Orang`;
+        act.innerHTML = `<button class="btn-lux" onclick="confirmCheckinAction('${guest.uid}')">✓ Konfirmasi Hadir</button>`;
+      }
+    }
+
+    function confirmCheckinAction(uid) {
+      const log = markPresent(uid);
+      refreshKPIs();
+      renderTable();
+      triggerAudioBeep("success");
+
+      const box = document.getElementById("verification-result-box");
+      box.className = "verification-box valid";
+      document.getElementById("verif-title").textContent = "CHECK-IN BERHASIL!";
+      document.getElementById("verif-action").innerHTML = `<span style="color:var(--success); font-weight:700;">Sudah Hadir (${log.formatted})</span>`;
+    }
+
+    function handleFastSearch() {
+      const key = document.getElementById("manual-search-box").value.toLowerCase().trim();
+      const list = document.getElementById("fast-search-list");
+      if (key.length < 2) { list.innerHTML = ""; return; }
+
+      const reg = queryRegistry();
+      const chk = queryCheckins();
+      const filtered = reg.filter(g => g.name.toLowerCase().includes(key) || g.uid.toLowerCase().includes(key));
+
+      let html = "";
+      filtered.forEach(g => {
+        const isPresent = !!chk[g.uid];
+        html += `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border-gold); padding:10px 14px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem;">${g.name}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${g.category} • Kuota: ${g.quota} • UID: ${g.uid}</div>
+            </div>
+            <div>
+              ${isPresent ? '<span style="color:var(--success); font-size:0.8rem;">Sudah Hadir</span>' : `<button class="btn-lux" style="padding:6px 14px; font-size:0.75rem;" onclick="confirmCheckinAction('${g.uid}'); handleFastSearch();">Check-in</button>`}
+            </div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function renderTable() {
+      const reg = queryRegistry();
+      const chk = queryCheckins();
+      const tbody = document.getElementById("guest-table-body");
+      tbody.innerHTML = "";
+
+      reg.forEach(g => {
+        const isPresent = !!chk[g.uid];
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code>${g.uid}</code></td>
+          <td><strong>${g.name}</strong></td>
+          <td>${g.category}</td>
+          <td>${g.quota}</td>
+          <td>${isPresent ? '<span style="color:var(--success); font-weight:700;">HADIR</span>' : '<span style="color:var(--text-muted);">BELUM</span>'}</td>
+          <td style="font-size:0.8rem;">${isPresent ? chk[g.uid].formatted : '-'}</td>
+          <td>
+            ${!isPresent ? `<button class="btn-outline" style="padding:4px 8px;" onclick="confirmCheckinAction('${g.uid}')">Check-in</button>` : '✓'}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleNewGuestSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("add-name").value.trim();
+      const cat = document.getElementById("add-cat").value.trim();
+      const quota = parseInt(document.getElementById("add-quota").value, 10);
+
+      const randomHex = Math.random().toString(16).substring(2, 8).toUpperCase();
+      const uid = `CS-${randomHex}`;
+
+      const reg = queryRegistry();
+      reg.push({ uid, name, quota, category: cat });
+      commitRegistry(reg);
+
+      refreshKPIs();
+      renderTable();
+      alert(`Tamu berhasil ditambahkan dengan UID: ${uid}`);
+      e.target.reset();
+    }
+
+    function exportCSV() {
+      const reg = queryRegistry();
+      const chk = queryCheckins();
+      let csv = "\uFEFFUID,Nama Tamu,Kategori,Kuota,Status,Waktu Check-in\n";
+      reg.forEach(g => {
+        const isPresent = !!chk[g.uid];
+        const t = isPresent ? chk[g.uid].formatted : "-";
+        csv += `"${g.uid}","${g.name}","${g.category}",${g.quota},"${isPresent ? 'HADIR' : 'BELUM'}","${t}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `rekap_presensi_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>
