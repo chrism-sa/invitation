@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Wedding of Charis & Sita</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- QRCode Generator -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- HTML5 QR Scanner -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <!-- ==========================================
+       CSS STYLING (Premium Minimalist Luxury)
+       ========================================== -->
+  <style>
+    :root {
+      --bg-cream: #FDFBF7;
+      --bg-sand: #F7F3EB;
+      --bg-card: #FFFFFF;
+      --primary: #2C2623;
+      --primary-light: #5A534E;
+      --gold: #A38753;
+      --gold-light: #CBB994;
+      --gold-tint: #FAF6ED;
+      --border: #E8E2D5;
+      --border-dark: #D4CABA;
+      --olive: #5C6250;
+      --success: #2E6B4F;
+      --danger: #9E2B2B;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow-sm: 0 4px 12px rgba(44, 38, 35, 0.04);
+      --shadow-md: 0 10px 30px rgba(44, 38, 35, 0.08);
+      --shadow-lg: 0 20px 40px rgba(44, 38, 35, 0.12);
+      --radius: 12px;
+      --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-serif {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: var(--font-sans);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    /* Container */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+    }
+
+    /* Floating Audio Player */
+    .audio-player-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: var(--shadow-sm);
+      animation: spin 8s linear infinite;
+    }
+    .audio-player-btn.paused {
+      animation-play-state: paused;
+      color: var(--primary-light);
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Welcome / Splash Screen */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #FFFFFF 0%, var(--bg-sand) 100%);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+    }
+    #splash-screen.opened {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .splash-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 48px 28px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      max-width: 440px;
+      width: 100%;
+    }
+    .splash-subtitle {
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .splash-title {
+      font-size: 2.8rem;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--primary);
+    }
+    .splash-invitee {
+      margin: 32px 0 36px;
+      padding: 20px;
+      background: var(--gold-tint);
+      border-radius: 8px;
+      border: 1px dashed var(--gold-light);
+    }
+    .splash-invitee p {
+      font-size: 0.85rem;
+      color: var(--primary-light);
+    }
+    .splash-invitee h4 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #fff;
+      padding: 14px 32px;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-primary:hover {
+      background-color: var(--gold);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Invalid UID Screen */
+    #invalid-uid-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-cream);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    /* Main Invitation */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-pretitle {
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-size: 4rem;
+      line-height: 1.05;
+      font-weight: 300;
+      margin-bottom: 18px;
+    }
+    .hero-date {
+      font-size: 0.95rem;
+      letter-spacing: 0.2em;
+      color: var(--primary-light);
+      text-transform: uppercase;
+    }
+
+    /* Section Global */
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 2.4rem;
+      color: var(--primary);
+    }
+
+    /* Quote */
+    .quote-card {
+      text-align: center;
+      font-style: italic;
+      font-size: 1.35rem;
+      line-height: 1.7;
+      color: var(--primary-light);
+      position: relative;
+      padding: 0 20px;
+    }
+    .quote-author {
+      font-style: normal;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 20px;
+      display: block;
+    }
+
+    /* Couple */
+    .couple-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .couple-item {
+      text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .couple-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      object-fit: cover;
+      border: 3px solid var(--gold-tint);
+      box-shadow: 0 0 0 1px var(--border-dark);
+    }
+    .couple-name {
+      font-size: 1.9rem;
+      margin-bottom: 8px;
+    }
+    .couple-parents {
+      font-size: 0.85rem;
+      color: var(--primary-light);
+      margin-top: 6px;
+    }
+
+    /* Events */
+    .event-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .event-title {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .event-time {
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .event-location {
+      font-size: 0.9rem;
+      color: var(--primary-light);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border: 1px solid var(--border-dark);
+      background: transparent;
+      color: var(--primary);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 4px;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-tint);
+    }
+
+    /* Countdown */
+    .countdown-wrap {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .countdown-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 8px;
+      text-align: center;
+    }
+    .countdown-num {
+      font-size: 2rem;
+      font-family: var(--font-serif);
+      line-height: 1;
+      color: var(--primary);
+    }
+    .countdown-lbl {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    /* Personal QR Code Section */
+    .qr-badge-card {
+      background: linear-gradient(145deg, #FFFFFF, var(--gold-tint));
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      padding: 40px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .qr-badge-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold-light), var(--gold));
+    }
+    .qr-code-box {
+      display: inline-block;
+      padding: 16px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .qr-guest-name {
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .qr-guest-quota {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      background: var(--gold-tint);
+      border: 1px solid var(--gold-light);
+      border-radius: 20px;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .qr-instruction {
+      font-size: 0.85rem;
+      color: var(--primary-light);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(44, 38, 35, 0.95);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #lightbox img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 6px;
+      box-shadow: var(--shadow-lg);
+    }
+    #lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    /* Gift & RSVP */
+    .bank-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .bank-name {
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .bank-number {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin: 8px 0;
+    }
+    .rsvp-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      color: var(--primary-light);
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      background: var(--bg-cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--primary);
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    /* Footer / Closing */
+    .closing {
+      text-align: center;
+      padding: 80px 0 100px;
+    }
+    .closing-text {
+      font-size: 1.1rem;
+      color: var(--primary-light);
+      margin-bottom: 28px;
+    }
+
+    /* ==========================================
+       ADMIN STYLING
+       ========================================== */
+    #admin-app {
+      display: none;
+      min-height: 100vh;
+      background: #F4F1EC;
+      color: #2D2723;
+    }
+    .admin-nav {
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .admin-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .admin-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .tab-btn {
+      padding: 10px 18px;
+      border-radius: 6px;
+      background: #EAE4D9;
+      color: var(--primary-light);
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .admin-section {
+      display: none;
+    }
+    .admin-section.active {
+      display: block;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-val {
+      font-size: 1.8rem;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--primary);
+    }
+    .stat-lbl {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary-light);
+      margin-top: 4px;
+    }
+
+    /* QR Scanner UI */
+    .scanner-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    #reader {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+
+    /* Scan Result Card */
+    .scan-feedback {
+      margin-top: 20px;
+      border-radius: 8px;
+      padding: 20px;
+      display: none;
+    }
+    .scan-feedback.ready {
+      background: var(--gold-tint);
+      border: 1px solid var(--gold-light);
+    }
+    .scan-feedback.already {
+      background: #FFF2F2;
+      border: 1px solid #ECA5A5;
+    }
+    .scan-feedback.invalid {
+      background: #F8F9FA;
+      border: 1px solid #CED4DA;
+    }
+
+    /* Table & Tools */
+    .card {
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--bg-sand);
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .badge-success { background: #D4EDDA; color: var(--success); }
+    .badge-pending { background: #E2E3E5; color: #6C757D; }
+
+    /* Modals & Toasts */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: var(--radius);
+      padding: 28px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+    }
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #FFFFFF;
+      background: var(--primary);
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+
+    /* Helpers */
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .gap-2 { gap: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mt-4 { margin-top: 16px; }
+  </style>
+</head>
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Audio Element (Auto-unmute/play saat buka undangan) -->
+  <audio id="wedding-audio" loop preload="auto">
+    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-1144.mp3" type="audio/mp3">
+  </audio>
+  <button id="audio-toggle" class="audio-player-btn paused" title="Putar Musik">
+    <i data-lucide="music" style="width: 18px; height: 18px;"></i>
+  </button>
+
+  <!-- ==============================================================
+       1. WELCOME SCREEN / SPLASH SCREEN
+       ============================================================== -->
+  <div id="splash-screen">
+    <div class="splash-card">
+      <p class="splash-subtitle">Intimate Wedding</p>
+      <h1 class="splash-title font-serif" id="splash-couple-title">Charis & Sita</h1>
+      
+      <div class="splash-invitee">
+        <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+        <h4 class="font-serif" id="guest-display-splash">Tamu Kehormatan</h4>
+        <p id="guest-quota-badge" style="font-size: 0.75rem; color: var(--gold); margin-top: 4px;"></p>
+      </div>
+
+      <p style="font-size: 0.8rem; color: var(--primary-light); margin-bottom: 24px;">
+        Tanpa mengurangi rasa hormat, kami mengundang Anda untuk merayakan hari bahagia kami.
+      </p>
+
+      <button id="btn-open-invitation" class="btn-primary" style="width: 100%; justify-content: center;">
+        <span>Buka Undangan</span>
+        <i data-lucide="mail-open" style="width: 16px; height: 16px;"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==============================================================
+       2. INVALID UID SCREEN (Fallback jika URL salah)
+       ============================================================== -->
+  <div id="invalid-uid-screen">
+    <div class="splash-card">
+      <i data-lucide="compass" style="width: 48px; height: 48px; color: var(--gold); margin-bottom: 16px;"></i>
+      <h2 class="font-serif" style="font-size: 2rem; margin-bottom: 12px;">Undangan Tidak Ditemukan</h2>
+      <p style="font-size: 0.85rem; color: var(--primary-light); line-height: 1.6; margin-bottom: 24px;">
+        Tautan undangan digital Anda mungkin tidak lengkap atau kode akses personal (UID) tidak terdaftar pada sistem kami.
+      </p>
+      <a href="?" class="btn-outline">Kembali ke Beranda</a>
+    </div>
+  </div>
+
+  <!-- ==============================================================
+       3. MAIN INVITATION PAGE (Guest Facing)
+       ============================================================== -->
+  <div id="invitation-app">
+    <!-- Hero -->
+    <header class="hero">
+      <div class="container">
+        <span class="hero-pretitle">The Wedding Celebration</span>
+        <h1 class="hero-title font-serif" id="main-couple-names">Charis & Sita</h1>
+        <p class="hero-date" id="main-wedding-date">12 Desember 2026</p>
+      </div>
+    </header>
+
+    <!-- Quote -->
+    <section>
+      <div class="container">
+        <div class="quote-card">
+          “Di antara tanda-tanda kebesaran-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat ketenangan hati dan dijadikan-Nya kasih sayang di antara kamu.”
+          <span class="quote-author">Ar-Rum: 21</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mempelai -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">The Happy Couple</span>
+          <h2 class="section-title">Mempelai</h2>
+        </div>
+        <div class="couple-grid">
+          <div class="couple-item">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&fit=crop&crop=faces" class="couple-avatar" alt="Groom">
+            <h3 class="couple-name font-serif" id="groom-name">Charis Maulana S.A.</h3>
+            <p class="couple-parents">Putra dari Bpk. Fahrur Rozi & Ibu Suci</p>
+          </div>
+          <div class="couple-item">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&fit=crop&crop=faces" class="couple-avatar" alt="Bride">
+            <h3 class="couple-name font-serif" id="bride-name">Sita Maulidia A.Z.</h3>
+            <p class="couple-parents">Putri dari Bpk. Samsun Hadi & Ibu Rois</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Event Detail -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Save The Date</span>
+          <h2 class="section-title">Waktu & Tempat</h2>
+        </div>
+
+        <div class="event-card">
+          <h3 class="event-title font-serif">Akad Nikah</h3>
+          <div class="event-time" id="akad-time">Jumat, 11 Desember 2026 • 08:00 WIB</div>
+          <p class="event-location" id="akad-venue">Kediaman Mempelai Wanita<br>Singosari, Malang, Jawa Timur</p>
+          <a href="https://maps.google.com" target="_blank" class="btn-outline">
+            <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Lihat Google Maps
+          </a>
+        </div>
+
+        <div class="event-card">
+          <h3 class="event-title font-serif">Resepsi Pernikahan</h3>
+          <div class="event-time" id="reception-time">Sabtu, 12 Desember 2026 • 09:00 - 13:00 WIB</div>
+          <p class="event-location" id="reception-venue">Villa & Resto Garden Area<br>Trawas, Mojokerto, Jawa Timur</p>
+          <a href="https://maps.google.com" target="_blank" class="btn-outline">
+            <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Buka Petunjuk Arah
+          </a>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown-wrap">
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-days">00</div>
+            <div class="countdown-lbl">Hari</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-hours">00</div>
+            <div class="countdown-lbl">Jam</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-minutes">00</div>
+            <div class="countdown-lbl">Menit</div>
+          </div>
+          <div class="countdown-box">
+            <div class="countdown-num" id="cd-seconds">00</div>
+            <div class="countdown-lbl">Detik</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXCLUSIVE PERSONAL QR CODE SECTION -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Personal Attendance Badge</span>
+          <h2 class="section-title">QR Code Kehadiran</h2>
+        </div>
+
+        <div class="qr-badge-card">
+          <h3 class="font-serif qr-guest-name" id="badge-guest-name">Nama Tamu</h3>
+          <span class="qr-guest-quota" id="badge-guest-quota">Kuota: 1 Orang</span>
+          
+          <div style="display: flex; justify-content: center;">
+            <div class="qr-code-box" id="personal-qrcode-container"></div>
+          </div>
+
+          <p class="qr-instruction">
+            Tunjukkan QR Code ini kepada petugas penerima tamu saat kedatangan untuk melakukan verifikasi kehadiran & registrasi suvenir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Moments</span>
+          <h2 class="section-title">Galeri Kisah</h2>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1519741497674-611481863552?w=800')">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&auto=format&fit=crop" loading="lazy" alt="Moment 1">
+          </div>
+          <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800')">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&auto=format&fit=crop" loading="lazy" alt="Moment 2">
+          </div>
+          <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=800')">
+            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=400&auto=format&fit=crop" loading="lazy" alt="Moment 3">
+          </div>
+          <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800')">
+            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&auto=format&fit=crop" loading="lazy" alt="Moment 4">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gift Section -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Tanda Kasih</span>
+          <h2 class="section-title">Wedding Gift</h2>
+        </div>
+        <p style="text-align: center; color: var(--primary-light); font-size: 0.85rem; margin-bottom: 24px;">
+          Doa restu Anda merupakan karunia terindah bagi kami. Apabila bermaksud memberikan tanda kasih secara digital, Anda dapat melalui rekening berikut:
+        </p>
+
+        <div class="bank-card">
+          <p class="bank-name">Bank Central Asia (BCA)</p>
+          <div class="bank-number" id="acc-num-1">1234 567 890</div>
+          <p style="font-size: 0.85rem; color: var(--primary-light); margin-bottom: 12px;">a.n Charis Maulana</p>
+          <button class="btn-outline" onclick="copyText('acc-num-1', 'Nomor rekening BCA disalin')">
+            <i data-lucide="copy" style="width: 14px; height: 14px;"></i> Salin Rekening
+          </button>
+        </div>
+
+        <div class="bank-card">
+          <p class="bank-name">Bank Mandiri</p>
+          <div class="bank-number" id="acc-num-2">9876 543 210</div>
+          <p style="font-size: 0.85rem; color: var(--primary-light); margin-bottom: 12px;">a.n Sita Maulidia</p>
+          <button class="btn-outline" onclick="copyText('acc-num-2', 'Nomor rekening Mandiri disalin')">
+            <i data-lucide="copy" style="width: 14px; height: 14px;"></i> Salin Rekening
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Attendance Form</span>
+          <h2 class="section-title">Konfirmasi Kehadiran</h2>
+        </div>
+
+        <form class="rsvp-form" id="rsvp-form">
+          <div class="form-group">
+            <label>Nama Tamu</label>
+            <input type="text" id="rsvp-name" class="form-input" readonly>
+          </div>
+          <div class="form-group">
+            <label>Kehadiran</label>
+            <select id="rsvp-status" class="form-input" required>
+              <option value="Hadir">Saya akan Hadir</option>
+              <option value="Tidak Hadir">Mohon Maaf Belum Bisa Hadir</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Jumlah Kehadiran (Maksimal <span id="rsvp-max-quota">1</span> Orang)</label>
+            <input type="number" id="rsvp-count" class="form-input" min="1" max="1" value="1" required>
+          </div>
+          <div class="form-group">
+            <label>Pesan & Doa Restu</label>
+            <textarea id="rsvp-message" class="form-input" rows="3" placeholder="Tuliskan ucapan selamat..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+            Kirim Konfirmasi
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Closing -->
+    <footer class="closing">
+      <div class="container">
+        <p class="closing-text font-serif">Merupakan suatu kehormatan & kebahagiaan bagi kami atas kehadiran dan doa restu Bapak/Ibu/Saudara/i.</p>
+        <h3 class="font-serif" style="font-size: 2.2rem; color: var(--primary); margin-bottom: 12px;">Charis & Sita</h3>
+        <p style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);">#CharisSitaForever</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Lightbox Popup -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <span id="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Zoom Image">
+  </div>
+
+  <!-- ==============================================================
+       4. ADMIN AUTH & DASHBOARD SYSTEM (?admin=1)
+       ============================================================== -->
+  <div id="admin-app">
+    <!-- Navbar -->
+    <header class="admin-nav">
+      <div class="admin-title">
+        <i data-lucide="shield-check" style="color: var(--gold);"></i>
+        <span>Admin Check-in System</span>
+      </div>
+      <div>
+        <button class="btn-outline" onclick="logoutAdmin()" style="padding: 6px 14px; font-size: 0.75rem;">
+          <i data-lucide="log-out" style="width: 14px; height: 14px;"></i> Keluar
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-container">
+      <!-- Navigation Tabs -->
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="switchAdminTab('scanner')">
+          <i data-lucide="scan"></i> Scanner QR
+        </button>
+        <button class="tab-btn" onclick="switchAdminTab('guestbook')">
+          <i data-lucide="users"></i> Daftar Tamu
+        </button>
+        <button class="tab-btn" onclick="switchAdminTab('management')">
+          <i data-lucide="user-plus"></i> Kelola Tamu
+        </button>
+        <button class="tab-btn" onclick="switchAdminTab('settings')">
+          <i data-lucide="settings"></i> Pengaturan
+        </button>
+      </div>
+
+      <!-- Live Dashboard Stats (Selalu Tampak) -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="stat-total-invitations">0</div>
+          <div class="stat-lbl">Undangan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-total-quota">0</div>
+          <div class="stat-lbl">Total Kuota</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--success);" id="stat-total-checked">0</div>
+          <div class="stat-lbl">Sudah Hadir</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--gold);" id="stat-total-pending">0</div>
+          <div class="stat-lbl">Belum Hadir</div>
+        </div>
+      </div>
+
+      <!-- TAB 1: SCANNER QR -->
+      <div id="tab-scanner" class="admin-section active">
+        <div class="scanner-card">
+          <h3 class="font-serif mb-3" style="font-size: 1.5rem;">Pemindai QR Code Tamu</h3>
+          <p style="font-size: 0.85rem; color: var(--primary-light); margin-bottom: 16px;">
+            Arahkan kamera ke QR Code personal pada smartphone tamu atau cetak undangan fisik.
+          </p>
+
+          <div id="reader"></div>
+
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button id="btn-start-scan" class="btn-primary" onclick="startScanner()">
+              <i data-lucide="camera" style="width: 16px; height: 16px;"></i> Mulai Kamera
+            </button>
+            <button id="btn-stop-scan" class="btn-outline" onclick="stopScanner()" style="display: none;">
+              Matikan Kamera
+            </button>
+          </div>
+
+          <!-- Scanner Feedback Card -->
+          <div id="scan-feedback-box" class="scan-feedback">
+            <h4 id="scan-feedback-title" style="font-size: 1.1rem; margin-bottom: 8px;">Status Tamu</h4>
+            <div id="scan-feedback-body" style="font-size: 0.9rem; line-height: 1.6;"></div>
+            <div id="scan-feedback-action" style="margin-top: 16px;"></div>
+          </div>
+        </div>
+
+        <!-- Manual Fast Check-in Search -->
+        <div class="card">
+          <h4 class="font-serif mb-3" style="font-size: 1.3rem;">Check-in Cepat Tanpa QR (Manual)</h4>
+          <div class="form-group">
+            <input type="text" id="manual-search-input" class="form-input" placeholder="Ketik nama tamu untuk mencari..." oninput="handleManualSearch()">
+          </div>
+          <div id="manual-search-results"></div>
+        </div>
+      </div>
+
+      <!-- TAB 2: GUESTBOOK TABLE -->
+      <div id="tab-guestbook" class="admin-section">
+        <div class="card">
+          <div class="flex-between mb-3">
+            <h3 class="font-serif" style="font-size: 1.4rem;">Daftar Presensi Tamu</h3>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn-outline" style="font-size: 0.75rem; padding: 6px 12px;" onclick="exportGuestCSV('all')">
+                <i data-lucide="download" style="width: 12px; height: 12px;"></i> CSV Semua
+              </button>
+              <button class="btn-outline" style="font-size: 0.75rem; padding: 6px 12px;" onclick="exportGuestCSV('hadir')">
+                <i data-lucide="check" style="width: 12px; height: 12px;"></i> CSV Hadir
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter & Search Controls -->
+          <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+            <input type="text" id="table-search-input" class="form-input" placeholder="Cari nama atau UID..." style="flex: 1; min-width: 180px;" oninput="renderGuestTable()">
+            <select id="table-filter-status" class="form-input" style="width: auto;" onchange="renderGuestTable()">
+              <option value="ALL">Semua Status</option>
+              <option value="HADIR">Sudah Hadir</option>
+              <option value="BELUM">Belum Hadir</option>
+            </select>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Tamu</th>
+                  <th>Kategori</th>
+                  <th>Kuota</th>
+                  <th>Status</th>
+                  <th>Waktu Hadir</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="guestbook-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: GUEST MANAGEMENT -->
+      <div id="tab-management" class="admin-section">
+        <div class="card">
+          <h3 class="font-serif mb-3" style="font-size: 1.4rem;">Tambah Tamu Baru</h3>
+          <form id="add-guest-form" onsubmit="handleAddNewGuest(event)">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+              <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="new-guest-name" class="form-input" required placeholder="Contoh: Bpk. Bambang">
+              </div>
+              <div class="form-group">
+                <label>Kategori</label>
+                <input type="text" id="new-guest-cat" class="form-input" required placeholder="VIP / Keluarga / Rekan">
+              </div>
+              <div class="form-group">
+                <label>Kuota Undangan</label>
+                <input type="number" id="new-guest-quota" class="form-input" min="1" max="10" value="2" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top: 8px;">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i> Tambah ke Database
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3 class="font-serif mb-3" style="font-size: 1.4rem;">Batch Import CSV Tamu</h3>
+          <p style="font-size: 0.85rem; color: var(--primary-light); margin-bottom: 12px;">
+            Unggah file CSV dengan format kolom: <code>uid,nama,kuota,kategori</code>
+          </p>
+          <input type="file" id="csv-file-input" accept=".csv" class="form-input mb-3">
+          <button class="btn-outline" onclick="handleCSVImport()">
+            <i data-lucide="upload" style="width: 14px; height: 14px;"></i> Proses Import CSV
+          </button>
+        </div>
+
+        <div class="card">
+          <h3 class="font-serif mb-3" style="font-size: 1.4rem;">Backup & Restore Data Presensi</h3>
+          <p style="font-size: 0.85rem; color: var(--primary-light); margin-bottom: 16px;">
+            Simpan cadangan data tamu dan status kehadiran dalam file JSON agar aman bila terjadi kendala browser.
+          </p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn-outline" onclick="backupDatabaseJSON()">
+              <i data-lucide="download-cloud" style="width: 14px; height: 14px;"></i> Backup Data JSON
+            </button>
+            <label class="btn-outline" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+              <i data-lucide="upload-cloud" style="width: 14px; height: 14px;"></i> Restore Data JSON
+              <input type="file" id="json-restore-input" accept=".json" style="display: none;" onchange="restoreDatabaseJSON(event)">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: SETTINGS -->
+      <div id="tab-settings" class="admin-section">
+        <div class="card">
+          <h3 class="font-serif mb-3" style="font-size: 1.4rem;">Ganti PIN Akses Admin</h3>
+          <div class="form-group">
+            <label>PIN Baru (4-8 Digit Angka)</label>
+            <input type="password" id="new-admin-pin" class="form-input" placeholder="Masukkan PIN baru">
+          </div>
+          <button class="btn-primary" onclick="handleChangeAdminPIN()">Perbarui PIN</button>
+        </div>
+
+        <div class="card" style="border-color: #ECA5A5;">
+          <h3 class="font-serif mb-3" style="font-size: 1.4rem; color: var(--danger);">Reset Data Presensi</h3>
+          <p style="font-size: 0.85rem; color: var(--primary-light); margin-bottom: 16px;">
+            Tindakan ini akan mereset seluruh status kehadiran tamu menjadi "Belum Hadir". Data tamu dan konfigurasi tidak akan terhapus.
+          </p>
+          <button class="btn-outline" style="color: var(--danger); border-color: var(--danger);" onclick="confirmResetCheckins()">
+            <i data-lucide="alert-triangle" style="width: 14px; height: 14px;"></i> Reset Semua Status Check-in
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Admin PIN Login -->
+  <div id="login-modal" class="modal-backdrop">
+    <div class="modal-box text-center">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <i data-lucide="lock" style="width: 36px; height: 36px; color: var(--gold);"></i>
+        <h3 class="font-serif" style="font-size: 1.8rem; margin-top: 8px;">Akses Resepsionis</h3>
+        <p style="font-size: 0.8rem; color: var(--primary-light);">Masukkan PIN Keamanan untuk membuka dashboard</p>
+      </div>
+      <div class="form-group">
+        <input type="password" id="admin-pin-input" class="form-input" placeholder="Masukkan PIN" style="text-align: center; font-size: 1.4rem; letter-spacing: 0.3em;" maxlength="8">
+      </div>
+      <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="verifyAdminPIN()">
+        Buka Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ==============================================================
+       JAVASCRIPT SYSTEM ARCHITECTURE (Modular & Vanilla ES6)
+       ============================================================== -->
+  <script>
+    /**
+     * DEFAULT DATA & INITIALIZATION
+     */
+    const DEFAULT_GUESTS = [
+      { uid: "charis001", name: "Bapak Ahmad Subagyo", quota: 2, category: "Keluarga Inti" },
+      { uid: "charis002", name: "Ibu Dian Sastro", quota: 2, category: "Tamu VIP" },
+      { uid: "charis003", name: "Saudara Budi Santoso", quota: 1, category: "Rekan IT Support" },
+      { uid: "charis004", name: "dr. Hendra Prasetya", quota: 2, category: "Keluarga" },
+      { uid: "charis005", name: "Rizky Ramadhan", quota: 1, category: "Sahabat" }
+    ];
+
+    const STORAGE_KEYS = {
+      GUESTS: "wedding_guests_db",
+      CHECKINS: "wedding_checkins_db",
+      PIN: "wedding_admin_pin",
+      CONFIG: "wedding_config_db"
+    };
+
+    let html5QrScannerInstance = null;
+    let currentGuest = null;
+
+    /* Database Helper Functions */
+    function getStoredGuests() {
+      const data = localStorage.getItem(STORAGE_KEYS.GUESTS);
+      if (!data) {
+        localStorage.setItem(STORAGE_KEYS.GUESTS, JSON.stringify(DEFAULT_GUESTS));
+        return DEFAULT_GUESTS;
+      }
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        return DEFAULT_GUESTS;
+      }
+    }
+
+    function saveStoredGuests(guests) {
+      localStorage.setItem(STORAGE_KEYS.GUESTS, JSON.stringify(guests));
+    }
+
+    function getStoredCheckins() {
+      const data = localStorage.getItem(STORAGE_KEYS.CHECKINS);
+      try {
+        return data ? JSON.parse(data) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveCheckinRecord(uid) {
+      const checkins = getStoredCheckins();
+      checkins[uid] = {
+        timestamp: new Date().toISOString(),
+        formattedTime: new Intl.DateTimeFormat('id-ID', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        }).format(new Date())
+      };
+      localStorage.setItem(STORAGE_KEYS.CHECKINS, JSON.stringify(checkins));
+      return checkins[uid];
+    }
+
+    function getAdminPIN() {
+      return localStorage.getItem(STORAGE_KEYS.PIN) || "1234";
+    }
+
+    /**
+     * ROUTING & APPLICATION CONTROLLER
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+      // Inisialisasi Lucide icons
+      if (window.lucide) lucide.createIcons();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const isAdminRoute = urlParams.get("admin") === "1";
+      const guestUID = urlParams.get("uid");
+
+      if (isAdminRoute) {
+        // Jalur Admin
+        initAdminSystem();
+      } else {
+        // Jalur Undangan Tamu
+        initGuestInvitation(guestUID);
+      }
+
+      initCountdown();
+      initAudio();
+    });
+
+    /**
+     * GUEST INVITATION LOGIC
+     */
+    function initGuestInvitation(uid) {
+      const guests = getStoredGuests();
+      
+      // Skenario 1: Tidak ada UID di URL -> Buka undangan umum default
+      if (!uid) {
+        setupGuestUI({
+          uid: "guest-general",
+          name: "Tamu Kehormatan",
+          quota: 1,
+          category: "Tamu Undangan"
+        });
+        return;
+      }
+
+      // Skenario 2: Cari guest berdasarkan UID
+      const foundGuest = guests.find(g => g.uid.toLowerCase() === uid.toLowerCase());
+      if (foundGuest) {
+        currentGuest = foundGuest;
+        setupGuestUI(foundGuest);
+      } else {
+        // Skenario 3: UID salah -> Tampilkan error screen elegan
+        document.getElementById("splash-screen").style.display = "none";
+        document.getElementById("invitation-app").style.display = "none";
+        document.getElementById("invalid-uid-screen").style.display = "flex";
+      }
+    }
+
+    function setupGuestUI(guest) {
+      // Splash screen update
+      document.getElementById("guest-display-splash").textContent = guest.name;
+      document.getElementById("guest-quota-badge").textContent = `Undangan berlaku untuk: ${guest.quota} Orang`;
+      
+      // Personal QR Section update
+      document.getElementById("badge-guest-name").textContent = guest.name;
+      document.getElementById("badge-guest-quota").textContent = `Kuota Undangan: ${guest.quota} Orang (${guest.category})`;
+      
+      // Form RSVP
+      document.getElementById("rsvp-name").value = guest.name;
+      document.getElementById("rsvp-max-quota").textContent = guest.quota;
+      document.getElementById("rsvp-count").max = guest.quota;
+
+      // Render Personal QR Code
+      const qrPayload = `WEDDING|${guest.uid}`;
+      const qrContainer = document.getElementById("personal-qrcode-container");
+      qrContainer.innerHTML = "";
+      
+      if (window.QRCode) {
+        new QRCode(qrContainer, {
+          text: qrPayload,
+          width: 180,
+          height: 180,
+          colorDark: "#2C2623",
+          colorLight: "#FFFFFF",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      } else {
+        qrContainer.innerHTML = `<p style="font-size:0.8rem; color:red;">Gagal memuat engine QR</p>`;
+      }
+
+      // Event Buka Undangan
+      document.getElementById("btn-open-invitation").addEventListener("click", () => {
+        document.getElementById("splash-screen").classList.add("opened");
+        playAudio();
+      });
+
+      // RSVP Submit
+      document.getElementById("rsvp-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        showToast("Terima kasih, konfirmasi kehadiran berhasil disimpan!", "success");
+      });
+    }
+
+    /**
+     * AUDIO CONTROLLER
+     */
+    function initAudio() {
+      const audio = document.getElementById("wedding-audio");
+      const toggleBtn = document.getElementById("audio-toggle");
+
+      toggleBtn.addEventListener("click", () => {
+        if (audio.paused) {
+          playAudio();
+        } else {
+          pauseAudio();
+        }
+      });
+    }
+
+    function playAudio() {
+      const audio = document.getElementById("wedding-audio");
+      const toggleBtn = document.getElementById("audio-toggle");
+      audio.play().then(() => {
+        toggleBtn.classList.remove("paused");
+      }).catch(err => {
+        console.log("Audio autoplay prevented by browser:", err);
+      });
+    }
+
+    function pauseAudio() {
+      const audio = document.getElementById("wedding-audio");
+      const toggleBtn = document.getElementById("audio-toggle");
+      audio.pause();
+      toggleBtn.classList.add("paused");
+    }
+
+    /**
+     * COUNTDOWN TIMER
+     */
+    function initCountdown() {
+      // 12 Desember 2026, 09:00 WIB
+      const eventDate = new Date("2026-12-12T09:00:00+07:00").getTime();
+
+      const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+
+        if (distance < 0) {
+          clearInterval(timer);
+          document.getElementById("cd-days").textContent = "00";
+          document.getElementById("cd-hours").textContent = "00";
+          document.getElementById("cd-minutes").textContent = "00";
+          document.getElementById("cd-seconds").textContent = "00";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("cd-days").textContent = String(days).padStart(2, '0');
+        document.getElementById("cd-hours").textContent = String(hours).padStart(2, '0');
+        document.getElementById("cd-minutes").textContent = String(minutes).padStart(2, '0');
+        document.getElementById("cd-seconds").textContent = String(seconds).padStart(2, '0');
+      }, 1000);
+    }
+
+    /**
+     * LIGHTBOX HANDLER
+     */
+    function openLightbox(url) {
+      const lb = document.getElementById("lightbox");
+      const img = document.getElementById("lightbox-img");
+      img.src = url;
+      lb.style.display = "flex";
+    }
+
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+
+    /**
+     * UTILS: Clipboard & Toast
+     */
+    function copyText(elemId, successMsg) {
+      const text = document.getElementById(elemId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(successMsg, "success");
+      });
+    }
+
+    function showToast(message, type = "normal") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      container.appendChild(toast);
+
+      setTimeout(() => toast.classList.add("show"), 50);
+      setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
+
+    /* ==============================================================
+       ADMIN SYSTEM CONTROLLER & QR SCANNER
+       ============================================================== */
+    function initAdminSystem() {
+      // Sembunyikan elemen guest
+      document.getElementById("splash-screen").style.display = "none";
+      document.getElementById("invitation-app").style.display = "none";
+      document.getElementById("audio-toggle").style.display = "none";
+
+      // Cek sesi autentikasi browser
+      const isAuthenticated = sessionStorage.getItem("admin_authenticated") === "true";
+      if (!isAuthenticated) {
+        document.getElementById("login-modal").style.display = "flex";
+      } else {
+        openAdminDashboard();
+      }
+    }
+
+    function verifyAdminPIN() {
+      const pinEntered = document.getElementById("admin-pin-input").value;
+      const actualPIN = getAdminPIN();
+
+      if (pinEntered === actualPIN) {
+        sessionStorage.setItem("admin_authenticated", "true");
+        document.getElementById("login-modal").style.display = "none";
+        openAdminDashboard();
+        showToast("Login Petugas Berhasil", "success");
+      } else {
+        showToast("PIN Salah. Akses ditolak.", "error");
+        document.getElementById("admin-pin-input").value = "";
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem("admin_authenticated");
+      stopScanner();
+      window.location.href = window.location.pathname;
+    }
+
+    function openAdminDashboard() {
+      document.getElementById("admin-app").style.display = "block";
+      updateDashboardStats();
+      renderGuestTable();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function switchAdminTab(tabName) {
+      // Toggle button styles
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+
+      // Toggle tab display
+      document.querySelectorAll(".admin-section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(`tab-${tabName}`).classList.add("active");
+
+      if (tabName !== "scanner") {
+        stopScanner();
+      }
+    }
+
+    function updateDashboardStats() {
+      const guests = getStoredGuests();
+      const checkins = getStoredCheckins();
+
+      let totalQuota = 0;
+      let checkedCount = 0;
+
+      guests.forEach(g => {
+        totalQuota += parseInt(g.quota || 1, 10);
+        if (checkins[g.uid]) {
+          checkedCount++;
+        }
+      });
+
+      document.getElementById("stat-total-invitations").textContent = guests.length;
+      document.getElementById("stat-total-quota").textContent = totalQuota;
+      document.getElementById("stat-total-checked").textContent = checkedCount;
+      document.getElementById("stat-total-pending").textContent = guests.length - checkedCount;
+    }
+
+    /**
+     * QR CODE SCANNER (html5-qrcode engine)
+     */
+    function startScanner() {
+      if (!window.Html5Qrcode) {
+        showToast("Library pemindai QR belum siap", "error");
+        return;
+      }
+
+      const qrRegionId = "reader";
+      html5QrScannerInstance = new Html5Qrcode(qrRegionId);
+
+      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+      html5QrScannerInstance.start(
+        { facingMode: "environment" },
+        config,
+        onQRCodeScanned,
+        onQRScanError
+      ).then(() => {
+        document.getElementById("btn-start-scan").style.display = "none";
+        document.getElementById("btn-stop-scan").style.display = "inline-flex";
+      }).catch(err => {
+        showToast("Kamera tidak dapat diakses: " + err, "error");
+      });
+    }
+
+    function stopScanner() {
+      if (html5QrScannerInstance) {
+        html5QrScannerInstance.stop().then(() => {
+          html5QrScannerInstance.clear();
+          html5QrScannerInstance = null;
+          document.getElementById("btn-start-scan").style.display = "inline-flex";
+          document.getElementById("btn-stop-scan").style.display = "none";
+        }).catch(err => console.error("Stop scanner error:", err));
+      }
+    }
+
+    function onQRCodeScanned(decodedText) {
+      handleProcessedScanData(decodedText);
+    }
+
+    function onQRScanError(errorMessage) {
+      // Ignore routine scan cycle frames
+    }
+
+    /**
+     * CHECK-IN BUSINESS LOGIC
+     */
+    function handleProcessedScanData(rawData) {
+      // Format valid: WEDDING|UID
+      const feedbackBox = document.getElementById("scan-feedback-box");
+      const title = document.getElementById("scan-feedback-title");
+      const body = document.getElementById("scan-feedback-body");
+      const action = document.getElementById("scan-feedback-action");
+
+      feedbackBox.className = "scan-feedback";
+      feedbackBox.style.display = "block";
+
+      if (!rawData || !rawData.startsWith("WEDDING|")) {
+        feedbackBox.classList.add("invalid");
+        title.textContent = "QR Code Tidak Dikenali";
+        body.innerHTML = `Format data QR: <code>${rawData}</code> tidak sesuai standar undangan ini.`;
+        action.innerHTML = "";
+        return;
+      }
+
+      const uid = rawData.split("|")[1];
+      const guests = getStoredGuests();
+      const guest = guests.find(g => g.uid.toLowerCase() === uid.toLowerCase());
+
+      if (!guest) {
+        feedbackBox.classList.add("invalid");
+        title.textContent = "Tamu Tidak Terdaftar";
+        body.innerHTML = `UID: <code>${uid}</code> tidak ditemukan pada database tamu.`;
+        action.innerHTML = "";
+        return;
+      }
+
+      const checkins = getStoredCheckins();
+      const alreadyChecked = checkins[guest.uid];
+
+      if (alreadyChecked) {
+        // SUDAH PERNAH CHECK-IN
+        feedbackBox.classList.add("already");
+        title.textContent = "UNDANGAN SUDAH DIGUNAKAN";
+        body.innerHTML = `
+          <strong>Nama:</strong> ${guest.name}<br>
+          <strong>Kategori:</strong> ${guest.category} (Kuota: ${guest.quota})<br>
+          <strong>Waktu Check-in:</strong> <span style="color: var(--danger); font-weight: 600;">${alreadyChecked.formattedTime}</span>
+        `;
+        action.innerHTML = `<p style="font-size:0.8rem; color:var(--danger); margin-top:8px;">Perhatian: Tamu ini telah melakukan verifikasi kedatangan sebelumnya.</p>`;
+      } else {
+        // VALID & BELUM CHECK-IN
+        feedbackBox.classList.add("ready");
+        title.textContent = "Undangan Terverifikasi";
+        body.innerHTML = `
+          <strong>Nama:</strong> ${guest.name}<br>
+          <strong>Kategori:</strong> ${guest.category}<br>
+          <strong>Kuota:</strong> ${guest.quota} Orang<br>
+          <strong>Status:</strong> <span class="badge badge-pending">BELUM CHECK-IN</span>
+        `;
+        action.innerHTML = `
+          <button class="btn-primary" style="background:var(--success);" onclick="executeCheckin('${guest.uid}')">
+            ✓ KONFIRMASI KEHADIRAN
+          </button>
+        `;
+      }
+    }
+
+    function executeCheckin(uid) {
+      const record = saveCheckinRecord(uid);
+      updateDashboardStats();
+      renderGuestTable();
+
+      const feedbackBox = document.getElementById("scan-feedback-box");
+      const title = document.getElementById("scan-feedback-title");
+      const body = document.getElementById("scan-feedback-body");
+      const action = document.getElementById("scan-feedback-action");
+
+      feedbackBox.className = "scan-feedback ready";
+      title.textContent = "CHECK-IN BERHASIL!";
+      body.innerHTML += `<div style="margin-top:8px; font-weight:600; color:var(--success);">Tercatat hadir: ${record.formattedTime}</div>`;
+      action.innerHTML = `<span class="badge badge-success" style="font-size:0.9rem; padding:6px 16px;">Telah Hadir</span>`;
+
+      showToast("Kehadiran berhasil diverifikasi!", "success");
+    }
+
+    /**
+     * MANUAL SEARCH FOR CHECK-IN
+     */
+    function handleManualSearch() {
+      const keyword = document.getElementById("manual-search-input").value.toLowerCase().trim();
+      const resultsContainer = document.getElementById("manual-search-results");
+
+      if (keyword.length < 2) {
+        resultsContainer.innerHTML = "";
+        return;
+      }
+
+      const guests = getStoredGuests();
+      const checkins = getStoredCheckins();
+      const filtered = guests.filter(g => g.name.toLowerCase().includes(keyword) || g.uid.toLowerCase().includes(keyword));
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = `<p style="font-size:0.85rem; color:var(--primary-light); padding:10px 0;">Tidak ada nama tamu yang cocok.</p>`;
+        return;
+      }
+
+      let html = `<div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">`;
+      filtered.forEach(g => {
+        const isPresent = !!checkins[g.uid];
+        html += `
+          <div style="background:var(--bg-sand); padding:12px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:600;">${g.name}</div>
+              <div style="font-size:0.75rem; color:var(--primary-light);">${g.category} • Kuota: ${g.quota} • UID: ${g.uid}</div>
+            </div>
+            <div>
+              ${isPresent 
+                ? `<span class="badge badge-success">Sudah Hadir</span>` 
+                : `<button class="btn-primary" style="padding:6px 14px; font-size:0.75rem;" onclick="executeCheckin('${g.uid}'); handleManualSearch();">Check-in</button>`
+              }
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      resultsContainer.innerHTML = html;
+    }
+
+    /**
+     * GUESTBOOK TABLE RENDERER
+     */
+    function renderGuestTable() {
+      const guests = getStoredGuests();
+      const checkins = getStoredCheckins();
+      const searchVal = document.getElementById("table-search-input").value.toLowerCase().trim();
+      const filterVal = document.getElementById("table-filter-status").value;
+
+      const tbody = document.getElementById("guestbook-tbody");
+      tbody.innerHTML = "";
+
+      let counter = 1;
+      guests.forEach(g => {
+        const isChecked = !!checkins[g.uid];
+        const checkinInfo = checkins[g.uid];
+
+        // Apply Status Filter
+        if (filterVal === "HADIR" && !isChecked) return;
+        if (filterVal === "BELUM" && isChecked) return;
+
+        // Apply Search
+        if (searchVal && !g.name.toLowerCase().includes(searchVal) && !g.uid.toLowerCase().includes(searchVal)) {
+          return;
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${counter++}</td>
+          <td>
+            <div style="font-weight:600;">${g.name}</div>
+            <div style="font-size:0.7rem; color:var(--primary-light);">${g.uid}</div>
+          </td>
+          <td>${g.category}</td>
+          <td>${g.quota}</td>
+          <td>
+            ${isChecked 
+              ? `<span class="badge badge-success">HADIR</span>` 
+              : `<span class="badge badge-pending">BELUM</span>`}
+          </td>
+          <td style="font-size:0.75rem;">${isChecked ? checkinInfo.formattedTime : "-"}</td>
+          <td>
+            ${!isChecked 
+              ? `<button class="btn-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="executeCheckin('${g.uid}')">Check-in</button>`
+              : `<span style="font-size:0.75rem; color:var(--success);">Tercatat</span>`}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      if (counter === 1) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--primary-light);">Tidak ada data yang sesuai.</td></tr>`;
+      }
+    }
+
+    /**
+     * GUEST MANAGEMENT & BATCH IMPORT
+     */
+    function handleAddNewGuest(e) {
+      e.preventDefault();
+      const name = document.getElementById("new-guest-name").value.trim();
+      const cat = document.getElementById("new-guest-cat").value.trim();
+      const quota = parseInt(document.getElementById("new-guest-quota").value, 10);
+
+      const guests = getStoredGuests();
+      // Generate clean sequential UID
+      const uid = "charis" + String(guests.length + 1).padStart(3, '0');
+
+      guests.push({ uid, name, quota, category: cat });
+      saveStoredGuests(guests);
+
+      document.getElementById("add-guest-form").reset();
+      updateDashboardStats();
+      renderGuestTable();
+      showToast(`Tamu ${name} berhasil ditambahkan (UID: ${uid})`, "success");
+    }
+
+    function handleCSVImport() {
+      const fileInput = document.getElementById("csv-file-input");
+      const file = fileInput.files[0];
+      if (!file) {
+        showToast("Pilih file CSV terlebih dahulu", "error");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.split("\n");
+        const guests = getStoredGuests();
+        let addedCount = 0;
+
+        lines.forEach((line, idx) => {
+          if (idx === 0 && line.toLowerCase().includes("uid")) return; // Skip CSV Header
+          const parts = line.split(",");
+          if (parts.length >= 4) {
+            const uid = parts[0].trim();
+            const name = parts[1].trim();
+            const quota = parseInt(parts[2].trim(), 10) || 1;
+            const category = parts[3].trim();
+
+            if (uid && name && !guests.some(g => g.uid === uid)) {
+              guests.push({ uid, name, quota, category });
+              addedCount++;
+            }
+          }
+        });
+
+        saveStoredGuests(guests);
+        updateDashboardStats();
+        renderGuestTable();
+        showToast(`Berhasil mengimpor ${addedCount} tamu baru`, "success");
+        fileInput.value = "";
+      };
+      reader.readAsText(file);
+    }
+
+    /**
+     * EXPORT DATA TO CSV (Microsoft Excel Compatible with UTF-8 BOM)
+     */
+    function exportGuestCSV(type) {
+      const guests = getStoredGuests();
+      const checkins = getStoredCheckins();
+
+      let rows = [["UID", "Nama Tamu", "Kategori", "Kuota", "Status", "Waktu Check-in"]];
+
+      guests.forEach(g => {
+        const isChecked = !!checkins[g.uid];
+        const checkinInfo = checkins[g.uid];
+
+        if (type === "hadir" && !isChecked) return;
+
+        rows.push([
+          g.uid,
+          `"${g.name.replace(/"/g, '""')}"`,
+          `"${g.category.replace(/"/g, '""')}"`,
+          g.quota,
+          isChecked ? "HADIR" : "BELUM HADIR",
+          isChecked ? `"${checkinInfo.formattedTime}"` : "-"
+        ]);
+      });
+
+      const csvContent = "\uFEFF" + rows.map(e => e.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `presensi_wedding_${type}_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /**
+     * BACKUP & RESTORE JSON
+     */
+    function backupDatabaseJSON() {
+      const data = {
+        guests: getStoredGuests(),
+        checkins: getStoredCheckins(),
+        pin: getAdminPIN(),
+        exportDate: new Date().toISOString()
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `backup_wedding_db_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function restoreDatabaseJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (parsed.guests && parsed.checkins) {
+            localStorage.setItem(STORAGE_KEYS.GUESTS, JSON.stringify(parsed.guests));
+            localStorage.setItem(STORAGE_KEYS.CHECKINS, JSON.stringify(parsed.checkins));
+            if (parsed.pin) localStorage.setItem(STORAGE_KEYS.PIN, parsed.pin);
+
+            updateDashboardStats();
+            renderGuestTable();
+            showToast("Basis data berhasil dipulihkan!", "success");
+          } else {
+            showToast("Struktur data JSON tidak valid.", "error");
+          }
+        } catch (err) {
+          showToast("Gagal membaca file JSON.", "error");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /**
+     * SETTINGS & SECURITY
+     */
+    function handleChangeAdminPIN() {
+      const newPin = document.getElementById("new-admin-pin").value.trim();
+      if (newPin.length < 4) {
+        showToast("PIN minimal harus terdiri dari 4 digit", "error");
+        return;
+      }
+      localStorage.setItem(STORAGE_KEYS.PIN, newPin);
+      document.getElementById("new-admin-pin").value = "";
+      showToast("PIN Admin berhasil diubah!", "success");
+    }
+
+    function confirmResetCheckins() {
+      const confirm1 = confirm("Apakah Anda yakin ingin mengosongkan seluruh data presensi?");
+      if (confirm1) {
+        const confirm2 = confirm("PERINGATAN: Tindakan ini permanen. Semua tamu akan kembali berstatus Belum Hadir. Lanjutkan?");
+        if (confirm2) {
+          localStorage.removeItem(STORAGE_KEYS.CHECKINS);
+          updateDashboardStats();
+          renderGuestTable();
+          showToast("Semua data check-in berhasil direset.", "success");
+        }
+      }
+    }
+  </script>
+</body>
+</html>
