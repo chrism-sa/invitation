@@ -20,19 +20,19 @@
   <style>
     :root {
       --bg-void: #0A0808;
-      --bg-card: rgba(22, 19, 17, 0.78);
-      --bg-card-border: rgba(212, 175, 55, 0.35);
+      --bg-panel: rgba(18, 15, 14, 0.75);
+      --border-fine: rgba(212, 175, 55, 0.22);
+      --border-highlight: rgba(247, 229, 169, 0.55);
       --gold-deep: #9B7B34;
       --gold-bright: #F7E5A9;
       --gold-metallic: linear-gradient(135deg, #ECC877 0%, #FAF1D6 40%, #B88E3E 70%, #F5DEB3 100%);
       --text-ivory: #FDFBF7;
-      --text-muted: #A39D95;
+      --text-muted: #9E968D;
       --charcoal: #141210;
       --crimson-locked: #8B1E1E;
       --font-display: 'Cinzel', serif;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans: 'Montserrat', sans-serif;
-      --shadow-3d: 0 30px 60px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.4);
     }
 
     * {
@@ -50,7 +50,7 @@
       overflow-x: hidden;
     }
 
-    /* Fixed 3D WebGL Background Canvas (Persisten di Seluruh Halaman) */
+    /* Fixed WebGL Canvas (Persisten di Seluruh Layar) */
     #webgl-bg-canvas {
       position: fixed;
       inset: 0;
@@ -60,13 +60,13 @@
       pointer-events: none;
     }
 
-    /* Ambient Shimmer Light Effect */
+    /* Foil Shimmer Text */
     .foil-text {
       background: var(--gold-metallic);
       background-size: 250% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: foilShimmer 6s ease-in-out infinite alternate;
+      animation: foilShimmer 7s ease-in-out infinite alternate;
       display: inline-block;
     }
 
@@ -78,13 +78,13 @@
     .container {
       max-width: 680px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 20px;
       position: relative;
       z-index: 10;
     }
 
     /* ==============================================================
-       1. SECURITY LOCK SCREEN (JIKA DIBUKA TANPA UID ATAU SALAH UID)
+       1. SECURITY ACCESS GATE (LOCKED JIKA TANPA UID RESMI)
        ============================================================== */
     #security-gate {
       position: fixed;
@@ -99,67 +99,66 @@
     }
 
     .gate-shield-card {
-      background: rgba(20, 16, 14, 0.92);
+      background: rgba(20, 16, 14, 0.94);
       border: 1px solid var(--crimson-locked);
       box-shadow: 0 0 60px rgba(139, 30, 30, 0.35);
       backdrop-filter: blur(20px);
       border-radius: 20px;
-      padding: 50px 32px;
-      max-width: 480px;
+      padding: 48px 28px;
+      max-width: 440px;
       width: 100%;
     }
 
     .gate-icon-lock {
-      width: 72px;
-      height: 72px;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       background: rgba(139, 30, 30, 0.15);
       border: 1px solid var(--crimson-locked);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 24px;
+      margin: 0 auto 20px;
       color: #E57373;
     }
 
     /* ==============================================================
-       2. 3D ENVELOPE CEREMONY (WELCOME PAGE DENGAN GSAP UNFOLD)
+       2. 3D ENVELOPE WELCOME SCREEN
        ============================================================== */
     #welcome-experience {
       position: fixed;
       inset: 0;
       z-index: 50000;
-      background: radial-gradient(circle at center, rgba(35, 28, 22, 0.96) 0%, rgba(10, 8, 8, 0.98) 100%);
+      background: radial-gradient(circle at center, rgba(30, 24, 20, 0.96) 0%, rgba(8, 7, 7, 0.98) 100%);
       backdrop-filter: blur(24px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      perspective: 1800px;
+      perspective: 1600px;
     }
 
     .envelope-3d-wrapper {
       position: relative;
       width: 100%;
-      max-width: 460px;
-      height: 560px;
+      max-width: 420px;
+      height: 520px;
       transform-style: preserve-3d;
-      transition: transform 0.2s cubic-bezier(0.1, 1, 0.1, 1);
     }
 
     .envelope-base {
       position: absolute;
       inset: 0;
-      background: linear-gradient(145deg, #1A1613 0%, #100E0C 100%);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 24px;
-      box-shadow: var(--shadow-3d);
+      background: linear-gradient(145deg, #181412 0%, #0E0C0B 100%);
+      border: 1px solid var(--border-fine);
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 28px;
+      padding: 36px 24px;
       text-align: center;
       transform-style: preserve-3d;
     }
@@ -167,40 +166,40 @@
     .envelope-base::before {
       content: "";
       position: absolute;
-      inset: 12px;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 18px;
+      inset: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 14px;
       pointer-events: none;
     }
 
     .wax-seal-3d {
-      width: 84px;
-      height: 84px;
+      width: 76px;
+      height: 76px;
       background: radial-gradient(circle at 35% 30%, #FFE082, #B8860B 60%, #5D4037 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 24px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.5), inset 0 3px 6px rgba(255, 255, 255, 0.7);
+      margin-bottom: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(212, 175, 55, 0.45);
       font-family: var(--font-display);
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #3E2723;
       cursor: pointer;
       transform: translateZ(40px);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.4s ease;
     }
     .wax-seal-3d:hover {
-      transform: translateZ(60px) scale(1.08);
+      transform: translateZ(55px) scale(1.06);
     }
 
     .invitee-badge {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      padding: 18px 24px;
-      border-radius: 14px;
-      margin: 18px 0 28px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin: 16px 0 24px;
       width: 100%;
       transform: translateZ(25px);
     }
@@ -209,33 +208,33 @@
       background: var(--gold-metallic);
       color: var(--charcoal);
       border: none;
-      padding: 16px 36px;
+      padding: 15px 32px;
       font-family: var(--font-sans);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       border-radius: 30px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.35);
       transform: translateZ(35px);
-      transition: all 0.4s ease;
+      transition: all 0.3s ease;
     }
     .btn-lux-primary:hover {
-      transform: translateZ(45px) scale(1.04);
-      box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+      transform: translateZ(45px) scale(1.03);
+      box-shadow: 0 14px 35px rgba(212, 175, 55, 0.55);
     }
 
     /* Soundtrack Player Widget */
     .audio-pill {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
-      width: 52px;
-      height: 52px;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: rgba(20, 16, 14, 0.85);
       border: 1px solid var(--gold-deep);
@@ -246,7 +245,7 @@
       justify-content: center;
       z-index: 1000;
       cursor: pointer;
-      box-shadow: var(--shadow-3d);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
       transition: transform 0.3s ease;
     }
     .audio-pill.spinning {
@@ -255,7 +254,7 @@
     @keyframes vinylSpin { 100% { transform: rotate(360deg); } }
 
     /* ==============================================================
-       3. MAIN INVITATION VIEW WITH 3D GLASS CARDS & SCROLL MOTION
+       3. EDITORIAL ASYMMETRICAL LAYOUT & MOTION SECTIONS
        ============================================================== */
     #invitation-scroll-view {
       display: none;
@@ -265,178 +264,139 @@
     }
 
     section {
-      padding: 110px 0;
+      padding: 90px 0;
       position: relative;
     }
 
     .section-eyebrow {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.4em;
       text-transform: uppercase;
       color: var(--gold-bright);
       display: block;
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .section-headline {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 7vw, 3.4rem);
+      font-size: clamp(2rem, 6.5vw, 3rem);
       font-weight: 400;
       text-align: center;
       line-height: 1.15;
-      margin-bottom: 50px;
+      margin-bottom: 44px;
     }
-
-    /* 3D Glass Card Container */
-    .glass-card-3d {
-      background: var(--bg-card);
-      border: 1px solid var(--bg-card-border);
-      border-radius: 24px;
-      padding: 44px 32px;
-      box-shadow: var(--shadow-3d);
-      backdrop-filter: blur(24px);
-      transform-style: preserve-3d;
-      transition: transform 0.2s cubic-bezier(0.1, 1, 0.1, 1);
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 32px;
-    }
-
-    .glass-card-3d::before {
-      content: "";
-      position: absolute;
-      top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(247, 229, 169, 0.1) 0%, transparent 60%);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .glass-card-3d:hover::before { opacity: 1; }
 
     /* Hero Section */
     .hero-view {
-      min-height: 100vh;
+      min-height: 92vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 16px;
     }
 
     .hero-date-badge {
-      font-size: 0.8rem;
-      letter-spacing: 0.5em;
+      font-size: 0.75rem;
+      letter-spacing: 0.45em;
       text-transform: uppercase;
       color: var(--gold-bright);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .hero-title-duo {
       font-family: var(--font-display);
-      font-size: clamp(3.4rem, 12vw, 5.6rem);
+      font-size: clamp(3rem, 11vw, 5rem);
       line-height: 1.05;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       font-weight: 600;
     }
 
-    /* Couple Avatar Wrappers */
-    .couple-avatar-wrap {
-      width: 150px;
-      height: 180px;
-      margin: 0 auto 20px;
-      border-radius: 90px 90px 14px 14px;
-      overflow: hidden;
-      border: 2px solid rgba(212, 175, 55, 0.4);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    }
-    .couple-avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-    .glass-card-3d:hover .couple-avatar-wrap img {
-      transform: scale(1.08);
-    }
-
-    /* Countdown Grid */
-    .countdown-grid {
+    /* EDITORIAL COUPLE GRID (Asymmetrical Offset Fashion Layout) */
+    .couple-editorial-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 36px;
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-bottom: 40px;
     }
 
-    .countdown-cell {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 14px;
-      padding: 18px 8px;
-      text-align: center;
-    }
-
-    .countdown-number {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      line-height: 1;
-      color: var(--gold-bright);
-    }
-
-    .countdown-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    /* 3D Holographic Attendance Pass */
-    .attendance-pass-3d {
-      background: linear-gradient(145deg, rgba(28, 23, 20, 0.95), rgba(14, 11, 10, 0.98));
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 24px;
-      padding: 48px 24px 40px;
-      text-align: center;
+    .editorial-profile {
       position: relative;
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.2);
-      transform-style: preserve-3d;
+      background: linear-gradient(135deg, rgba(25, 20, 18, 0.75) 0%, rgba(12, 10, 9, 0.85) 100%);
+      border: 1px solid var(--border-fine);
+      border-radius: 16px;
+      padding: 32px 24px;
+      overflow: hidden;
+      transition: border-color 0.4s ease, transform 0.4s ease;
+    }
+    .editorial-profile:hover {
+      border-color: var(--border-highlight);
     }
 
-    .attendance-pass-3d::after {
-      content: "";
+    .editorial-num {
       position: absolute;
-      inset: 8px;
-      border: 1px dashed rgba(212, 175, 55, 0.25);
-      border-radius: 18px;
+      top: 16px;
+      right: 20px;
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      color: rgba(212, 175, 55, 0.12);
+      font-weight: 700;
+      line-height: 1;
       pointer-events: none;
     }
 
-    .qr-frame-3d {
-      display: inline-block;
-      padding: 18px;
-      background: #FFFFFF;
-      border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-      margin: 24px 0;
-      transform: translateZ(30px);
+    .editorial-portrait {
+      width: 140px;
+      height: 175px;
+      margin: 0 auto 20px;
+      border-radius: 70px 70px 10px 10px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    }
+    .editorial-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.1) contrast(1.05);
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .editorial-profile:hover .editorial-portrait img {
+      transform: scale(1.08);
     }
 
-    /* Interactive Buttons */
+    /* EVENT SCHEDULE ASYMMETRICAL TILES */
+    .event-tile-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .editorial-event-card {
+      background: linear-gradient(145deg, rgba(22, 18, 16, 0.75), rgba(12, 10, 9, 0.85));
+      border: 1px solid var(--border-fine);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      position: relative;
+    }
+
     .btn-lux-outline {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 28px;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      background: rgba(255, 255, 255, 0.03);
+      gap: 8px;
+      padding: 10px 24px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      background: rgba(255, 255, 255, 0.02);
       color: var(--gold-bright);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      border-radius: 30px;
+      border-radius: 24px;
       cursor: pointer;
       transition: all 0.3s ease;
       margin-top: 14px;
@@ -445,78 +405,148 @@
       background: var(--gold-metallic);
       color: var(--charcoal);
       border-color: transparent;
-      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
     }
 
-    /* Gallery Grid */
-    .gallery-masonry {
+    /* COUNTDOWN PODS */
+    .countdown-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 24px;
     }
 
-    .gallery-thumb {
-      aspect-ratio: 4/5;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      cursor: pointer;
-      position: relative;
+    .countdown-cell {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 12px;
+      padding: 16px 6px;
+      text-align: center;
     }
-    .gallery-thumb img {
+
+    .countdown-number {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      line-height: 1;
+      color: var(--gold-bright);
+    }
+
+    .countdown-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ==============================================================
+       4. ASYMMETRICAL EDITORIAL PHOTO GALLERY (SEBELUM QR)
+       ============================================================== */
+    .editorial-gallery-mosaic {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .gallery-mosaic-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.22);
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    .gallery-mosaic-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+      display: block;
     }
-    .gallery-thumb:hover img {
-      transform: scale(1.08);
+    .gallery-mosaic-item:hover img {
+      transform: scale(1.07);
     }
 
-    /* Form Fields */
+    /* Asymmetrical Grid Distribution */
+    .mosaic-1 { grid-column: span 7; height: 260px; }
+    .mosaic-2 { grid-column: span 5; height: 260px; }
+    .mosaic-3 { grid-column: span 5; height: 240px; }
+    .mosaic-4 { grid-column: span 7; height: 240px; }
+
+    /* ==============================================================
+       5. VIP PHYSICAL BOARDING PASS QR CODE BADGE
+       ============================================================== */
+    .attendance-pass-stationery {
+      background: linear-gradient(145deg, rgba(26, 21, 19, 0.95), rgba(12, 10, 9, 0.98));
+      border: 1px solid rgba(212, 175, 55, 0.38);
+      border-radius: 20px;
+      padding: 42px 20px 36px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15);
+    }
+
+    .attendance-pass-stationery::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px dashed rgba(212, 175, 55, 0.2);
+      border-radius: 14px;
+      pointer-events: none;
+    }
+
+    .qr-frame-clean {
+      display: inline-block;
+      padding: 16px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      margin: 20px 0;
+    }
+
+    /* Form Inputs */
     .luxury-input {
       width: 100%;
-      padding: 14px 18px;
-      border-radius: 10px;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      background: rgba(0, 0, 0, 0.4);
+      padding: 13px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      background: rgba(0, 0, 0, 0.5);
       color: #FFF;
       font-family: var(--font-sans);
-      font-size: 0.9rem;
-      margin-top: 8px;
+      font-size: 0.85rem;
+      margin-top: 6px;
       outline: none;
       transition: border-color 0.3s ease;
     }
     .luxury-input:focus {
       border-color: var(--gold-bright);
-      box-shadow: 0 0 15px rgba(247, 229, 169, 0.2);
+      box-shadow: 0 0 12px rgba(247, 229, 169, 0.18);
     }
 
-    /* Pop-up Modals (Gift & Lightbox) */
+    /* Pop-up Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 8, 8, 0.92);
-      backdrop-filter: blur(16px);
+      background: rgba(8, 6, 6, 0.94);
+      backdrop-filter: blur(14px);
       z-index: 60000;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
     }
     .modal-content-card {
-      background: rgba(22, 19, 17, 0.95);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 24px;
-      padding: 36px 28px;
-      max-width: 440px;
+      background: rgba(20, 16, 14, 0.96);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 20px;
+      padding: 32px 24px;
+      max-width: 420px;
       width: 100%;
-      box-shadow: var(--shadow-3d);
       text-align: center;
       position: relative;
     }
 
-    /* Toast Container */
+    /* Toast */
     #toast-shelf {
       position: fixed;
       bottom: 24px;
@@ -532,12 +562,12 @@
       background: rgba(20, 16, 14, 0.95);
       border: 1px solid var(--gold-deep);
       color: #FFF;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-size: 0.82rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
       opacity: 0;
-      transform: translateY(15px);
+      transform: translateY(12px);
       transition: all 0.3s ease;
     }
     .toast-pill.reveal { opacity: 1; transform: translateY(0); }
@@ -546,35 +576,35 @@
 </head>
 <body>
 
-  <!-- Fixed 3D WebGL Canvas untuk Photorealistic Gold Rings & Star Dust -->
+  <!-- Background WebGL Canvas (3D Gold Rings & Ambient Lights) -->
   <div id="webgl-bg-canvas"></div>
 
-  <!-- Toast Container -->
+  <!-- Toast Stack -->
   <div id="toast-shelf"></div>
 
-  <!-- Background Music Player -->
+  <!-- Soundtrack Audio -->
   <audio id="soundtrack-audio" loop preload="auto">
     <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-1144.mp3" type="audio/mp3">
   </audio>
   <div id="audio-widget-btn" class="audio-pill" title="Putar Musik">
-    <i data-lucide="music" style="width: 20px; height: 20px;"></i>
+    <i data-lucide="music" style="width: 18px; height: 18px;"></i>
   </div>
 
   <!-- ==============================================================
-       1. SECURITY GATE (LOCKED JIKA TANPA UID)
+       1. SECURITY GATE (LOCKED TANPA UID)
        ============================================================== -->
   <div id="security-gate">
     <div class="gate-shield-card">
       <div class="gate-icon-lock">
-        <i data-lucide="shield-alert" style="width: 36px; height: 36px;"></i>
+        <i data-lucide="shield-alert" style="width: 32px; height: 32px;"></i>
       </div>
-      <h2 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 12px; color: #FFF;">
+      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 10px; color: #FFF;">
         Private Invitation Only
       </h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px;">
-        Akses ditolak. Undangan pernikahan ini bersifat terbatas & privat. Silakan gunakan tautan personal resmi dengan kode akses UID yang telah diberikan.
+      <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
+        Akses ditolak. Undangan pernikahan ini bersifat terbatas & privat. Silakan gunakan tautan personal dengan parameter UID resmi yang diberikan.
       </p>
-      <div style="font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson-locked);">
+      <div style="font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson-locked);">
         [ Error Code: ACCESS_DENIED_MISSING_UID ]
       </div>
     </div>
@@ -590,43 +620,43 @@
           <span>CS</span>
         </div>
 
-        <p style="font-size: 0.75rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-bright);">
+        <p style="font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-bright);">
           Exclusive Invitation
         </p>
-        <h1 class="foil-text" style="font-family: var(--font-display); font-size: 2.8rem; margin: 8px 0 16px;">
+        <h1 class="foil-text" style="font-family: var(--font-display); font-size: 2.5rem; margin: 6px 0 14px;">
           Charis & Sita
         </h1>
 
         <div class="invitee-badge">
-          <p style="font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);">
+          <p style="font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);">
             Special Honor Conferred Upon:
           </p>
-          <h3 id="target-guest-name" style="font-family: var(--font-serif); font-size: 1.9rem; color: #FFF; margin-top: 4px;">
+          <h3 id="target-guest-name" style="font-family: var(--font-serif); font-size: 1.8rem; color: #FFF; margin-top: 4px;">
             -
           </h3>
-          <span id="target-guest-quota" style="display:inline-block; font-size: 0.72rem; color: var(--gold-bright); font-weight: 600; margin-top: 6px;">
+          <span id="target-guest-quota" style="display:inline-block; font-size: 0.7rem; color: var(--gold-bright); font-weight: 600; margin-top: 4px;">
             -
           </span>
         </div>
 
         <button id="btn-unfold-invitation" class="btn-lux-primary">
           <span>Buka Undangan</span>
-          <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+          <i data-lucide="sparkles" style="width: 15px; height: 15px;"></i>
         </button>
       </div>
     </div>
   </div>
 
   <!-- ==============================================================
-       3. MAIN INVITATION CONTENT VIEW (FULL ANIMATED SCROLL)
+       3. MAIN INVITATION VIEW
        ============================================================== -->
   <main id="invitation-scroll-view">
-    <!-- Hero Section -->
+    <!-- Hero Header -->
     <header class="hero-view">
-      <div class="container reveal-on-scroll">
+      <div class="container flow-fade-in">
         <span class="hero-date-badge">Sabtu • 12 Desember 2026</span>
         <h1 class="hero-title-duo foil-text">Charis & Sita</h1>
-        <p style="font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted);">
+        <p style="font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted);">
           The Private Wedding Celebration
         </p>
       </div>
@@ -635,89 +665,99 @@
     <!-- Holy Matrimony Quote -->
     <section>
       <div class="container">
-        <div class="glass-card-3d reveal-on-scroll" style="text-align: center;">
-          <p style="font-family: var(--font-serif); font-size: 1.45rem; font-style: italic; line-height: 1.8; color: var(--text-ivory);">
+        <div class="editorial-profile flow-up" style="text-align: center; padding: 40px 24px;">
+          <p style="font-family: var(--font-serif); font-size: 1.35rem; font-style: italic; line-height: 1.8; color: var(--text-ivory);">
             “Dan di antara tanda-tanda kebesaran-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat ketenangan hati dan dijadikan-Nya kasih sayang di antara kamu.”
           </p>
-          <span style="display: block; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-bright); margin-top: 24px;">
+          <span style="display: block; font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-bright); margin-top: 20px;">
             Surah Ar-Rum: 21
           </span>
         </div>
       </div>
     </section>
 
-    <!-- Couple Section -->
+    <!-- Couple Section: Editorial Layout -->
     <section>
       <div class="container">
         <span class="section-eyebrow">The Blessed Couple</span>
         <h2 class="section-headline foil-text">Mempelai Pengantin</h2>
 
-        <!-- Groom -->
-        <div class="glass-card-3d reveal-on-scroll" style="text-align: center;">
-          <div class="couple-avatar-wrap">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop" alt="Charis Maulana">
+        <div class="couple-editorial-grid">
+          <!-- Groom -->
+          <div class="editorial-profile flow-left">
+            <span class="editorial-num">I</span>
+            <div class="editorial-portrait">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop" alt="Charis Maulana">
+            </div>
+            <div style="text-align: center;">
+              <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #FFF; margin-bottom: 6px;">
+                Charis Maulana Setya Adi
+              </h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
+                Putra Pertama dari Bpk. Mohammad Fahrur Rozi & Ibu Bunda
+              </p>
+            </div>
           </div>
-          <h3 style="font-family: var(--font-display); font-size: 2rem; color: #FFF; margin-bottom: 6px;">
-            Charis Maulana Setya Adi
-          </h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Putra Pertama dari Bpk. Mohammad Fahrur Rozi & Ibu Bunda
-          </p>
-        </div>
 
-        <!-- Bride -->
-        <div class="glass-card-3d reveal-on-scroll" style="text-align: center;">
-          <div class="couple-avatar-wrap">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&fit=crop" alt="Sita Maulidia">
+          <!-- Bride -->
+          <div class="editorial-profile flow-right">
+            <span class="editorial-num">II</span>
+            <div class="editorial-portrait">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&fit=crop" alt="Sita Maulidia">
+            </div>
+            <div style="text-align: center;">
+              <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #FFF; margin-bottom: 6px;">
+                Sita Maulidia Alyatu Zahra
+              </h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
+                Putri Tercinta dari Keluarga Bpk. Fulan & Ibu Fulanah
+              </p>
+            </div>
           </div>
-          <h3 style="font-family: var(--font-display); font-size: 2rem; color: #FFF; margin-bottom: 6px;">
-            Sita Maulidia Alyatu Zahra
-          </h3>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Putri Tercinta dari Keluarga Bpk. Fulan & Ibu Fulanah
-          </p>
         </div>
       </div>
     </section>
 
-    <!-- Event Timeline & Countdown -->
+    <!-- Schedule / Timeline Section -->
     <section>
       <div class="container">
         <span class="section-eyebrow">Sacred Schedule</span>
         <h2 class="section-headline foil-text">Waktu & Tempat</h2>
 
-        <div class="glass-card-3d reveal-on-scroll" style="text-align: center;">
-          <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #FFF; margin-bottom: 8px;">
-            Akad Nikah
-          </h3>
-          <p style="font-size: 0.85rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 12px;">
-            Jumat, 11 Desember 2026 • 08:00 WIB
-          </p>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
-            Kediaman Mempelai Wanita<br>Singosari, Malang, Jawa Timur
-          </p>
-          <a href="https://maps.google.com" target="_blank" class="btn-lux-outline">
-            <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Buka Google Maps
-          </a>
+        <div class="event-tile-grid">
+          <div class="editorial-event-card flow-up">
+            <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: #FFF; margin-bottom: 6px;">
+              Akad Nikah
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 10px;">
+              Jumat, 11 Desember 2026 • 08:00 WIB
+            </p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+              Kediaman Mempelai Wanita<br>Singosari, Malang, Jawa Timur
+            </p>
+            <a href="https://maps.google.com" target="_blank" class="btn-lux-outline">
+              <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Buka Google Maps
+            </a>
+          </div>
+
+          <div class="editorial-event-card flow-up">
+            <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: #FFF; margin-bottom: 6px;">
+              Resepsi Pernikahan
+            </h3>
+            <p style="font-size: 0.82rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 10px;">
+              Sabtu, 12 Desember 2026 • 09:00 - 13:00 WIB
+            </p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+              Villa & Resto Garden Area<br>Trawas, Mojokerto, Jawa Timur
+            </p>
+            <a href="https://maps.google.com" target="_blank" class="btn-lux-outline">
+              <i data-lucide="navigation" style="width: 14px; height: 14px;"></i> Petunjuk Arah
+            </a>
+          </div>
         </div>
 
-        <div class="glass-card-3d reveal-on-scroll" style="text-align: center;">
-          <h3 style="font-family: var(--font-display); font-size: 1.8rem; color: #FFF; margin-bottom: 8px;">
-            Resepsi Pernikahan
-          </h3>
-          <p style="font-size: 0.85rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 12px;">
-            Sabtu, 12 Desember 2026 • 09:00 - 13:00 WIB
-          </p>
-          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
-            Villa & Resto Garden Area<br>Trawas, Mojokerto, Jawa Timur
-          </p>
-          <a href="https://maps.google.com" target="_blank" class="btn-lux-outline">
-            <i data-lucide="navigation" style="width: 14px; height: 14px;"></i> Petunjuk Arah
-          </a>
-        </div>
-
-        <!-- Countdown -->
-        <div class="countdown-grid reveal-on-scroll">
+        <!-- Countdown Matrix -->
+        <div class="countdown-grid flow-up">
           <div class="countdown-cell">
             <div class="countdown-number" id="cd-days">00</div>
             <div class="countdown-label">Hari</div>
@@ -738,101 +778,101 @@
       </div>
     </section>
 
-    <!-- EXCLUSIVE 3D HOLOGRAM QR ATTENDANCE PASS -->
+    <!-- GALERI FOTO (DITEMPATKAN TEPAT SEBELUM KODE QR) -->
     <section>
       <div class="container">
-        <span class="section-eyebrow">Personal Verification</span>
-        <h2 class="section-headline foil-text">Tiket Masuk & Presensi</h2>
+        <span class="section-eyebrow">Visual Memoirs</span>
+        <h2 class="section-headline foil-text">Galeri Kisah</h2>
 
-        <div class="attendance-pass-3d reveal-on-scroll">
-          <span style="font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-bright);">
-            Official Admission Badge
+        <div class="editorial-gallery-mosaic">
+          <div class="gallery-mosaic-item mosaic-1 flow-left" onclick="openPhotoModal('https://images.unsplash.com/photo-1519741497674-611481863552?w=1000')">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&fit=crop" alt="Moments 1">
+          </div>
+          <div class="gallery-mosaic-item mosaic-2 flow-right" onclick="openPhotoModal('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1000')">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&fit=crop" alt="Moments 2">
+          </div>
+          <div class="gallery-mosaic-item mosaic-3 flow-left" onclick="openPhotoModal('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1000')">
+            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&fit=crop" alt="Moments 3">
+          </div>
+          <div class="gallery-mosaic-item mosaic-4 flow-right" onclick="openPhotoModal('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1000')">
+            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&fit=crop" alt="Moments 4">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXCLUSIVE PERSONAL QR CODE BADGE -->
+    <section>
+      <div class="container">
+        <span class="section-eyebrow">Personal Admission</span>
+        <h2 class="section-headline foil-text">Tiket Presensi Tamu</h2>
+
+        <div class="attendance-pass-stationery flow-scale">
+          <span style="font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-bright);">
+            VIP Attendance Pass
           </span>
-          <h3 id="pass-guest-name" style="font-family: var(--font-display); font-size: 2.2rem; color: #FFF; margin-top: 8px;">
+          <h3 id="pass-guest-name" style="font-family: var(--font-display); font-size: 2rem; color: #FFF; margin-top: 6px;">
             -
           </h3>
-          <p id="pass-guest-quota" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">
+          <p id="pass-guest-quota" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
             -
           </p>
 
-          <div class="qr-frame-3d">
+          <div class="qr-frame-clean">
             <div id="mount-qr-box"></div>
           </div>
 
-          <p style="font-size: 0.8rem; color: var(--text-muted); max-width: 380px; margin: 0 auto; line-height: 1.6;">
-            Wajib menunjukkan kode QR personal ini kepada petugas di resepsionis untuk verifikasi kedatangan otomatis.
+          <p style="font-size: 0.78rem; color: var(--text-muted); max-width: 360px; margin: 0 auto; line-height: 1.6;">
+            Tunjukkan kode QR personal ini kepada petugas di resepsionis untuk verifikasi presensi saat kedatangan.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Gallery & Pop-up Lightbox -->
-    <section>
-      <div class="container">
-        <span class="section-eyebrow">Memoir of Joy</span>
-        <h2 class="section-headline foil-text">Galeri Kisah</h2>
-
-        <div class="gallery-masonry reveal-on-scroll">
-          <div class="gallery-thumb" onclick="openPhotoModal('https://images.unsplash.com/photo-1519741497674-611481863552?w=1000')">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=500&fit=crop" alt="Moments 1">
-          </div>
-          <div class="gallery-thumb" onclick="openPhotoModal('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1000')">
-            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=500&fit=crop" alt="Moments 2">
-          </div>
-          <div class="gallery-thumb" onclick="openPhotoModal('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1000')">
-            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=500&fit=crop" alt="Moments 3">
-          </div>
-          <div class="gallery-thumb" onclick="openPhotoModal('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1000')">
-            <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=500&fit=crop" alt="Moments 4">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Wedding Gift & Pop-up Card -->
+    <!-- Wedding Gift Modal Section -->
     <section>
       <div class="container">
         <span class="section-eyebrow">Token Of Love</span>
         <h2 class="section-headline foil-text">Tanda Kasih</h2>
 
-        <div class="glass-card-3d reveal-on-scroll" style="text-align: center;">
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.7;">
-            Doa restu Anda merupakan karunia terindah bagi kami. Bagi keluarga & sahabat yang hendak memberikan tanda kasih digital, Anda dapat melalui rekening pernikahan kami.
+        <div class="editorial-profile flow-up" style="text-align: center;">
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.7;">
+            Doa restu Anda merupakan karunia terindah bagi kami. Bagi keluarga & rekan yang hendak memberikan tanda kasih digital, Anda dapat melalui rekening pernikahan kami.
           </p>
           <button class="btn-lux-primary" onclick="openGiftModal()">
-            <i data-lucide="gift" style="width: 16px; height: 16px;"></i> Kirim Hadiah Digital
+            <i data-lucide="gift" style="width: 15px; height: 15px;"></i> Kirim Hadiah Digital
           </button>
         </div>
       </div>
     </section>
 
-    <!-- RSVP Confirmation -->
+    <!-- RSVP Section -->
     <section>
       <div class="container">
         <span class="section-eyebrow">Attendance Form</span>
         <h2 class="section-headline foil-text">Konfirmasi RSVP</h2>
 
-        <form class="glass-card-3d reveal-on-scroll" id="rsvp-guest-form">
-          <div style="margin-bottom: 20px;">
-            <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Nama Tamu</label>
+        <form class="editorial-profile flow-up" id="rsvp-guest-form">
+          <div style="margin-bottom: 18px;">
+            <label style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);">Nama Tamu</label>
             <input type="text" id="rsvp-field-name" class="luxury-input" readonly>
           </div>
-          <div style="margin-bottom: 20px;">
-            <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Status Kehadiran</label>
+          <div style="margin-bottom: 18px;">
+            <label style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);">Status Kehadiran</label>
             <select id="rsvp-field-status" class="luxury-input" required>
               <option value="Hadir">Saya akan Hadir</option>
               <option value="Tidak Hadir">Mohon Maaf Berhalangan Hadir</option>
             </select>
           </div>
-          <div style="margin-bottom: 20px;">
-            <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">
+          <div style="margin-bottom: 18px;">
+            <label style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);">
               Jumlah Hadir (Maksimal <span id="rsvp-max-badge">1</span> Orang)
             </label>
             <input type="number" id="rsvp-field-count" class="luxury-input" min="1" max="1" value="1" required>
           </div>
-          <div style="margin-bottom: 28px;">
-            <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted);">Ucapan & Doa Restu</label>
-            <textarea id="rsvp-field-msg" class="luxury-input" rows="3" placeholder="Tuliskan pesan doa restu..."></textarea>
+          <div style="margin-bottom: 24px;">
+            <label style="font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted);">Ucapan & Doa Restu</label>
+            <textarea id="rsvp-field-msg" class="luxury-input" rows="3" placeholder="Tuliskan ucapan selamat..."></textarea>
           </div>
           <button type="submit" class="btn-lux-primary" style="width: 100%; justify-content: center;">
             Kirim Konfirmasi Kehadiran
@@ -842,39 +882,39 @@
     </section>
 
     <!-- Closing -->
-    <footer style="text-align: center; padding: 100px 0 140px;">
-      <div class="container reveal-on-scroll">
-        <p style="font-family: var(--font-serif); font-size: 1.35rem; font-style: italic; color: var(--text-muted); margin-bottom: 16px;">
+    <footer style="text-align: center; padding: 80px 0 120px;">
+      <div class="container flow-fade-in">
+        <p style="font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; color: var(--text-muted); margin-bottom: 14px;">
           Merupakan suatu kebahagiaan atas kehadiran Anda di hari istimewa kami.
         </p>
-        <h2 class="foil-text" style="font-family: var(--font-display); font-size: 2.8rem;">
+        <h2 class="foil-text" style="font-family: var(--font-display); font-size: 2.6rem;">
           Charis & Sita
         </h2>
       </div>
     </footer>
   </main>
 
-  <!-- MODAL: WEDDING GIFT REKENING -->
+  <!-- MODAL: GIFT REKENING -->
   <div id="gift-modal" class="modal-overlay" onclick="closeGiftModal(event)">
     <div class="modal-content-card">
-      <h3 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 20px; color: var(--gold-bright);">
+      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 18px; color: var(--gold-bright);">
         Rekening Pernikahan
       </h3>
 
-      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; padding: 18px; margin-bottom: 16px;">
-        <p style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">Bank BCA</p>
-        <h4 id="bca-acc-no" style="font-family: var(--font-display); font-size: 1.6rem; margin: 6px 0;">1234 567 890</h4>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">a.n Charis Maulana Setya Adi</p>
-        <button class="btn-lux-outline" style="margin: 0; padding: 8px 20px;" onclick="copyNumber('bca-acc-no', 'Nomor Rekening BCA Disalin')">
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-fine); border-radius: 12px; padding: 16px; margin-bottom: 14px;">
+        <p style="font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">Bank BCA</p>
+        <h4 id="bca-acc-no" style="font-family: var(--font-display); font-size: 1.5rem; margin: 4px 0;">1234 567 890</h4>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">a.n Charis Maulana Setya Adi</p>
+        <button class="btn-lux-outline" style="margin: 0; padding: 6px 18px;" onclick="copyNumber('bca-acc-no', 'Nomor Rekening BCA Disalin')">
           Salin No. Rekening
         </button>
       </div>
 
-      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; padding: 18px; margin-bottom: 24px;">
-        <p style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">Bank Mandiri</p>
-        <h4 id="mandiri-acc-no" style="font-family: var(--font-display); font-size: 1.6rem; margin: 6px 0;">9876 543 210</h4>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">a.n Sita Maulidia Alyatu Zahra</p>
-        <button class="btn-lux-outline" style="margin: 0; padding: 8px 20px;" onclick="copyNumber('mandiri-acc-no', 'Nomor Rekening Mandiri Disalin')">
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-fine); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+        <p style="font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">Bank Mandiri</p>
+        <h4 id="mandiri-acc-no" style="font-family: var(--font-display); font-size: 1.5rem; margin: 4px 0;">9876 543 210</h4>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">a.n Sita Maulidia Alyatu Zahra</p>
+        <button class="btn-lux-outline" style="margin: 0; padding: 6px 18px;" onclick="copyNumber('mandiri-acc-no', 'Nomor Rekening Mandiri Disalin')">
           Salin No. Rekening
         </button>
       </div>
@@ -883,18 +923,17 @@
     </div>
   </div>
 
-  <!-- MODAL: IMAGE LIGHTBOX -->
+  <!-- MODAL: LIGHTBOX -->
   <div id="photo-modal" class="modal-overlay" onclick="closePhotoModal()">
-    <img id="photo-modal-img" src="" style="max-width: 90vw; max-height: 85vh; border-radius: 12px; box-shadow: var(--shadow-3d); border: 1px solid rgba(212,175,55,0.3);" alt="Enlarged View">
+    <img id="photo-modal-img" src="" style="max-width: 92vw; max-height: 85vh; border-radius: 10px; border: 1px solid rgba(212,175,55,0.3);" alt="Enlarged View">
   </div>
 
   <!-- ==============================================================
-       JAVASCRIPT: THREE.JS PBR 3D, GSAP SCROLL & WEB AUDIO
+       JAVASCRIPT: THREE.JS RESPONSIVE RINGS & GSAP FLOW ENGINE
        ============================================================== -->
   <script>
     const STORAGE_KEY_REGISTRY = "secure_wedding_registry_2026";
 
-    // Master Registry Default dengan High-Entropy Tokenized Hash UID
     const DEFAULT_REGISTRY = [
       { uid: "CS-8F2B7D", name: "Bapak Ahmad Subagyo", quota: 2, category: "Keluarga Inti" },
       { uid: "CS-4A91E6", name: "Ibu Dian Sastrowardoyo", quota: 2, category: "Tamu VIP" },
@@ -913,7 +952,7 @@
     }
 
     /**
-     * THREE.JS PHOTOREALISTIC PROCEDURAL HDR & PBR GOLD ENGINE
+     * THREE.JS OPTIMIZED MOBILE-RESPONSIVE GOLD RINGS ENGINE
      */
     let scene, camera, renderer, ringGroup, particlesMesh;
     let targetRotationX = 0, targetRotationY = 0;
@@ -925,13 +964,12 @@
       const ctx = cvs.getContext('2d');
 
       const bg = ctx.createLinearGradient(0, 0, 0, 512);
-      bg.addColorStop(0, '#0c0a09');
-      bg.addColorStop(0.5, '#1a1411');
+      bg.addColorStop(0, '#0a0808');
+      bg.addColorStop(0.5, '#161210');
       bg.addColorStop(1, '#050404');
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, 1024, 512);
 
-      // Key Softbox Light
       const key = ctx.createRadialGradient(512, 100, 10, 512, 100, 240);
       key.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
       key.addColorStop(0.4, 'rgba(255, 240, 220, 0.7)');
@@ -939,7 +977,6 @@
       ctx.fillStyle = key;
       ctx.fillRect(0, 0, 1024, 512);
 
-      // Warm Rim Softbox
       const warm = ctx.createRadialGradient(160, 260, 20, 160, 260, 280);
       warm.addColorStop(0, 'rgba(255, 190, 90, 0.95)');
       warm.addColorStop(0.5, 'rgba(200, 130, 40, 0.4)');
@@ -963,8 +1000,12 @@
       const container = document.getElementById("webgl-bg-canvas");
       scene = new THREE.Scene();
 
+      // Responsif: Atur jarak kamera mundur jika layar HP agar cincin pas & proporsional
+      const isMobile = window.innerWidth < 640;
+      const initialZ = isMobile ? 10.5 : 8.0;
+
       camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, 8);
+      camera.position.set(0, 0, initialZ);
 
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1006,23 +1047,27 @@
       });
 
       ringGroup = new THREE.Group();
-      const ringGeo = new THREE.TorusGeometry(1.25, 0.13, 36, 128);
+
+      // Responsif: Ukuran radius torus disesuaikan agar tidak mendominasi layar kecil
+      const ringRadius = isMobile ? 1.0 : 1.25;
+      const tubeRadius = isMobile ? 0.11 : 0.13;
+      const ringGeo = new THREE.TorusGeometry(ringRadius, tubeRadius, 36, 128);
 
       const groomRing = new THREE.Mesh(ringGeo, yellowGoldMat);
-      groomRing.position.set(-0.55, 0, 0);
+      groomRing.position.set(isMobile ? -0.42 : -0.55, 0, 0);
       groomRing.rotation.set(0.4, 0.6, 0);
 
       const brideRing = new THREE.Mesh(ringGeo, roseGoldMat);
-      brideRing.position.set(0.55, 0, 0);
+      brideRing.position.set(isMobile ? 0.42 : 0.55, 0, 0);
       brideRing.rotation.set(-0.4, -0.6, 0);
 
       ringGroup.add(groomRing);
       ringGroup.add(brideRing);
-      ringGroup.position.y = 0.2;
+      ringGroup.position.y = isMobile ? 0.4 : 0.2;
       scene.add(ringGroup);
 
-      // Gold Shimmer Stardust Particles
-      const pCount = 350;
+      // Gold Stardust Particles
+      const pCount = isMobile ? 220 : 350;
       const pGeo = new THREE.BufferGeometry();
       const pos = new Float32Array(pCount * 3);
       for (let i = 0; i < pCount * 3; i += 3) {
@@ -1032,15 +1077,15 @@
       }
       pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
       particlesMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({
-        size: 0.045,
+        size: isMobile ? 0.038 : 0.045,
         color: 0xFFE082,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.75,
         blending: THREE.AdditiveBlending
       }));
       scene.add(particlesMesh);
 
-      // Mouse & Gyro Parallax
+      // Gyro & Mouse Tilt
       window.addEventListener("mousemove", (e) => {
         const x = (e.clientX / window.innerWidth) * 2 - 1;
         const y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -1048,8 +1093,19 @@
         targetRotationX = y * 0.45;
       });
 
+      window.addEventListener("touchmove", (e) => {
+        if (e.touches.length > 0) {
+          const x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+          const y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+          targetRotationY = x * 0.8;
+          targetRotationX = y * 0.5;
+        }
+      }, { passive: true });
+
       window.addEventListener("resize", () => {
+        const mobile = window.innerWidth < 640;
         camera.aspect = window.innerWidth / window.innerHeight;
+        camera.position.z = mobile ? 10.5 : 8.0;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
@@ -1074,30 +1130,7 @@
     }
 
     /**
-     * AUDIO SYNTHESIZER (SEAL CRACK EFFECT)
-     */
-    function playSealCrackAudio() {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.2);
-      } catch (e) {}
-    }
-
-    /**
-     * INITIALIZATION & STRICT SECURITY CHECK
+     * INITIALIZATION & STRICT SECURITY
      */
     document.addEventListener("DOMContentLoaded", () => {
       if (window.lucide) lucide.createIcons();
@@ -1105,7 +1138,7 @@
       initCountdown();
       initAudioControls();
 
-      // Check UID
+      // Verifikasi UID Ketat
       const params = new URLSearchParams(window.location.search);
       const uid = params.get("uid");
 
@@ -1123,7 +1156,7 @@
       }
 
       setupGuestDetails(matched);
-      setupScrollInteractions();
+      setupScrollFlowAnimations();
     });
 
     function lockoutStrict() {
@@ -1144,14 +1177,14 @@
       document.getElementById("rsvp-max-badge").textContent = guest.quota;
       document.getElementById("rsvp-field-count").max = guest.quota;
 
-      // Mount QR Code
+      // Render QR Code
       const qrBox = document.getElementById("mount-qr-box");
       qrBox.innerHTML = "";
       if (window.QRCode) {
         new QRCode(qrBox, {
           text: `WEDDING|${guest.uid}`,
-          width: 180,
-          height: 180,
+          width: 175,
+          height: 175,
           colorDark: "#0A0808",
           colorLight: "#FFFFFF",
           correctLevel: QRCode.CorrectLevel.H
@@ -1168,7 +1201,6 @@
     }
 
     function unfoldCeremony() {
-      playSealCrackAudio();
       playMusicTrack();
 
       if (window.gsap) {
@@ -1179,11 +1211,11 @@
             main.style.display = "block";
             gsap.to(main, { opacity: 1, duration: 1 });
 
-            // GSAP ScrollTrigger Dynamic Background Camera Zoom
+            // GSAP ScrollTrigger 3D Rings Motion
             gsap.registerPlugin(ScrollTrigger);
             gsap.to(ringGroup.position, {
-              z: -5,
-              y: 1.8,
+              z: -6,
+              y: 2.2,
               scrollTrigger: {
                 trigger: "body",
                 start: "top top",
@@ -1204,9 +1236,9 @@
           }
         });
 
-        tl.to(".wax-seal-3d", { scale: 1.3, rotateZ: 20, duration: 0.35, ease: "back.out(2)" })
+        tl.to(".wax-seal-3d", { scale: 1.25, rotateZ: 20, duration: 0.35, ease: "back.out(2)" })
           .to(".wax-seal-3d", { scale: 0, opacity: 0, duration: 0.25 })
-          .to(".envelope-3d-wrapper", { rotateX: 60, y: 120, opacity: 0, duration: 0.8, ease: "power2.in" });
+          .to(".envelope-3d-wrapper", { rotateX: 60, y: 120, opacity: 0, duration: 0.75, ease: "power2.in" });
       } else {
         document.getElementById("welcome-experience").style.display = "none";
         document.getElementById("invitation-scroll-view").style.display = "block";
@@ -1214,26 +1246,72 @@
       }
     }
 
-    function setupScrollInteractions() {
+    /**
+     * GSAP SCROLLTRIGGER FLOW-IN ANIMATIONS
+     */
+    function setupScrollFlowAnimations() {
       if (window.gsap && window.ScrollTrigger) {
         gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.reveal-on-scroll').forEach(el => {
+
+        // Fade in
+        gsap.utils.toArray('.flow-fade-in').forEach(el => {
           gsap.from(el, {
-            y: 50,
             opacity: 0,
+            y: 30,
             duration: 1.2,
             ease: "power3.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%"
-            }
+            scrollTrigger: { trigger: el, start: "top 88%" }
+          });
+        });
+
+        // Flow up
+        gsap.utils.toArray('.flow-up').forEach(el => {
+          gsap.from(el, {
+            opacity: 0,
+            y: 50,
+            duration: 1.1,
+            ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 85%" }
+          });
+        });
+
+        // Flow Left
+        gsap.utils.toArray('.flow-left').forEach(el => {
+          gsap.from(el, {
+            opacity: 0,
+            x: -45,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 85%" }
+          });
+        });
+
+        // Flow Right
+        gsap.utils.toArray('.flow-right').forEach(el => {
+          gsap.from(el, {
+            opacity: 0,
+            x: 45,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 85%" }
+          });
+        });
+
+        // Flow Scale
+        gsap.utils.toArray('.flow-scale').forEach(el => {
+          gsap.from(el, {
+            opacity: 0,
+            scale: 0.92,
+            duration: 1.3,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 85%" }
           });
         });
       }
     }
 
     /**
-     * AUDIO & TOAST CONTROLLER
+     * AUDIO & UTILS
      */
     function initAudioControls() {
       const audio = document.getElementById("soundtrack-audio");
