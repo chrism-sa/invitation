@@ -1,1301 +1,503 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>The Private Celebration of Charis & Sita</title>
-
-  <!-- Typography: Luxury Italian Display, Serif & Modern Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Core Libraries CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-  <style>
-    :root {
-      --bg-void: #080606;
-      --gold-deep: #9B7B34;
-      --gold-bright: #F7E5A9;
-      --gold-metallic: linear-gradient(135deg, #ECC877 0%, #FAF1D6 40%, #B88E3E 70%, #F5DEB3 100%);
-      --border-gold: rgba(212, 175, 55, 0.28);
-      --border-glow: rgba(247, 229, 169, 0.6);
-      --text-ivory: #FDFBF7;
-      --text-muted: #A39D95;
-      --charcoal: #141210;
-      --crimson-locked: #8B1E1E;
-      --font-display: 'Cinzel', serif;
-      --font-serif: 'Cormorant Garamond', Georgia, serif;
-      --font-sans: 'Montserrat', sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      background-color: var(--bg-void);
-      color: var(--text-ivory);
-      font-family: var(--font-sans);
-      overflow-x: hidden;
-    }
-
-    /* Fixed 3D WebGL Background Canvas */
-    #webgl-bg-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Foil Shimmer Animation */
-    .foil-text {
-      background: var(--gold-metallic);
-      background-size: 250% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: foilShimmer 7s ease-in-out infinite alternate;
-      display: inline-block;
-    }
-
-    @keyframes foilShimmer {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-
-    /* ==============================================================
-       1. SECURITY LOCK SCREEN (JIKA TIDAK MENGGUNAKAN UID RESMI)
-       ============================================================== */
-    #security-gate {
-      position: fixed;
-      inset: 0;
-      z-index: 999999;
-      background: radial-gradient(circle at center, #1C1310 0%, #060404 100%);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .gate-card {
-      background: rgba(20, 16, 14, 0.94);
-      border: 1px solid var(--crimson-locked);
-      box-shadow: 0 0 60px rgba(139, 30, 30, 0.35);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 48px 28px;
-      max-width: 440px;
-      width: 100%;
-    }
-
-    .gate-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(139, 30, 30, 0.15);
-      border: 1px solid var(--crimson-locked);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      color: #E57373;
-    }
-
-    /* ==============================================================
-       2. CINEMATIC WELCOME SCREEN DENGAN SLICE CURTAIN
-       ============================================================== */
-    #welcome-experience {
-      position: fixed;
-      inset: 0;
-      z-index: 50000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      perspective: 1600px;
-    }
-
-    /* Dua tirai yang akan terbelah ke kiri dan kanan */
-    .curtain-slice {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 50%;
-      background: radial-gradient(circle at center, #1C1613 0%, #080606 100%);
-      z-index: 1;
-      border-color: var(--border-gold);
-    }
-    .curtain-left {
-      left: 0;
-      border-right: 1px solid var(--border-gold);
-    }
-    .curtain-right {
-      right: 0;
-      border-left: 1px solid var(--border-gold);
-    }
-
-    .welcome-content-wrapper {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 440px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .monogram-crest {
-      width: 82px;
-      height: 82px;
-      margin: 0 auto 22px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, #FFE082, #B8860B 60%, #5D4037 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 35px rgba(212, 175, 55, 0.5);
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #3E2723;
-      cursor: pointer;
-      transition: transform 0.4s ease;
-    }
-    .monogram-crest:hover {
-      transform: scale(1.08) rotate(5deg);
-    }
-
-    .invitee-hologram {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin: 18px 0 26px;
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-lux-primary {
-      background: var(--gold-metallic);
-      color: var(--charcoal);
-      border: none;
-      padding: 16px 36px;
-      font-family: var(--font-sans);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      border-radius: 30px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-      transition: all 0.3s ease;
-    }
-    .btn-lux-primary:hover {
-      transform: scale(1.04);
-      box-shadow: 0 14px 40px rgba(212, 175, 55, 0.6);
-    }
-
-    /* Sound Pill */
-    .audio-pill {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(20, 16, 14, 0.85);
-      border: 1px solid var(--gold-deep);
-      backdrop-filter: blur(12px);
-      color: var(--gold-bright);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-    }
-    .audio-pill.spinning {
-      animation: spin 8s linear infinite;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    /* ==============================================================
-       3. PRESENTATION SLIDE-DECK CONTAINER (FULL-PAGE SECTIONS)
-       ============================================================== */
-    #invitation-scroll-view {
-      display: none;
-      position: relative;
-      z-index: 10;
-    }
-
-    .slide-section {
-      min-height: 100vh;
-      width: 100vw;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      overflow: hidden;
-    }
-
-    .slide-content-container {
-      width: 100%;
-      max-width: 660px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 5;
-    }
-
-    /* Editorial Presentation Glass Frames (Bukan Card Monoton) */
-    .presentation-panel {
-      position: relative;
-      background: rgba(18, 14, 13, 0.78);
-      border: 1px solid var(--border-gold);
-      border-radius: 20px;
-      padding: 44px 28px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(18px);
-    }
-
-    /* Gold Corner Filigree Accents */
-    .corner-bracket {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-color: var(--gold-bright);
-      pointer-events: none;
-    }
-    .cb-tl { top: -1px; left: -1px; border-top: 2px solid var(--gold-bright); border-left: 2px solid var(--gold-bright); border-top-left-radius: 20px; }
-    .cb-tr { top: -1px; right: -1px; border-top: 2px solid var(--gold-bright); border-right: 2px solid var(--gold-bright); border-top-right-radius: 20px; }
-    .cb-bl { bottom: -1px; left: -1px; border-bottom: 2px solid var(--gold-bright); border-left: 2px solid var(--gold-bright); border-bottom-left-radius: 20px; }
-    .cb-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--gold-bright); border-right: 2px solid var(--gold-bright); border-bottom-right-radius: 20px; }
-
-    .slide-eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--gold-bright);
-      display: block;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .slide-headline {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 6.5vw, 3.2rem);
-      font-weight: 400;
-      text-align: center;
-      line-height: 1.15;
-      margin-bottom: 36px;
-    }
-
-    /* Asymmetrical Couple Presentation Layout */
-    .couple-deck-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 28px;
-    }
-    .profile-deck {
-      position: relative;
-      background: linear-gradient(135deg, rgba(25, 20, 18, 0.6) 0%, rgba(12, 10, 9, 0.8) 100%);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 16px;
-      padding: 24px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .profile-portrait {
-      width: 110px;
-      height: 140px;
-      flex-shrink: 0;
-      border-radius: 60px 60px 8px 8px;
-      overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-    }
-    .profile-portrait img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Event Itinerary Pods */
-    .event-split-pod {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-gold);
-      border-radius: 14px;
-      padding: 24px 20px;
-      text-align: center;
-      margin-bottom: 18px;
-    }
-
-    /* Countdown Matrix */
-    .countdown-flex {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 24px;
-    }
-    .countdown-pod {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 10px;
-      padding: 14px 4px;
-      text-align: center;
-    }
-    .countdown-num {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      line-height: 1;
-      color: var(--gold-bright);
-    }
-    .countdown-lbl {
-      font-size: 0.62rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Mosaic Photo Gallery (Tepat Sebelum QR Code) */
-    .gallery-mosaic-deck {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .mosaic-photo {
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      cursor: pointer;
-    }
-    .mosaic-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s ease;
-    }
-    .mosaic-photo:hover img {
-      transform: scale(1.08);
-    }
-    .mp-1 { grid-column: span 7; height: 200px; }
-    .mp-2 { grid-column: span 5; height: 200px; }
-    .mp-3 { grid-column: span 5; height: 190px; }
-    .mp-4 { grid-column: span 7; height: 190px; }
-
-    /* VIP Boarding Pass QR Card */
-    .qr-boarding-deck {
-      background: linear-gradient(145deg, rgba(26, 21, 19, 0.95), rgba(12, 10, 9, 0.98));
-      border: 1px solid var(--border-gold);
-      border-radius: 20px;
-      padding: 40px 20px 32px;
-      text-align: center;
-      position: relative;
-    }
-    .qr-code-mount {
-      display: inline-block;
-      padding: 16px;
-      background: #FFFFFF;
-      border-radius: 14px;
-      margin: 18px 0;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
-    }
-
-    /* Form Fields */
-    .input-deck {
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 8px;
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      background: rgba(0, 0, 0, 0.5);
-      color: #FFF;
-      font-family: var(--font-sans);
-      font-size: 0.85rem;
-      margin-top: 6px;
-      outline: none;
-    }
-    .input-deck:focus {
-      border-color: var(--gold-bright);
-    }
-
-    /* Modal Overlay */
-    .modal-backdrop-deck {
-      position: fixed;
-      inset: 0;
-      background: rgba(8, 6, 6, 0.94);
-      backdrop-filter: blur(14px);
-      z-index: 60000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-box-deck {
-      background: rgba(20, 16, 14, 0.96);
-      border: 1px solid var(--border-gold);
-      border-radius: 20px;
-      padding: 32px 24px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-    }
-
-    /* Slide Deck Pagination Indicator (Titik Navigasi Kanan) */
-    .slide-pagination {
-      position: fixed;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .pagination-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(212, 175, 55, 0.3);
-      transition: all 0.4s ease;
-    }
-    .pagination-dot.active {
-      height: 24px;
-      border-radius: 8px;
-      background: var(--gold-bright);
-      box-shadow: 0 0 10px rgba(247, 229, 169, 0.6);
-    }
-
-    /* Toast */
-    #toast-bin {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 999999;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      pointer-events: none;
-    }
-    .toast-chip {
-      background: rgba(20, 16, 14, 0.95);
-      border: 1px solid var(--gold-deep);
-      color: #FFF;
-      padding: 10px 22px;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      opacity: 0;
-      transform: translateY(12px);
-      transition: all 0.3s ease;
-    }
-    .toast-chip.show { opacity: 1; transform: translateY(0); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080606">
+<title>The Private Celebration of Charis &amp; Sita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--void:#080606;--gold:#9B7B34;--gold-b:#F7E5A9;--foil:linear-gradient(120deg,#B88E3E 0%,#F7E5A9 35%,#ECC877 55%,#FAF1D6 75%,#B88E3E 100%);--line:rgba(212,175,55,.28);--ivory:#FDFBF7;--muted:#A8A199;--char:#141210;--red:#8B1E1E;--f-d:'Cinzel',serif;--f-s:'Cormorant Garamond',Georgia,serif;--f-m:'Montserrat',sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;background:var(--void)}
+body{min-height:100dvh;background:var(--void);color:var(--ivory);font-family:var(--f-m);overflow-x:hidden}
+body.lock{overflow:hidden}
+.i{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.125em}
+#gl{position:fixed;inset:0;z-index:1;pointer-events:none}
+#vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 40%,rgba(0,0,0,.65) 100%)}
+#grain{position:fixed;inset:-50%;z-index:3;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}33%{transform:translate(-3%,2%)}66%{transform:translate(2%,-3%)}100%{transform:translate(0,0)}}
+#glow{position:fixed;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;z-index:4;pointer-events:none;background:radial-gradient(circle,rgba(247,229,169,.10),transparent 65%);opacity:0;transition:opacity .4s;will-change:transform}
+.foil{background:var(--foil);background-size:250% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:foil 8s ease-in-out infinite alternate;display:inline-block}
+@keyframes foil{to{background-position:100% 50%}}
+#progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:900;background:var(--foil);transform:scaleX(0);transform-origin:0 50%}
+/* Navbar */
+#nav{position:fixed;top:max(14px,env(safe-area-inset-top));left:50%;transform:translate(-50%,-140%);z-index:800;display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:40px;background:rgba(16,12,11,.62);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}
+#nav::-webkit-scrollbar{display:none}
+#nav a{flex:none;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:9px 14px;border-radius:30px;transition:.4s var(--ease)}
+#nav a:hover{color:var(--ivory)}
+#nav a.on{background:rgba(247,229,169,.12);color:var(--gold-b)}
+#nav .mono{font-family:var(--f-d);font-weight:700;color:var(--gold-b);letter-spacing:.1em}
+/* Gate */
+#gate{position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at center,#1C1310,#060404);display:none;align-items:center;justify-content:center;padding:24px;text-align:center}
+.gate-card{background:rgba(20,16,14,.94);border:1px solid var(--red);box-shadow:0 0 70px rgba(139,30,30,.35);border-radius:22px;padding:46px 28px;max-width:440px;width:100%}
+.gate-ic{width:66px;height:66px;border-radius:50%;background:rgba(139,30,30,.15);border:1px solid var(--red);display:grid;place-items:center;margin:0 auto 20px;color:#E57373;font-size:1.9rem;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 14px rgba(139,30,30,0)}0%{box-shadow:0 0 0 0 rgba(139,30,30,.4)}}
+/* Welcome */
+#welcome{position:fixed;inset:0;z-index:50000;display:grid;place-items:center;overflow:hidden}
+.curtain{position:absolute;top:0;bottom:0;width:50.5%;background:radial-gradient(circle at center,#1C1613,#080606);z-index:1;will-change:transform}
+.curtain.l{left:0;border-right:1px solid var(--line)}.curtain.r{right:0;border-left:1px solid var(--line)}
+.w-wrap{position:relative;z-index:2;width:100%;max-width:440px;padding:20px;text-align:center}
+.crest{width:84px;height:84px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#FFE082,#B8860B 60%,#5D4037);box-shadow:0 15px 35px #000c,0 0 40px rgba(212,175,55,.5);font:700 1.8rem var(--f-d);color:#3E2723;cursor:pointer;transition:transform .5s var(--ease);position:relative}
+.crest::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:1px solid var(--line);animation:ring 3s ease-out infinite}
+@keyframes ring{to{transform:scale(1.5);opacity:0}}
+.crest:hover{transform:scale(1.08) rotate(6deg)}
+.eyebrow{display:block;text-align:center;font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold-b);margin-bottom:12px}
+.holo{border:1px solid rgba(212,175,55,.25);background:rgba(255,255,255,.025);border-radius:16px;padding:16px 20px;margin:18px 0 26px;backdrop-filter:blur(10px)}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:12px;border:0;cursor:pointer;padding:16px 36px;border-radius:40px;font:700 .78rem var(--f-m);letter-spacing:.22em;text-transform:uppercase;background:var(--foil);background-size:200% auto;color:var(--char);box-shadow:0 10px 30px rgba(212,175,55,.35);transition:box-shadow .4s,background-position .6s;will-change:transform}
+.btn:hover{background-position:100% 0;box-shadow:0 16px 44px rgba(212,175,55,.55)}
+.btn::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,#fff8,transparent);transform:skewX(-20deg)}
+.btn:hover::after{left:130%;transition:left .8s var(--ease)}
+.btn.ghost{background:transparent;color:var(--gold-b);border:1px solid var(--line);box-shadow:none}
+.btn:focus-visible,.input:focus-visible,.crest:focus-visible{outline:2px solid var(--gold-b);outline-offset:3px}
+/* Audio */
+#audio-btn{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));width:50px;height:50px;border-radius:50%;z-index:1000;display:grid;place-items:center;cursor:pointer;background:rgba(20,16,14,.85);border:1px solid var(--gold);backdrop-filter:blur(12px);color:var(--gold-b);font-size:1.1rem;box-shadow:0 10px 25px #000b}
+#audio-btn .eq{display:none;gap:2px;align-items:flex-end;height:16px}
+#audio-btn .eq i{width:3px;background:var(--gold-b);border-radius:2px;animation:eq 1s ease-in-out infinite}
+#audio-btn .eq i:nth-child(2){animation-delay:.2s}#audio-btn .eq i:nth-child(3){animation-delay:.4s}
+@keyframes eq{0%,100%{height:4px}50%{height:16px}}
+#audio-btn.on .eq{display:flex}#audio-btn.on .i{display:none}
+/* Slides */
+#deck{display:none;position:relative;z-index:10}
+.slide{min-height:100dvh;position:relative;display:grid;place-items:center;padding:90px 20px 70px}
+.wrap{width:100%;max-width:660px;perspective:1200px}
+.panel{position:relative;padding:46px 28px;border-radius:24px;text-align:center;border:1px solid var(--line);background:linear-gradient(160deg,rgba(26,20,18,.8),rgba(12,9,8,.82));box-shadow:0 40px 80px #000a,inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s var(--ease);will-change:transform;overflow:hidden}
+.panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),rgba(247,229,169,.11),transparent 60%);opacity:0;transition:opacity .4s}
+.panel:hover::before{opacity:1}
+.cb{position:absolute;width:20px;height:20px;border:0 solid var(--gold-b);pointer-events:none}
+.tl{top:10px;left:10px;border-top-width:1px;border-left-width:1px}.tr{top:10px;right:10px;border-top-width:1px;border-right-width:1px}
+.bl{bottom:10px;left:10px;border-bottom-width:1px;border-left-width:1px}.br{bottom:10px;right:10px;border-bottom-width:1px;border-right-width:1px}
+.h2{font:400 clamp(2rem,6.5vw,3.1rem)/1.15 var(--f-d);margin-bottom:34px}
+.divider{display:flex;align-items:center;gap:12px;justify-content:center;margin:0 auto 22px;color:var(--gold-b);font-size:.7rem}
+.divider::before,.divider::after{content:"";width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-b))}.divider::after{transform:scaleX(-1)}
+.grid{display:grid;gap:22px;text-align:left}
+.profile{display:flex;align-items:center;gap:20px;padding:22px;border-radius:18px;border:1px solid rgba(212,175,55,.2);background:linear-gradient(135deg,rgba(25,20,18,.6),rgba(12,10,9,.8));transition:.5s var(--ease)}
+.profile:hover{border-color:var(--gold-b);transform:translateY(-4px)}
+.portrait{width:110px;height:140px;flex:none;border-radius:60px 60px 10px 10px;overflow:hidden;border:1px solid rgba(212,175,55,.4);background:linear-gradient(160deg,#3a2c1b,#120d0a)}
+.portrait img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}.profile:hover img{transform:scale(1.1)}
+.pod{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:16px;padding:24px 20px;margin-bottom:16px;transition:.5s var(--ease)}
+.pod:hover{background:rgba(247,229,169,.05);transform:translateY(-3px)}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.cd div{background:rgba(255,255,255,.03);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:14px 4px}
+.cd b{display:block;font:400 1.8rem/1 var(--f-d);color:var(--gold-b);font-variant-numeric:tabular-nums}
+.cd small{display:block;margin-top:5px;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.mosaic{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-bottom:20px}
+.ph{border-radius:14px;overflow:hidden;border:1px solid rgba(212,175,55,.25);cursor:zoom-in;background:linear-gradient(160deg,#3a2c1b,#120d0a)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--ease),filter .6s;filter:saturate(.9)}
+.ph:hover img{transform:scale(1.1);filter:saturate(1.15)}
+.p1{grid-column:span 7;height:200px}.p2{grid-column:span 5;height:200px}.p3{grid-column:span 5;height:190px}.p4{grid-column:span 7;height:190px}
+.ticket{border-radius:20px;padding:36px 20px 30px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(26,21,19,.95),rgba(12,10,9,.98));position:relative}
+.ticket::before,.ticket::after{content:"";position:absolute;top:58%;width:22px;height:22px;border-radius:50%;background:var(--void);border:1px solid var(--line)}
+.ticket::before{left:-12px}.ticket::after{right:-12px}
+.qr{display:inline-block;padding:16px;background:#fff;border-radius:16px;margin:18px 0;box-shadow:0 10px 30px #000a,0 0 40px rgba(247,229,169,.15)}
+.qr img,.qr canvas{display:block}
+label{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left}
+.input{width:100%;padding:14px 16px;margin-top:6px;border-radius:10px;border:1px solid rgba(212,175,55,.25);background:rgba(0,0,0,.45);color:#fff;font:400 .88rem var(--f-m);transition:.3s}
+.input:focus{border-color:var(--gold-b);box-shadow:0 0 0 3px rgba(247,229,169,.1);outline:0}
+.field{margin-bottom:16px}
+.modal{position:fixed;inset:0;z-index:60000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(8,6,6,.92);backdrop-filter:blur(14px)}
+.modal.open{display:flex}
+.modal>*{animation:pop .5s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.92) translateY(14px)}}
+.mbox{max-width:420px;width:100%;text-align:center;padding:32px 24px;border-radius:22px;border:1px solid var(--line);background:rgba(20,16,14,.97)}
+.acct{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;background:rgba(255,255,255,.02)}
+.pager{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:100;display:none;flex-direction:column;gap:12px}
+.pager i{display:block;width:7px;height:7px;border-radius:8px;background:rgba(212,175,55,.3);cursor:pointer;transition:.5s var(--ease)}
+.pager i.on{height:26px;background:var(--gold-b);box-shadow:0 0 12px rgba(247,229,169,.6)}
+#toasts{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:999999;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:max-content;max-width:90vw}
+.toast{background:rgba(20,16,14,.95);border:1px solid var(--gold);padding:11px 22px;border-radius:24px;font-size:.82rem;text-align:center;opacity:0;transform:translateY(12px);transition:.4s var(--ease)}
+.toast.show{opacity:1;transform:none}
+footer{padding:34px 20px calc(34px + env(safe-area-inset-bottom));text-align:center;color:var(--muted);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+.hint{display:inline-block;margin-top:22px;font-size:.68rem;letter-spacing:.3em;color:var(--muted)}
+.hint i{display:block;width:1px;height:34px;margin:10px auto 0;background:linear-gradient(var(--gold-b),transparent);animation:drop 2s ease-in-out infinite;transform-origin:top}
+@keyframes drop{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+@media(max-width:560px){.pager{display:none!important}.profile{flex-direction:column;text-align:center}.panel{padding:40px 20px}.cd b{font-size:1.4rem}#nav a{padding:9px 11px}}
+@media(min-width:561px){#deck.show~.pager,.pager.show{display:flex}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2z"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M12 8v13M19 12v9H5v-9M7.5 8a2.5 2.5 0 010-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 010 5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM12 8v4M12 16h.01"/></symbol>
+</svg>
 
-  <!-- WebGL Canvas untuk 3D Gold Rings & Particles -->
-  <div id="webgl-bg-canvas"></div>
+<div id="progress"></div>
+<div id="gl"></div><div id="vignette"></div><div id="grain"></div><div id="glow"></div>
+<div id="toasts" aria-live="polite"></div>
 
-  <!-- Toast Stack -->
-  <div id="toast-bin"></div>
+<audio id="bgm" loop preload="none"><source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-1144.mp3" type="audio/mp3"></audio>
+<button id="audio-btn" aria-label="Putar atau jeda musik" title="Putar Musik"><svg class="i"><use href="#i-music"/></svg><span class="eq"><i></i><i></i><i></i></span></button>
 
-  <!-- Soundtrack Audio -->
-  <audio id="soundtrack-audio" loop preload="auto">
-    <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-moment-1144.mp3" type="audio/mp3">
-  </audio>
-  <div id="audio-widget-btn" class="audio-pill" title="Putar Musik">
-    <i data-lucide="music" style="width: 18px; height: 18px;"></i>
+<!-- Gate -->
+<div id="gate"><div class="gate-card">
+  <div class="gate-ic"><svg class="i"><use href="#i-shield"/></svg></div>
+  <h2 style="font:400 1.6rem var(--f-d);margin-bottom:10px">Private Invitation Only</h2>
+  <p style="font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:20px">Akses ditolak. Undangan pernikahan ini bersifat eksklusif &amp; privat. Harap gunakan URL personal dengan kode akses UID yang telah diberikan.</p>
+  <div style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red)">[ Error Code: INVALID_OR_MISSING_UID ]</div>
+</div></div>
+
+<!-- Welcome -->
+<div id="welcome">
+  <div class="curtain l" id="cl"></div><div class="curtain r" id="cr"></div>
+  <div class="w-wrap" id="w-el">
+    <div class="crest" id="crest" role="button" tabindex="0" title="Sentuh untuk Membuka"><span>CS</span></div>
+    <p class="eyebrow" style="margin-bottom:0">Exclusive Intimate Wedding</p>
+    <h1 class="foil" style="font:400 2.7rem var(--f-d);margin:8px 0 14px">Charis &amp; Sita</h1>
+    <div class="holo">
+      <p style="font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Special Honor Conferred Upon:</p>
+      <h3 id="g-name" style="font:400 1.9rem var(--f-s);margin-top:4px">-</h3>
+      <span id="g-quota" style="font-size:.7rem;color:var(--gold-b);font-weight:600">-</span>
+    </div>
+    <button id="open" class="btn" data-mag><span>Buka Undangan</span><svg class="i"><use href="#i-spark"/></svg></button>
   </div>
+</div>
 
-  <!-- ==============================================================
-       1. STRICT ACCESS LOCK GATE (DITOLAK TOTAL TANPA UID)
-       ============================================================== -->
-  <div id="security-gate">
-    <div class="gate-card">
-      <div class="gate-icon">
-        <i data-lucide="shield-alert" style="width: 32px; height: 32px;"></i>
+<!-- Nav -->
+<nav id="nav" aria-label="Navigasi undangan"></nav>
+<div class="pager" id="pager"></div>
+
+<main id="deck">
+  <section class="slide" id="s0" data-nav="Beranda"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <span class="eyebrow" data-r>The Sacred Matrimony</span>
+    <h1 class="foil" data-r style="font:400 clamp(3rem,11vw,4.8rem)/1.05 var(--f-d);margin:12px 0 16px">Charis &amp; Sita</h1>
+    <p data-r style="font-size:.8rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-b)">Sabtu • 12 Desember 2026 • Trawas</p>
+    <div class="hint" data-r>SCROLL<i></i></div>
+  </div></div></section>
+
+  <section class="slide" id="s1" data-nav="Doa"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <span class="eyebrow" data-r>Holy Matrimony Quote</span>
+    <div class="divider" data-r>✦</div>
+    <p data-r style="font:italic 400 1.4rem/1.8 var(--f-s);margin:6px 0 22px">“Dan di antara tanda-tanda kebesaran-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat ketenangan hati dan dijadikan-Nya kasih sayang di antara kamu.”</p>
+    <span data-r style="font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold-b)">Surah Ar-Rum: 21</span>
+  </div></div></section>
+
+  <section class="slide" id="s2" data-nav="Mempelai"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <span class="eyebrow" data-r>The Blessed Couple</span>
+    <h2 class="h2 foil" data-r>Mempelai Pengantin</h2>
+    <div class="grid">
+      <div class="profile" data-r>
+        <div class="portrait"><img loading="lazy" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop" alt="Mempelai pria" onerror="this.remove()"></div>
+        <div><span style="font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-b)">The Groom</span>
+        <h3 style="font:400 1.45rem var(--f-d);margin:4px 0 6px">Charis Maulana S.A.</h3>
+        <p style="font-size:.76rem;color:var(--muted);line-height:1.5">Putra Pertama dari Bpk. Mohammad Fahrur Rozi &amp; Ibu Bunda</p></div>
       </div>
-      <h2 style="font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 10px; color: #FFF;">
-        Private Invitation Only
-      </h2>
-      <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px;">
-        Akses ditolak. Undangan pernikahan ini bersifat eksklusif & privat. Harap gunakan URL personal dengan kode akses UID yang telah diberikan.
-      </p>
-      <div style="font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--crimson-locked);">
-        [ Error Code: INVALID_OR_MISSING_UID ]
+      <div class="profile" data-r>
+        <div class="portrait"><img loading="lazy" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&fit=crop" alt="Mempelai wanita" onerror="this.remove()"></div>
+        <div><span style="font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-b)">The Bride</span>
+        <h3 style="font:400 1.45rem var(--f-d);margin:4px 0 6px">Sita Maulidia A.Z.</h3>
+        <p style="font-size:.76rem;color:var(--muted);line-height:1.5">Putri Tercinta dari Keluarga Bpk. Fulan &amp; Ibu Fulanah</p></div>
       </div>
     </div>
-  </div>
+  </div></div></section>
 
-  <!-- ==============================================================
-       2. CINEMATIC WELCOME SCREEN DENGAN SLICE EFFECT
-       ============================================================== -->
-  <div id="welcome-experience">
-    <!-- Tirai Kiri dan Kanan yang akan Terbelah -->
-    <div class="curtain-slice curtain-left" id="curtain-l"></div>
-    <div class="curtain-slice curtain-right" id="curtain-r"></div>
-
-    <div class="welcome-content-wrapper" id="welcome-deck-elements">
-      <div class="monogram-crest" id="crest-trigger" title="Sentuh untuk Membuka">
-        <span>CS</span>
-      </div>
-
-      <p style="font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-bright);">
-        Exclusive Intimate Wedding
-      </p>
-      <h1 class="foil-text" style="font-family: var(--font-display); font-size: 2.6rem; margin: 6px 0 14px;">
-        Charis & Sita
-      </h1>
-
-      <div class="invitee-hologram">
-        <p style="font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);">
-          Special Honor Conferred Upon:
-        </p>
-        <h3 id="target-guest-name" style="font-family: var(--font-serif); font-size: 1.85rem; color: #FFF; margin-top: 4px;">
-          -
-        </h3>
-        <span id="target-guest-quota" style="display:inline-block; font-size: 0.7rem; color: var(--gold-bright); font-weight: 600; margin-top: 4px;">
-          -
-        </span>
-      </div>
-
-      <button id="btn-open-ceremony" class="btn-lux-primary">
-        <span>Buka Undangan</span>
-        <i data-lucide="sparkles" style="width: 15px; height: 15px;"></i>
-      </button>
+  <section class="slide" id="s3" data-nav="Acara"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <span class="eyebrow" data-r>Sacred Schedule</span>
+    <h2 class="h2 foil" data-r style="margin-bottom:24px">Waktu &amp; Lokasi</h2>
+    <div class="pod" data-r><h3 style="font:400 1.4rem var(--f-d);margin-bottom:4px">Akad Nikah</h3>
+      <p style="font-size:.8rem;color:var(--gold-b);font-weight:600;margin-bottom:6px">Jumat, 11 Desember 2026 • 08:00 WIB</p>
+      <p style="font-size:.76rem;color:var(--muted)">Singosari, Malang, Jawa Timur</p></div>
+    <div class="pod" data-r><h3 style="font:400 1.4rem var(--f-d);margin-bottom:4px">Resepsi Intimate</h3>
+      <p style="font-size:.8rem;color:var(--gold-b);font-weight:600;margin-bottom:6px">Sabtu, 12 Desember 2026 • 09:00 - 13:00 WIB</p>
+      <p style="font-size:.76rem;color:var(--muted)">Villa &amp; Resto Garden Area, Trawas, Mojokerto</p></div>
+    <div class="cd" data-r>
+      <div><b id="cd-d">00</b><small>Hari</small></div><div><b id="cd-h">00</b><small>Jam</small></div>
+      <div><b id="cd-m">00</b><small>Menit</small></div><div><b id="cd-s">00</b><small>Detik</small></div>
     </div>
-  </div>
+  </div></div></section>
 
-  <!-- ==============================================================
-       3. SLIDE PRESENTATION DECK CONTAINER
-       ============================================================== -->
-  <!-- Pagination Dots -->
-  <div class="slide-pagination" id="slide-dots">
-    <div class="pagination-dot active" data-index="0"></div>
-    <div class="pagination-dot" data-index="1"></div>
-    <div class="pagination-dot" data-index="2"></div>
-    <div class="pagination-dot" data-index="3"></div>
-    <div class="pagination-dot" data-index="4"></div>
-    <div class="pagination-dot" data-index="5"></div>
-    <div class="pagination-dot" data-index="6"></div>
-  </div>
-
-  <main id="invitation-scroll-view">
-    <!-- SLIDE 1: HERO -->
-    <section class="slide-section" id="slide-0">
-      <div class="slide-content-container text-center">
-        <div class="presentation-panel slide-deck-anim">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <span class="slide-eyebrow">The Sacred Matrimony</span>
-          <h1 class="foil-text" style="font-family: var(--font-display); font-size: clamp(3rem, 10vw, 4.8rem); line-height: 1.05; margin: 12px 0 16px;">
-            Charis & Sita
-          </h1>
-          <p style="font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-bright);">
-            Sabtu • 12 Desember 2026 • Trawas
-          </p>
-          <div style="margin-top: 24px; font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.15em;">
-            [ SCROLL KE BAWAH UNTUK MELIHAT PRESENTASI ]
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 2: SACRED QUOTE -->
-    <section class="slide-section" id="slide-1">
-      <div class="slide-content-container">
-        <div class="presentation-panel slide-deck-anim" style="text-align: center;">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <span class="slide-eyebrow">Holy Matrimony Quote</span>
-          <p style="font-family: var(--font-serif); font-size: 1.4rem; font-style: italic; line-height: 1.8; color: var(--text-ivory); margin: 20px 0;">
-            “Dan di antara tanda-tanda kebesaran-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri supaya kamu mendapat ketenangan hati dan dijadikan-Nya kasih sayang di antara kamu.”
-          </p>
-          <span style="font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-bright);">
-            Surah Ar-Rum: 21
-          </span>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 3: MEMPELAI PENGANTIN -->
-    <section class="slide-section" id="slide-2">
-      <div class="slide-content-container">
-        <div class="presentation-panel slide-deck-anim">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <span class="slide-eyebrow">The Blessed Couple</span>
-          <h2 class="slide-headline foil-text">Mempelai Pengantin</h2>
-
-          <div class="couple-deck-grid">
-            <!-- Groom -->
-            <div class="profile-deck">
-              <div class="profile-portrait">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&fit=crop" alt="Groom">
-              </div>
-              <div>
-                <span style="font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">The Groom</span>
-                <h3 style="font-family: var(--font-display); font-size: 1.45rem; color: #FFF; margin: 4px 0 6px;">
-                  Charis Maulana S.A.
-                </h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.5;">
-                  Putra Pertama dari Bpk. Mohammad Fahrur Rozi & Ibu Bunda
-                </p>
-              </div>
-            </div>
-
-            <!-- Bride -->
-            <div class="profile-deck">
-              <div class="profile-portrait">
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&fit=crop" alt="Bride">
-              </div>
-              <div>
-                <span style="font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">The Bride</span>
-                <h3 style="font-family: var(--font-display); font-size: 1.45rem; color: #FFF; margin: 4px 0 6px;">
-                  Sita Maulidia A.Z.
-                </h3>
-                <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.5;">
-                  Putri Tercinta dari Keluarga Bpk. Fulan & Ibu Fulanah
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 4: SACRED TIMELINE & COUNTDOWN -->
-    <section class="slide-section" id="slide-3">
-      <div class="slide-content-container">
-        <div class="presentation-panel slide-deck-anim">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <span class="slide-eyebrow">Sacred Schedule</span>
-          <h2 class="slide-headline foil-text" style="margin-bottom: 24px;">Waktu & Lokasi</h2>
-
-          <div class="event-split-pod">
-            <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 4px;">Akad Nikah</h3>
-            <p style="font-size: 0.8rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 6px;">Jumat, 11 Desember 2026 • 08:00 WIB</p>
-            <p style="font-size: 0.75rem; color: var(--text-muted);">Singosari, Malang, Jawa Timur</p>
-          </div>
-
-          <div class="event-split-pod">
-            <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: #FFF; margin-bottom: 4px;">Resepsi Intimate</h3>
-            <p style="font-size: 0.8rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 6px;">Sabtu, 12 Desember 2026 • 09:00 - 13:00 WIB</p>
-            <p style="font-size: 0.75rem; color: var(--text-muted);">Villa & Resto Garden Area, Trawas, Mojokerto</p>
-          </div>
-
-          <div class="countdown-flex">
-            <div class="countdown-pod"><div class="countdown-num" id="cd-days">00</div><div class="countdown-lbl">Hari</div></div>
-            <div class="countdown-pod"><div class="countdown-num" id="cd-hours">00</div><div class="countdown-lbl">Jam</div></div>
-            <div class="countdown-pod"><div class="countdown-num" id="cd-minutes">00</div><div class="countdown-lbl">Menit</div></div>
-            <div class="countdown-pod"><div class="countdown-num" id="cd-seconds">00</div><div class="countdown-lbl">Detik</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 5: GALERI MOSAIC (TEPAT SEBELUM QR CODE) -->
-    <section class="slide-section" id="slide-4">
-      <div class="slide-content-container">
-        <div class="presentation-panel slide-deck-anim">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <span class="slide-eyebrow">Visual Memoir</span>
-          <h2 class="slide-headline foil-text" style="margin-bottom: 24px;">Galeri Kisah</h2>
-
-          <div class="gallery-mosaic-deck">
-            <div class="mosaic-photo mp-1" onclick="openPhotoModal('https://images.unsplash.com/photo-1519741497674-611481863552?w=1000')">
-              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&fit=crop" alt="Photo 1">
-            </div>
-            <div class="mosaic-photo mp-2" onclick="openPhotoModal('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1000')">
-              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&fit=crop" alt="Photo 2">
-            </div>
-            <div class="mosaic-photo mp-3" onclick="openPhotoModal('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1000')">
-              <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&fit=crop" alt="Photo 3">
-            </div>
-            <div class="mosaic-photo mp-4" onclick="openPhotoModal('https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1000')">
-              <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&fit=crop" alt="Photo 4">
-            </div>
-          </div>
-
-          <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted);">
-            Sentuh foto untuk memperbesar tampilan
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 6: VIP ATTENDANCE QR CODE -->
-    <section class="slide-section" id="slide-5">
-      <div class="slide-content-container">
-        <div class="presentation-panel slide-deck-anim">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <div class="qr-boarding-deck">
-            <span class="slide-eyebrow">Personal Admission</span>
-            <h2 id="pass-guest-name" style="font-family: var(--font-display); font-size: 1.8rem; color: #FFF; margin: 4px 0 2px;">
-              -
-            </h2>
-            <p id="pass-guest-quota" style="font-size: 0.78rem; color: var(--gold-bright); margin-bottom: 12px;">
-              -
-            </p>
-
-            <div class="qr-code-mount">
-              <div id="mount-qr-box"></div>
-            </div>
-
-            <p style="font-size: 0.75rem; color: var(--text-muted); max-width: 340px; margin: 0 auto; line-height: 1.6;">
-              Tunjukkan QR Code ini kepada petugas resepsionis saat kedatangan untuk konfirmasi presensi kehadiran.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLIDE 7: RSVP & WEDDING GIFT -->
-    <section class="slide-section" id="slide-6">
-      <div class="slide-content-container">
-        <div class="presentation-panel slide-deck-anim">
-          <div class="corner-bracket cb-tl"></div>
-          <div class="corner-bracket cb-tr"></div>
-          <div class="corner-bracket cb-bl"></div>
-          <div class="corner-bracket cb-br"></div>
-
-          <span class="slide-eyebrow">RSVP & Token Of Love</span>
-          <h2 class="slide-headline foil-text" style="margin-bottom: 20px;">Konfirmasi & Kado</h2>
-
-          <form id="rsvp-deck-form" style="margin-bottom: 24px;">
-            <div style="margin-bottom: 14px;">
-              <label style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted);">Nama Tamu</label>
-              <input type="text" id="rsvp-field-name" class="input-deck" readonly>
-            </div>
-            <div style="margin-bottom: 14px;">
-              <label style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted);">Kehadiran</label>
-              <select id="rsvp-field-status" class="input-deck" required>
-                <option value="Hadir">Saya akan Hadir</option>
-                <option value="Tidak Hadir">Berhalangan Hadir</option>
-              </select>
-            </div>
-            <div style="margin-bottom: 18px;">
-              <label style="font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted);">
-                Jumlah Hadir (Maksimal <span id="rsvp-max-badge">1</span> Orang)
-              </label>
-              <input type="number" id="rsvp-field-count" class="input-deck" min="1" max="1" value="1" required>
-            </div>
-            <button type="submit" class="btn-lux-primary" style="width: 100%; justify-content: center; padding: 13px;">
-              Kirim Konfirmasi Kehadiran
-            </button>
-          </form>
-
-          <div style="text-align: center; border-top: 1px dashed var(--border-gold); padding-top: 18px;">
-            <button type="button" class="btn-lux-primary" style="background: transparent; border: 1px solid var(--border-gold); color: var(--gold-bright); box-shadow: none;" onclick="openGiftModal()">
-              <i data-lucide="gift" style="width: 15px; height: 15px;"></i> Kirim Hadiah / Amplop Digital
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- MODAL: HADIAH DIGITAL -->
-  <div id="gift-modal" class="modal-backdrop-deck" onclick="closeGiftModal(event)">
-    <div class="modal-box-deck">
-      <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 16px; color: var(--gold-bright);">
-        Rekening Pernikahan
-      </h3>
-
-      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px; margin-bottom: 12px;">
-        <p style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">Bank BCA</p>
-        <h4 id="bca-acc-no" style="font-family: var(--font-display); font-size: 1.5rem; margin: 4px 0;">1234 567 890</h4>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">a.n Charis Maulana Setya Adi</p>
-        <button class="btn-lux-primary" style="padding: 6px 16px; font-size: 0.7rem;" onclick="copyNumber('bca-acc-no', 'Nomor Rekening BCA Disalin')">
-          Salin No. Rekening
-        </button>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-gold); border-radius: 12px; padding: 14px; margin-bottom: 18px;">
-        <p style="font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-bright);">Bank Mandiri</p>
-        <h4 id="mandiri-acc-no" style="font-family: var(--font-display); font-size: 1.5rem; margin: 4px 0;">9876 543 210</h4>
-        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">a.n Sita Maulidia Alyatu Zahra</p>
-        <button class="btn-lux-primary" style="padding: 6px 16px; font-size: 0.7rem;" onclick="copyNumber('mandiri-acc-no', 'Nomor Rekening Mandiri Disalin')">
-          Salin No. Rekening
-        </button>
-      </div>
-
-      <button class="btn-lux-primary" style="background: transparent; border: 1px solid var(--border-gold); color: #FFF; box-shadow: none;" onclick="closeGiftModalDirect()">
-        Tutup
-      </button>
+  <section class="slide" id="s4" data-nav="Galeri"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <span class="eyebrow" data-r>Visual Memoir</span>
+    <h2 class="h2 foil" data-r style="margin-bottom:24px">Galeri Kisah</h2>
+    <div class="mosaic" data-r>
+      <div class="ph p1" data-src="photo-1519741497674-611481863552"><img loading="lazy" alt="Foto 1" onerror="this.remove()"></div>
+      <div class="ph p2" data-src="photo-1511285560929-80b456fea0bc"><img loading="lazy" alt="Foto 2" onerror="this.remove()"></div>
+      <div class="ph p3" data-src="photo-1465495976277-4387d4b0b4c6"><img loading="lazy" alt="Foto 3" onerror="this.remove()"></div>
+      <div class="ph p4" data-src="photo-1583939003579-730e3918a45a"><img loading="lazy" alt="Foto 4" onerror="this.remove()"></div>
     </div>
+    <p data-r style="font-size:.75rem;color:var(--muted)">Sentuh foto untuk memperbesar tampilan</p>
+  </div></div></section>
+
+  <section class="slide" id="s5" data-nav="Tiket"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <div class="ticket" data-r>
+      <span class="eyebrow">Personal Admission</span>
+      <h2 id="p-name" style="font:400 1.8rem var(--f-d);margin:4px 0 2px">-</h2>
+      <p id="p-quota" style="font-size:.78rem;color:var(--gold-b);margin-bottom:6px">-</p>
+      <div class="qr"><div id="qr"></div></div>
+      <p style="font-size:.75rem;color:var(--muted);max-width:340px;margin:0 auto;line-height:1.6">Tunjukkan QR Code ini kepada petugas resepsionis saat kedatangan untuk konfirmasi presensi kehadiran.</p>
+    </div>
+  </div></div></section>
+
+  <section class="slide" id="s6" data-nav="RSVP"><div class="wrap"><div class="panel" data-tilt>
+    <i class="cb tl"></i><i class="cb tr"></i><i class="cb bl"></i><i class="cb br"></i>
+    <span class="eyebrow" data-r>RSVP &amp; Token Of Love</span>
+    <h2 class="h2 foil" data-r style="margin-bottom:22px">Konfirmasi &amp; Kado</h2>
+    <form id="rsvp" data-r style="margin-bottom:24px">
+      <div class="field"><label for="f-name">Nama Tamu</label><input id="f-name" class="input" readonly></div>
+      <div class="field"><label for="f-status">Kehadiran</label>
+        <select id="f-status" class="input"><option value="Hadir">Saya akan Hadir</option><option value="Tidak Hadir">Berhalangan Hadir</option></select></div>
+      <div class="field" id="count-field"><label for="f-count">Jumlah Hadir (Maksimal <span id="f-max">1</span> Orang)</label><input type="number" id="f-count" class="input" min="1" max="1" value="1" required></div>
+      <button type="submit" class="btn" data-mag style="width:100%;padding:14px">Kirim Konfirmasi Kehadiran</button>
+    </form>
+    <div data-r style="border-top:1px dashed var(--line);padding-top:20px">
+      <button type="button" class="btn ghost" data-mag onclick="openGift()"><svg class="i"><use href="#i-gift"/></svg> Kirim Hadiah / Amplop Digital</button>
+    </div>
+    <footer style="padding:26px 0 0">Charis &amp; Sita • 2026<br><span style="letter-spacing:.1em;text-transform:none;font-family:var(--f-s);font-style:italic;font-size:.95rem">Terima kasih atas doa &amp; kehadiran Anda</span></footer>
+  </div></div></section>
+</main>
+
+<div id="gift" class="modal" onclick="if(event.target===this)closeGift()">
+  <div class="mbox">
+    <h3 style="font:400 1.5rem var(--f-d);margin-bottom:16px;color:var(--gold-b)">Rekening Pernikahan</h3>
+    <div class="acct"><p style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-b)">Bank BCA</p>
+      <h4 id="bca" style="font:400 1.5rem var(--f-d);margin:4px 0">1234 567 890</h4>
+      <p style="font-size:.75rem;color:var(--muted);margin-bottom:10px">a.n Charis Maulana Setya Adi</p>
+      <button class="btn" style="padding:8px 18px;font-size:.68rem" onclick="copyNo('bca','Nomor Rekening BCA Disalin')">Salin No. Rekening</button></div>
+    <div class="acct" style="margin-bottom:18px"><p style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-b)">Bank Mandiri</p>
+      <h4 id="mandiri" style="font:400 1.5rem var(--f-d);margin:4px 0">9876 543 210</h4>
+      <p style="font-size:.75rem;color:var(--muted);margin-bottom:10px">a.n Sita Maulidia Alyatu Zahra</p>
+      <button class="btn" style="padding:8px 18px;font-size:.68rem" onclick="copyNo('mandiri','Nomor Rekening Mandiri Disalin')">Salin No. Rekening</button></div>
+    <button class="btn ghost" onclick="closeGift()">Tutup</button>
   </div>
-
-  <!-- MODAL: IMAGE LIGHTBOX -->
-  <div id="photo-modal" class="modal-backdrop-deck" onclick="closePhotoModal()">
-    <img id="photo-modal-img" src="" style="max-width: 92vw; max-height: 85vh; border-radius: 10px; border: 1px solid var(--border-gold);" alt="Enlarged View">
-  </div>
-
-  <!-- ==============================================================
-       JAVASCRIPT: THREE.JS HYPER-ZOOM SLICE & GSAP SLIDE ENGINE
-       ============================================================== -->
-  <script>
-    const STORAGE_KEY_REGISTRY = "secure_wedding_registry_2026";
-
-    const DEFAULT_REGISTRY = [
-      { uid: "CS-8F2B7D", name: "Bapak Ahmad Subagyo", quota: 2, category: "Keluarga Inti" },
-      { uid: "CS-4A91E6", name: "Ibu Dian Sastrowardoyo", quota: 2, category: "Tamu VIP" },
-      { uid: "CS-1C308F", name: "dr. Hendra Prasetya", quota: 2, category: "Keluarga" },
-      { uid: "CS-9E7D42", name: "Saudara Budi Santoso", quota: 1, category: "Rekan IT Support" },
-      { uid: "CS-5B6A19", name: "Rizky Ramadhan", quota: 1, category: "Sahabat" }
-    ];
-
-    function fetchRegistry() {
-      const data = localStorage.getItem(STORAGE_KEY_REGISTRY);
-      if (!data) {
-        localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(DEFAULT_REGISTRY));
-        return DEFAULT_REGISTRY;
-      }
-      try { return JSON.parse(data); } catch (e) { return DEFAULT_REGISTRY; }
-    }
-
-    /**
-     * THREE.JS OPTIMIZED RESPONSIVE JEWELRY ENGINE
-     */
-    let scene, camera, renderer, ringGroup, particlesMesh;
-    let targetRotationX = 0, targetRotationY = 0;
-
-    function buildProceduralStudioHDR(rend) {
-      const cvs = document.createElement('canvas');
-      cvs.width = 1024;
-      cvs.height = 512;
-      const ctx = cvs.getContext('2d');
-
-      const bg = ctx.createLinearGradient(0, 0, 0, 512);
-      bg.addColorStop(0, '#0a0808');
-      bg.addColorStop(0.5, '#161210');
-      bg.addColorStop(1, '#050404');
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, 1024, 512);
-
-      const key = ctx.createRadialGradient(512, 100, 10, 512, 100, 240);
-      key.addColorStop(0, 'rgba(255, 255, 255, 1.0)');
-      key.addColorStop(0.4, 'rgba(255, 240, 220, 0.7)');
-      key.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = key;
-      ctx.fillRect(0, 0, 1024, 512);
-
-      const warm = ctx.createRadialGradient(160, 260, 20, 160, 260, 280);
-      warm.addColorStop(0, 'rgba(255, 190, 90, 0.95)');
-      warm.addColorStop(0.5, 'rgba(200, 130, 40, 0.4)');
-      warm.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = warm;
-      ctx.fillRect(0, 0, 1024, 512);
-
-      const tex = new THREE.CanvasTexture(cvs);
-      tex.mapping = THREE.EquirectangularReflectionMapping;
-
-      const pmrem = new THREE.PMREMGenerator(rend);
-      pmrem.compileEquirectangularShader();
-      const env = pmrem.fromEquirectangular(tex).texture;
-
-      tex.dispose();
-      pmrem.dispose();
-      return env;
-    }
-
-    function init3DEnvironment() {
-      const container = document.getElementById("webgl-bg-canvas");
-      scene = new THREE.Scene();
-
-      const isMobile = window.innerWidth < 640;
-      const initialZ = isMobile ? 10.5 : 8.0;
-
-      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.set(0, 0, initialZ);
-
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.35;
-      renderer.outputEncoding = THREE.sRGBEncoding;
-      container.appendChild(renderer.domElement);
-
-      const studioEnv = buildProceduralStudioHDR(renderer);
-      scene.environment = studioEnv;
-
-      // Lights
-      const spot = new THREE.SpotLight(0xFFFFFF, 3.2, 40, Math.PI / 4, 0.3);
-      spot.position.set(4, 7, 5);
-      scene.add(spot);
-
-      const rim = new THREE.DirectionalLight(0xF5DEB3, 2.0);
-      rim.position.set(-6, -2, -3);
-      scene.add(rim);
-
-      scene.add(new THREE.AmbientLight(0xFFF6E5, 0.6));
-
-      // Dual 18K Wedding Rings
-      const yellowGoldMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xFFDF73),
-        metalness: 1.0,
-        roughness: 0.11,
-        envMap: studioEnv,
-        envMapIntensity: 2.2
-      });
-
-      const roseGoldMat = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(0xF0B9A2),
-        metalness: 1.0,
-        roughness: 0.13,
-        envMap: studioEnv,
-        envMapIntensity: 2.0
-      });
-
-      ringGroup = new THREE.Group();
-      const ringRadius = isMobile ? 0.95 : 1.25;
-      const tubeRadius = isMobile ? 0.11 : 0.13;
-      const ringGeo = new THREE.TorusGeometry(ringRadius, tubeRadius, 36, 128);
-
-      const groomRing = new THREE.Mesh(ringGeo, yellowGoldMat);
-      groomRing.position.set(isMobile ? -0.42 : -0.55, 0, 0);
-      groomRing.rotation.set(0.4, 0.6, 0);
-
-      const brideRing = new THREE.Mesh(ringGeo, roseGoldMat);
-      brideRing.position.set(isMobile ? 0.42 : 0.55, 0, 0);
-      brideRing.rotation.set(-0.4, -0.6, 0);
-
-      ringGroup.add(groomRing);
-      ringGroup.add(brideRing);
-      ringGroup.position.set(0, 0, 0);
-      scene.add(ringGroup);
-
-      // Gold Particles
-      const pCount = isMobile ? 200 : 320;
-      const pGeo = new THREE.BufferGeometry();
-      const pos = new Float32Array(pCount * 3);
-      for (let i = 0; i < pCount * 3; i += 3) {
-        pos[i] = (Math.random() - 0.5) * 18;
-        pos[i+1] = (Math.random() - 0.5) * 14;
-        pos[i+2] = (Math.random() - 0.5) * 10;
-      }
-      pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      particlesMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({
-        size: isMobile ? 0.038 : 0.045,
-        color: 0xFFE082,
-        transparent: true,
-        opacity: 0.75,
-        blending: THREE.AdditiveBlending
-      }));
-      scene.add(particlesMesh);
-
-      // Orientation / Tilt
-      window.addEventListener("mousemove", (e) => {
-        const x = (e.clientX / window.innerWidth) * 2 - 1;
-        const y = -(e.clientY / window.innerHeight) * 2 + 1;
-        targetRotationY = x * 0.7;
-        targetRotationX = y * 0.45;
-      });
-
-      window.addEventListener("touchmove", (e) => {
-        if (e.touches.length > 0) {
-          const x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-          const y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-          targetRotationY = x * 0.8;
-          targetRotationX = y * 0.5;
-        }
-      }, { passive: true });
-
-      window.addEventListener("resize", () => {
-        const mobile = window.innerWidth < 640;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.position.z = mobile ? 10.5 : 8.0;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      animateWebGL();
-    }
-
-    function animateWebGL() {
-      requestAnimationFrame(animateWebGL);
-
-      if (ringGroup) {
-        ringGroup.rotation.y += 0.005;
-        ringGroup.rotation.x += (targetRotationX - ringGroup.rotation.x) * 0.05;
-        ringGroup.rotation.y += (targetRotationY - ringGroup.rotation.y) * 0.05;
-      }
-
-      if (particlesMesh) {
-        particlesMesh.rotation.y -= 0.0008;
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    /**
-     * INITIALIZATION & STRICT SECURITY CHECK
-     */
-    document.addEventListener("DOMContentLoaded", () => {
-      if (window.lucide) lucide.createIcons();
-      init3DEnvironment();
-      initCountdown();
-      initAudioControls();
-
-      // Validasi Parameter UID
-      const params = new URLSearchParams(window.location.search);
-      const uid = params.get("uid");
-
-      if (!uid || uid.trim() === "") {
-        lockoutStrict();
-        return;
-      }
-
-      const registry = fetchRegistry();
-      const matched = registry.find(g => g.uid.toUpperCase() === uid.trim().toUpperCase());
-
-      if (!matched) {
-        lockoutStrict();
-        return;
-      }
-
-      setupGuestInformation(matched);
-    });
-
-    function lockoutStrict() {
-      document.getElementById("welcome-experience").style.display = "none";
-      document.getElementById("invitation-scroll-view").style.display = "none";
-      document.getElementById("audio-widget-btn").style.display = "none";
-      document.getElementById("slide-dots").style.display = "none";
-      document.getElementById("security-gate").style.display = "flex";
-    }
-
-    function setupGuestInformation(guest) {
-      document.getElementById("target-guest-name").textContent = guest.name;
-      document.getElementById("target-guest-quota").textContent = `${guest.category} • Kuota ${guest.quota} Orang`;
-
-      document.getElementById("pass-guest-name").textContent = guest.name;
-      document.getElementById("pass-guest-quota").textContent = `Undangan Resmi: ${guest.quota} Orang (${guest.category})`;
-
-      document.getElementById("rsvp-field-name").value = guest.name;
-      document.getElementById("rsvp-max-badge").textContent = guest.quota;
-      document.getElementById("rsvp-field-count").max = guest.quota;
-
-      // Mount QR Code
-      const qrBox = document.getElementById("mount-qr-box");
-      qrBox.innerHTML = "";
-      if (window.QRCode) {
-        new QRCode(qrBox, {
-          text: `WEDDING|${guest.uid}`,
-          width: 175,
-          height: 175,
-          colorDark: "#0A0808",
-          colorLight: "#FFFFFF",
-          correctLevel: QRCode.CorrectLevel.H
-        });
-      }
-
-      document.getElementById("btn-open-ceremony").addEventListener("click", triggerSlicingCeremony);
-      document.getElementById("crest-trigger").addEventListener("click", triggerSlicingCeremony);
-
-      document.getElementById("rsvp-deck-form").addEventListener("submit", (e) => {
-        e.preventDefault();
-        showToast("Konfirmasi RSVP Anda berhasil dikirim!", "green");
-      });
-    }
-
-    /**
-     * THE RING SLICING TRANSITION & FULL-PAGE SLIDE MOTION
-     */
-    function triggerSlicingCeremony() {
-      playMusicTrack();
-
-      if (window.gsap) {
-        const tl = gsap.timeline({
-          onComplete: () => {
-            document.getElementById("welcome-experience").style.display = "none";
-            const main = document.getElementById("invitation-scroll-view");
-            main.style.display = "block";
-            setupSlideDeckPresentationScroll();
-          }
-        });
-
-        // 1. Cincin 3D Hyper-Zoom & Spin menembus layar
-        tl.to(ringGroup.scale, { x: 2.2, y: 2.2, z: 2.2, duration: 0.6, ease: "power2.in" }, 0)
-          .to(ringGroup.position, { z: 4.5, duration: 0.6, ease: "power2.in" }, 0)
-          .to(ringGroup.rotation, { z: Math.PI * 2, duration: 0.6, ease: "power2.in" }, 0)
-          // 2. Konten welcome memudar
-          .to("#welcome-deck-elements", { scale: 0.85, opacity: 0, duration: 0.4 }, 0.2)
-          // 3. Tirai kiri dan kanan terbelah ke samping
-          .to("#curtain-l", { xPercent: -100, duration: 0.8, ease: "power3.inOut" }, 0.5)
-          .to("#curtain-r", { xPercent: 100, duration: 0.8, ease: "power3.inOut" }, 0.5)
-          // 4. Cincin kembali ke posisi latar belakang yang anggun
-          .to(ringGroup.scale, { x: 0.7, y: 0.7, z: 0.7, duration: 1.2, ease: "power3.out" }, 0.8)
-          .to(ringGroup.position, { z: -3.5, y: 1.5, duration: 1.2, ease: "power3.out" }, 0.8);
-      } else {
-        document.getElementById("welcome-experience").style.display = "none";
-        document.getElementById("invitation-scroll-view").style.display = "block";
-      }
-    }
-
-    /**
-     * GSAP FULL-PAGE PRESENTATION SLIDE-IN ENGINE
-     */
-    function setupSlideDeckPresentationScroll() {
-      if (window.gsap && window.ScrollTrigger) {
-        gsap.registerPlugin(ScrollTrigger);
-
-        const slides = gsap.utils.toArray('.slide-section');
-        const dots = document.querySelectorAll('.pagination-dot');
-
-        slides.forEach((slide, index) => {
-          const panel = slide.querySelector('.slide-deck-anim');
-          const direction = index % 2 === 0 ? -70 : 70; // Bergantian masuk dari kiri dan kanan
-
-          // Animasi Panel Slide Presentasi Masuk
-          gsap.fromTo(panel, 
-            {
-              opacity: 0,
-              x: direction,
-              scale: 0.92,
-              filter: "blur(8px)"
-            },
-            {
-              opacity: 1,
-              x: 0,
-              scale: 1,
-              filter: "blur(0px)",
-              duration: 1.2,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: slide,
-                start: "top 70%",
-                end: "bottom 30%",
-                toggleActions: "play reverse play reverse",
-                onEnter: () => updatePagination(index),
-                onEnterBack: () => updatePagination(index)
-              }
-            }
-          );
-
-          // Cincin 3D Bergeser Mengikuti Slide
-          gsap.to(ringGroup.position, {
-            x: index % 2 === 0 ? 1.5 : -1.5,
-            y: (index % 3 - 1) * 0.8,
-            scrollTrigger: {
-              trigger: slide,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5
-            }
-          });
-        });
-
-        function updatePagination(activeIndex) {
-          dots.forEach((dot, i) => {
-            if (i === activeIndex) dot.classList.add('active');
-            else dot.classList.remove('active');
-          });
-        }
-      }
-    }
-
-    /**
-     * AUDIO & UTILS
-     */
-    function initAudioControls() {
-      const audio = document.getElementById("soundtrack-audio");
-      const btn = document.getElementById("audio-widget-btn");
-
-      btn.addEventListener("click", () => {
-        if (audio.paused) {
-          playMusicTrack();
-        } else {
-          audio.pause();
-          btn.classList.remove("spinning");
-        }
-      });
-    }
-
-    function playMusicTrack() {
-      const audio = document.getElementById("soundtrack-audio");
-      const btn = document.getElementById("audio-widget-btn");
-      audio.play().then(() => btn.classList.add("spinning")).catch(e => {});
-    }
-
-    function showToast(msg, type = "normal") {
-      const bin = document.getElementById("toast-bin");
-      const chip = document.createElement("div");
-      chip.className = "toast-chip show";
-      chip.textContent = msg;
-      bin.appendChild(chip);
-
-      setTimeout(() => {
-        chip.classList.remove("show");
-        setTimeout(() => chip.remove(), 400);
-      }, 3500);
-    }
-
-    function copyNumber(id, msg) {
-      const text = document.getElementById(id).textContent;
-      navigator.clipboard.writeText(text).then(() => showToast(msg));
-    }
-
-    function openGiftModal() { document.getElementById("gift-modal").style.display = "flex"; }
-    function closeGiftModal(e) { if (e.target.id === "gift-modal") closeGiftModalDirect(); }
-    function closeGiftModalDirect() { document.getElementById("gift-modal").style.display = "none"; }
-
-    function openPhotoModal(url) {
-      document.getElementById("photo-modal-img").src = url;
-      document.getElementById("photo-modal").style.display = "flex";
-    }
-    function closePhotoModal() { document.getElementById("photo-modal").style.display = "none"; }
-
-    function initCountdown() {
-      const target = new Date("2026-12-12T09:00:00+07:00").getTime();
-      setInterval(() => {
-        const diff = target - new Date().getTime();
-        if (diff <= 0) return;
-        document.getElementById("cd-days").textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
-        document.getElementById("cd-hours").textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        document.getElementById("cd-minutes").textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        document.getElementById("cd-seconds").textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-      }, 1000);
-    }
-  </script>
+</div>
+<div id="lightbox" class="modal" onclick="this.classList.remove('open')"><img id="lb-img" alt="Tampilan diperbesar" style="max-width:92vw;max-height:85vh;border-radius:12px;border:1px solid var(--line)"></div>
+
+<script>
+(()=>{
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE=matchMedia('(hover:hover) and (pointer:fine)').matches;
+const KEY="secure_wedding_registry_2026", RSVP_KEY="wedding_rsvp_2026";
+const DEFAULTS=[
+ {uid:"CS-8F2B7D",name:"Bapak Ahmad Subagyo",quota:2,category:"Keluarga Inti"},
+ {uid:"CS-4A91E6",name:"Ibu Dian Sastrowardoyo",quota:2,category:"Tamu VIP"},
+ {uid:"CS-1C308F",name:"dr. Hendra Prasetya",quota:2,category:"Keluarga"},
+ {uid:"CS-9E7D42",name:"Saudara Budi Santoso",quota:1,category:"Rekan IT Support"},
+ {uid:"CS-5B6A19",name:"Rizky Ramadhan",quota:1,category:"Sahabat"}];
+const store={
+ get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}},
+ set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const registry=()=>{const r=store.get(KEY,null);if(!r){store.set(KEY,DEFAULTS);return DEFAULTS}return r};
+
+/* ---------- Toast & utils ---------- */
+function toast(msg){const c=document.createElement('div');c.className='toast';c.textContent=msg;$('#toasts').appendChild(c);
+ requestAnimationFrame(()=>c.classList.add('show'));setTimeout(()=>{c.classList.remove('show');setTimeout(()=>c.remove(),400)},3500)}
+window.copyNo=(id,msg)=>{const t=$('#'+id).textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(msg)).catch(()=>toast('Salin manual: '+t))};
+window.openGift=()=>$('#gift').classList.add('open');window.closeGift=()=>$('#gift').classList.remove('open');
+addEventListener('keydown',e=>{if(e.key==='Escape')$$('.modal.open').forEach(m=>m.classList.remove('open'))});
+
+/* ---------- 3D Engine ---------- */
+const mobile=innerWidth<640;
+const S={x:0,y:0,z:0,s:1,rx:0,ry:0,rz:0,glow:1};      // state yang digerakkan scroll
+const intro={z:0,s:1,spin:0,exp:1};                     // state transisi pembuka
+const mouse={x:0,y:0,tx:0,ty:0};
+let scene,camera,renderer,root,ringsG,gem,dust,lightA,lightB,running=true,clock=new THREE.Clock(),slow=0,frames=0;
+
+function studioEnv(r){
+ const c=document.createElement('canvas');c.width=1024;c.height=512;const x=c.getContext('2d');
+ const bg=x.createLinearGradient(0,0,0,512);bg.addColorStop(0,'#0c0a09');bg.addColorStop(.5,'#1a1411');bg.addColorStop(1,'#050404');x.fillStyle=bg;x.fillRect(0,0,1024,512);
+ const blob=(px,py,r0,r1,col)=>{const g=x.createRadialGradient(px,py,2,px,py,r1);g.addColorStop(0,col);g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,1024,512)};
+ blob(512,90,10,260,'rgba(255,255,255,1)');blob(150,260,10,300,'rgba(255,185,85,.95)');blob(880,230,10,240,'rgba(255,230,200,.85)');blob(512,470,10,200,'rgba(255,215,150,.5)');
+ x.fillStyle='rgba(255,255,255,.9)';x.fillRect(300,40,14,160);x.fillRect(720,60,10,120);   // strip softbox -> pantulan tajam
+ const t=new THREE.CanvasTexture(c);t.mapping=THREE.EquirectangularReflectionMapping;
+ const p=new THREE.PMREMGenerator(r);p.compileEquirectangularShader();const e=p.fromEquirectangular(t).texture;t.dispose();p.dispose();return e}
+
+function sprite(){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');
+ const g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,240,190,1)');g.addColorStop(.3,'rgba(255,215,120,.5)');g.addColorStop(1,'rgba(255,200,80,0)');
+ x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)}
+
+function init3D(){
+ scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x080606,.045);
+ camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,100);camera.position.set(0,0,mobile?11:8.5);
+ try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:!mobile,powerPreference:'high-performance'})}catch{ $('#gl').remove();return false}
+ renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.5:2));
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;renderer.outputEncoding=THREE.sRGBEncoding;
+ $('#gl').appendChild(renderer.domElement);
+ const env=studioEnv(renderer);scene.environment=env;
+
+ lightA=new THREE.PointLight(0xffe2a8,18,30,2);lightA.position.set(4,5,5);
+ lightB=new THREE.PointLight(0xffb77a,10,30,2);lightB.position.set(-5,-3,3);
+ scene.add(lightA,lightB,new THREE.AmbientLight(0xfff0d8,.35));
+
+ const mat=(col,rough)=>new THREE.MeshPhysicalMaterial({color:col,metalness:1,roughness:rough,clearcoat:.6,clearcoatRoughness:.08,envMap:env,envMapIntensity:2.4});
+ const yellow=mat(0xFFD86B,.14), rose=mat(0xEDB3A0,.16);
+
+ root=new THREE.Group();ringsG=new THREE.Group();root.add(ringsG);scene.add(root);
+ const R=mobile?.95:1.2, T=mobile?.115:.135;
+ // cincin dengan profil comfort-fit: torus + alur tipis (inner band)
+ const band=(R,T,m)=>{const g=new THREE.Group();
+   g.add(new THREE.Mesh(new THREE.TorusGeometry(R,T,48,160),m));
+   const inner=new THREE.Mesh(new THREE.TorusGeometry(R,T*.62,32,160),mat(0xfff0c8,.05));inner.scale.set(1,1,1.02);g.add(inner);return g};
+ const gr=band(R,T,yellow), br=band(R,T,rose);
+ const off=mobile?.42:.56;
+ gr.position.x=-off;gr.rotation.set(.45,.7,.1);br.position.x=off;br.rotation.set(-.45,-.7,-.1);
+ ringsG.add(gr,br);
+
+ // berlian di antara dua cincin
+ gem=new THREE.Mesh(new THREE.OctahedronGeometry(mobile?.2:.26,0),new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:.1,roughness:0,clearcoat:1,envMap:env,envMapIntensity:4,flatShading:true,emissive:0x302518}));
+ gem.scale.y=1.35;ringsG.add(gem);
+
+ // debu emas bercahaya, 3 lapis kedalaman
+ const N=mobile?160:300,pos=new Float32Array(N*3),seed=new Float32Array(N);
+ for(let i=0;i<N;i++){pos.set([(Math.random()-.5)*20,(Math.random()-.5)*14,(Math.random()-.5)*12-1],i*3);seed[i]=Math.random()*6.28}
+ const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3));pg.userData={seed,base:pos.slice()};
+ dust=new THREE.Points(pg,new THREE.PointsMaterial({size:mobile?.16:.2,map:sprite(),transparent:true,opacity:.8,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true}));
+ scene.add(dust);
+
+ addEventListener('pointermove',e=>{mouse.tx=e.clientX/innerWidth*2-1;mouse.ty=-(e.clientY/innerHeight)*2+1},{passive:true});
+ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.position.z=innerWidth<640?11:8.5;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+ document.addEventListener('visibilitychange',()=>{running=!document.hidden;if(running){clock.getDelta();loop()}});
+ loop();return true}
+
+function loop(){
+ if(!running)return;requestAnimationFrame(loop);
+ const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;
+ // adaptif: turunkan pixel ratio bila FPS rendah
+ if(++frames>90&&frames<400){slow+=dt>.026?1:0;if(slow>60){renderer.setPixelRatio(1);slow=-9999}}
+ mouse.x+=(mouse.tx-mouse.x)*.05;mouse.y+=(mouse.ty-mouse.y)*.05;
+ root.position.set(S.x,S.y+Math.sin(t*.8)*.08,S.z+intro.z);
+ root.scale.setScalar(S.s*intro.s);
+ root.rotation.set(S.rx+mouse.y*.3,S.ry+mouse.x*.45,S.rz);
+ ringsG.rotation.y=t*.28+intro.spin;ringsG.rotation.x=Math.sin(t*.5)*.12;
+ gem.rotation.y=t*1.1;gem.rotation.z=Math.sin(t)*.1;
+ lightA.position.set(Math.cos(t*.45)*5,4+Math.sin(t*.3)*1.5,5);lightB.position.set(Math.sin(t*.35)*-5,-3,3);
+ lightA.intensity=18*S.glow*intro.exp;
+ dust.rotation.y=t*.02+mouse.x*.06;dust.rotation.x=mouse.y*.04;
+ const a=dust.geometry.attributes.position,{seed,base}=dust.geometry.userData;
+ for(let i=0;i<seed.length;i++){a.array[i*3+1]=base[i*3+1]+Math.sin(t*.4+seed[i])*.35;a.array[i*3]=base[i*3]+Math.cos(t*.3+seed[i])*.2}
+ a.needsUpdate=true;
+ camera.position.x+=(mouse.x*.35-camera.position.x)*.04;camera.position.y+=(mouse.y*.25-camera.position.y)*.04;camera.lookAt(0,0,0);
+ renderer.render(scene,camera)}
+
+/* ---------- Koreografi scroll: tiap slide punya pose cincin ---------- */
+const POSES=mobile?
+ [{x:0,y:1.6,z:-2.5,s:.62,rx:0,ry:0,rz:0},{x:0,y:2,z:-3.5,s:.5,rx:.4,ry:.6,rz:.3},{x:0,y:2.2,z:-4,s:.45,rx:.2,ry:-.5,rz:-.2},
+  {x:0,y:2.2,z:-4,s:.45,rx:-.3,ry:.4,rz:.2},{x:0,y:2,z:-4.5,s:.42,rx:.3,ry:-.4,rz:0},{x:0,y:2.1,z:-4,s:.45,rx:0,ry:.5,rz:.3},{x:0,y:2,z:-3.5,s:.5,rx:-.2,ry:0,rz:-.3}]:
+ [{x:0,y:.6,z:-1.2,s:.95,rx:0,ry:0,rz:0},{x:-2.6,y:.4,z:-2,s:.7,rx:.3,ry:.8,rz:.25},{x:2.7,y:-.2,z:-2,s:.72,rx:.1,ry:-.8,rz:-.2},
+  {x:-2.8,y:.2,z:-2,s:.7,rx:-.3,ry:.6,rz:.3},{x:2.7,y:.4,z:-2.4,s:.68,rx:.4,ry:-.5,rz:0},{x:-2.7,y:-.3,z:-1.8,s:.74,rx:0,ry:.9,rz:.4},{x:0,y:.8,z:-2.5,s:.8,rx:-.2,ry:0,rz:-.3}];
+
+function choreograph(){
+ const slides=$$('.slide');
+ slides.forEach((sl,i)=>{
+   gsap.to(S,{...POSES[i],glow:i===5?1.5:1,ease:'none',scrollTrigger:{trigger:sl,start:'top 80%',end:'center center',scrub:1.4}});
+   const items=$$('[data-r]',sl);
+   gsap.from(items,{opacity:0,y:34,filter:'blur(8px)',duration:1.1,stagger:.12,ease:'power3.out',scrollTrigger:{trigger:sl,start:'top 62%',once:true}});
+   gsap.from($('.panel',sl),{opacity:0,scale:.94,rotateX:8,duration:1.3,ease:'power3.out',scrollTrigger:{trigger:sl,start:'top 75%',once:true}});
+   gsap.to($('.panel',sl),{yPercent:-4,ease:'none',scrollTrigger:{trigger:sl,start:'top bottom',end:'bottom top',scrub:true}}); // parallax halus
+   ScrollTrigger.create({trigger:sl,start:'top 55%',end:'bottom 55%',onToggle:s=>s.isActive&&setActive(i)});
+ });
+ gsap.to('#progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:'#deck',start:'top top',end:'bottom bottom',scrub:.3}});
+}
+
+/* ---------- Navbar + pager ---------- */
+function buildNav(){
+ const nav=$('#nav'),pg=$('#pager');
+ nav.innerHTML='<a href="#s0" class="mono">CS</a>'+$$('.slide').slice(2).map(s=>`<a href="#${s.id}" data-t="${s.id}">${s.dataset.nav}</a>`).join('');
+ pg.innerHTML=$$('.slide').map((s,i)=>`<i data-i="${i}" title="${s.dataset.nav}"></i>`).join('');
+ pg.onclick=e=>{const i=e.target.dataset.i;if(i!==undefined)$$('.slide')[i].scrollIntoView({behavior:REDUCED?'auto':'smooth'})};
+ nav.onclick=e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();$(a.getAttribute('href')).scrollIntoView({behavior:REDUCED?'auto':'smooth'})};
+ pg.classList.add('show');
+ gsap.to(nav,{yPercent:0,y:0,xPercent:-50,x:0,duration:1.2,ease:'power4.out',delay:.6,startAt:{y:-80}});
+}
+function setActive(i){
+ $$('#pager i').forEach((d,k)=>d.classList.toggle('on',k===i));
+ const id='s'+i;$$('#nav a[data-t]').forEach(a=>a.classList.toggle('on',a.dataset.t===id));
+ const on=$('#nav a.on');if(on)on.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'})}
+
+/* ---------- Interaksi: tilt, magnetic, cursor glow ---------- */
+function interactions(){
+ if(!FINE)return;
+ $$('[data-tilt]').forEach(p=>{
+  p.addEventListener('pointermove',e=>{const r=p.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+   p.style.setProperty('--ry',((x-.5)*5).toFixed(2)+'deg');p.style.setProperty('--rx',((.5-y)*4).toFixed(2)+'deg');
+   p.style.setProperty('--mx',x*100+'%');p.style.setProperty('--my',y*100+'%')});
+  p.addEventListener('pointerleave',()=>{p.style.setProperty('--rx','0deg');p.style.setProperty('--ry','0deg')})});
+ $$('[data-mag]').forEach(b=>{
+  const mx=gsap.quickTo(b,'x',{duration:.5,ease:'power3'}),my=gsap.quickTo(b,'y',{duration:.5,ease:'power3'});
+  b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();mx((e.clientX-r.left-r.width/2)*.22);my((e.clientY-r.top-r.height/2)*.3)});
+  b.addEventListener('pointerleave',()=>{mx(0);my(0)})});
+ const g=$('#glow'),gx=gsap.quickTo(g,'x',{duration:.6}),gy=gsap.quickTo(g,'y',{duration:.6});
+ addEventListener('pointermove',e=>{g.style.opacity=1;gx(e.clientX);gy(e.clientY)},{passive:true})}
+
+/* ---------- Audio ---------- */
+const bgm=$('#bgm'),abtn=$('#audio-btn');
+function play(){bgm.volume=0;bgm.play().then(()=>{abtn.classList.add('on');gsap.to(bgm,{volume:.6,duration:2.5})}).catch(()=>{})}
+abtn.onclick=()=>{if(bgm.paused)play();else{gsap.to(bgm,{volume:0,duration:.6,onComplete:()=>{bgm.pause();abtn.classList.remove('on')}})}};
+
+/* ---------- Upacara pembuka ---------- */
+let opened=false;
+function openCeremony(){
+ if(opened)return;opened=true;play();document.body.classList.add('lock');
+ const tl=gsap.timeline({onComplete:()=>{
+   $('#welcome').style.display='none';$('#deck').style.display='block';$('#deck').classList.add('show');
+   document.body.classList.remove('lock');scrollTo(0,0);buildNav();choreograph();interactions();ScrollTrigger.refresh()}});
+ if(!renderer||REDUCED){tl.to('#welcome',{opacity:0,duration:.5});return}
+ tl.to(intro,{z:4.2,s:2.1,duration:.9,ease:'power3.in'},0)
+   .to(intro,{spin:Math.PI*2,duration:1.4,ease:'power2.inOut'},0)
+   .to(intro,{exp:3,duration:.5,yoyo:true,repeat:1,ease:'sine.inOut'},.2)
+   .to('#w-el',{scale:.88,opacity:0,filter:'blur(10px)',duration:.5,ease:'power2.in'},.15)
+   .to('#cl',{xPercent:-101,duration:1,ease:'power4.inOut'},.7)
+   .to('#cr',{xPercent:101,duration:1,ease:'power4.inOut'},.7)
+   .to(intro,{z:0,s:1,duration:1.6,ease:'expo.out'},.95)
+   .to(camera,{fov:50,duration:.9,ease:'power2.in',onUpdate:()=>camera.updateProjectionMatrix()},0)
+   .to(camera,{fov:42,duration:1.6,ease:'expo.out',onUpdate:()=>camera.updateProjectionMatrix()},.95)}
+
+/* ---------- Countdown ---------- */
+function countdown(){
+ const target=new Date("2026-12-12T09:00:00+07:00").getTime(),ids=['d','h','m','s'];
+ const tick=()=>{let d=Math.max(0,target-Date.now());const v=[d/864e5,d%864e5/36e5,d%36e5/6e4,d%6e4/1e3].map(n=>String(Math.floor(n)).padStart(2,'0'));
+  ids.forEach((k,i)=>{const el=$('#cd-'+k);if(el&&el.textContent!==v[i])el.textContent=v[i]})};
+ tick();setInterval(tick,1000)}
+
+/* ---------- Data tamu, RSVP, galeri ---------- */
+function setupGuest(g){
+ $('#g-name').textContent=g.name;$('#g-quota').textContent=`${g.category} • Kuota ${g.quota} Orang`;
+ $('#p-name').textContent=g.name;$('#p-quota').textContent=`Undangan Resmi: ${g.quota} Orang (${g.category})`;
+ $('#f-name').value=g.name;$('#f-max').textContent=g.quota;$('#f-count').max=g.quota;
+ const q=$('#qr');q.innerHTML='';if(window.QRCode)new QRCode(q,{text:`WEDDING|${g.uid}`,width:175,height:175,colorDark:"#0A0808",colorLight:"#FFFFFF",correctLevel:QRCode.CorrectLevel.H});
+ const saved=store.get(RSVP_KEY,{})[g.uid];if(saved){$('#f-status').value=saved.status;$('#f-count').value=saved.count||1;toggleCount()}
+ $('#open').onclick=openCeremony;$('#crest').onclick=openCeremony;
+ $('#crest').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCeremony()}};
+ $('#f-status').onchange=toggleCount;
+ $('#rsvp').onsubmit=e=>{e.preventDefault();
+  const all=store.get(RSVP_KEY,{}),hadir=$('#f-status').value==='Hadir';
+  all[g.uid]={uid:g.uid,name:g.name,status:$('#f-status').value,count:hadir?Math.min(+$('#f-count').value||1,g.quota):0,at:new Date().toISOString()};
+  store.set(RSVP_KEY,all);toast('Konfirmasi tersimpan di perangkat ini. Terima kasih!')}}
+function toggleCount(){$('#count-field').style.display=$('#f-status').value==='Hadir'?'block':'none'}
+function gallery(){
+ $$('.ph').forEach(p=>{const id=p.dataset.src,base='https://images.unsplash.com/'+id;
+  p.querySelector('img').src=base+'?w=600&fit=crop';
+  p.onclick=()=>{$('#lb-img').src=base+'?w=1200';$('#lightbox').classList.add('open')}})}
+
+function lockout(){['welcome','deck','audio-btn','pager','nav'].forEach(i=>{const e=$('#'+i);if(e)e.style.display='none'});$('#gate').style.display='flex'}
+
+/* ---------- Boot ---------- */
+document.addEventListener('DOMContentLoaded',()=>{
+ gsap.registerPlugin(ScrollTrigger);
+ init3D();countdown();gallery();
+ const uid=(new URLSearchParams(location.search).get('uid')||'').trim().toUpperCase();
+ const g=uid&&registry().find(x=>x.uid.toUpperCase()===uid);
+ if(!g){lockout();return}
+ setupGuest(g);
+ gsap.from('#w-el > *',{opacity:0,y:24,duration:1.2,stagger:.12,ease:'power3.out',delay:.3});
+ gsap.from('#gl',{opacity:0,duration:2});
+});
+})();
+</script>
 </body>
 </html>
